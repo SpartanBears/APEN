@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Prueba de conexion</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>user</th>
+            <th>pass</th>
+        </tr>
+        <tbody id="data_container">
+
+        </tbody>
+    </table>
+    <form id="insertar">
+        <input type="text" id="userName" autocomplete="off" required>
+        <input type="text" id="userPass" autocomplete="off" required>
+        <button id="Guardar">Guardar</button> 
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="./js/prueba.js"></script>
+</body>
+</html>
