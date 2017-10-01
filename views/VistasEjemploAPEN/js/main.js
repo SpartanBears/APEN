@@ -1,4 +1,6 @@
-window.onload = function(){
+var io = io()
+
+window.onload = function () {
 
 	createDonut('donut1', donutVal);
 	createDonutSnd('knotEx', 53);
@@ -259,18 +261,16 @@ var tablaConsistecia3 = {
 
 
 var arrayTabas = [tablaConsistecia, tablaConsistecia2, tablaConsistecia3];
-
 var donutVal = [
-	{
-		label: 'Corregidos',
-		value: 23
-	},
-	{
-		label: 'No Corregidos',
-		value: 77
-	}
+    {
+        label: 'Corregidos',
+        value: 23
+    },
+    {
+        label: 'No Corregidos',
+        value: 77
+    }
 ];
-
 var donutVal2 = [
 	{
 		label: 'Corregidos',
@@ -282,6 +282,19 @@ var donutVal2 = [
 	}
 ];
 
+/*
+recibe datos desde otra pagina y recarga los datos del grafico
+*/
+io.on('nuevosDatos', function (data) {
+    donutVal[0].value = data.corregidos;
+    donutVal[1].value = data.nocorr;
+    var node = document.getElementById('donut1');
+    while (node.hasChildNodes()) {
+        node.removeChild(node.firstChild);
+    }
+    createDonut('donut1', donutVal);
+
+})
 var consistenciaDetalle = {
 	columns:[
 		{title:"ID Respuesta"},

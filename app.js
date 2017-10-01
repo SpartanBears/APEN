@@ -11,6 +11,9 @@ app
     .get('/', function (req, res) {
         res.sendFile(`${publicDir}/index.html`)
     })
+    .get('/admin', function (req, res) {
+        res.sendFile("/views/VistasEjemploAPEN/blank.html", { root: __dirname });
+    })
 
 http.listen(port, function (cb) {
     console.log('servidor iniciado')
@@ -29,8 +32,10 @@ El evento 'insertarUsuario', recibe los datos del formulario y los guarda en la 
 a traves de la función isertarUsario
 */
 io.on('connection', function (socket) {
+    console.log('ingreso alguien')
     Funciones.buscarTodos(socket)
     socket.on('insertarUsuario', function (data) {
-        Funciones.insertarUsuario(data.user, data.pass, io)
+        //Funciones.insertarUsuario(data.user, data.pass, io)
+        io.emit('nuevosDatos', { corregidos: data.user, nocorr: data.pass })
     })
 })
