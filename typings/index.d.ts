@@ -13,6 +13,7 @@
 /// <reference path="modules/debug/index.d.ts" />
 /// <reference path="modules/express/index.d.ts" />
 /// <reference path="modules/morgan/index.d.ts" />
+/// <reference path="modules/mysql/index.d.ts" />
 /// <reference path="modules/pg/index.d.ts" />
 /// <reference path="modules/sequelize/index.d.ts" />
 /// <reference path="modules/serve-favicon/index.d.ts" />

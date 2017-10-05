@@ -1,9 +1,9 @@
 ﻿{
-	"postgres":{
+	"mysql":{
 		"host": "localhost",
-		"dialect": "postgres",
+		"dialect": "mysql",
 		"user": "root",
 		"pass": "root",
-		"database": "prueba"
+		"database": "qualans"
 	}
 }

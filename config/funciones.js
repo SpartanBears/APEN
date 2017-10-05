@@ -17,19 +17,23 @@ module.exports = {
     */
     buscarTodos: function (socket) {
         sequelize.query('SELECT * FROM usuario', { model: Usuario, raw: true }).then(resultado => {
-            socket.emit('buscador', resultado)
+            console.log('aqui estan todos')
+            console.log(resultado)
 
         })
     },
 
     /*
-    función que crea un nuevo usuario
+    función login, inicia sesion en la aplicación
     */
-    insertarUsuario: function (useru, passu, io) {
-        sequelize.query('INSERT INTO usuario("user","pass") VALUES (:user, :pass)', {
-            replacements: { user: useru, pass: passu }
-        }, { type: sequelize.QueryTypes.INSERT }).then(function () {
-            actualizarTabla(io)
+    login: function (useru, passu, io, sock) {
+        sequelize.query("SELECT * FROM usuario WHERE usuario='"+useru+"' AND contraseña='"+passu+"'", { type: sequelize.QueryTypes.SELECT, model: Usuario, raw: true }).then(function (result) {
+            if (result.length == 1) {
+                console.log(result[0].usuario)
+                io.to(sock).emit('login exitoso', { nombre: result[0].nombre, apellidop: result[0].apellido_paterno, apellidom: result[0].apellido_materno, tipousuario: result[0].id_tipo_usuario })
+            } else {
+                io.to(sock).emit('login fallido', { mensaje: 'datos incorrectos' })
+            }  
             })
     }
 }

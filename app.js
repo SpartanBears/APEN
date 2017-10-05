@@ -14,6 +14,9 @@ app
     .get('/admin', function (req, res) {
         res.sendFile("/views/VistasEjemploAPEN/blank.html", { root: __dirname });
     })
+    .get('/usuario', function (req, res) {
+        res.sendFile("/views/login.html", { root: __dirname })
+    })
 
 http.listen(port, function (cb) {
     console.log('servidor iniciado')
@@ -34,8 +37,7 @@ a traves de la función isertarUsario
 io.on('connection', function (socket) {
     console.log('ingreso alguien')
     Funciones.buscarTodos(socket)
-    socket.on('insertarUsuario', function (data) {
-        //Funciones.insertarUsuario(data.user, data.pass, io)
-        io.emit('nuevosDatos', { corregidos: data.user, nocorr: data.pass })
+    socket.on('Iniciar Sesion', function (data) {
+        Funciones.login(data.user, data.pass, io, socket.id)
     })
 })

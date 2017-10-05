@@ -1,6 +1,6 @@
 ﻿
     'use strict'
-    var io = io()
+    var io = io.connect('https://apen.spartanbears.cl:50000')
 /*
 evento 'buscador', recibe un objeto con los datos de la tabla usuario
 y los envía al la tabla que esta en el html.
