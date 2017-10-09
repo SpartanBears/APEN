@@ -8,6 +8,7 @@ Se importa el modelo de la tabla usuario
 */
 var Usuario = sequelize.import('./models/usuario.js')
 var AsignacionCodigo = sequelize.import('./models/asignacion_codigo.js')
+var Asignacion = sequelize.import('./models/asignacion.js')
 
 
 
@@ -27,26 +28,36 @@ module.exports = {
     /*
     función login, inicia sesion en la aplicación
     */
-    login: function (useru, passu, io, sock, fs) {
-        sequelize.query("SELECT * FROM usuario WHERE usuario='"+useru+"' AND contraseña='"+passu+"'", { type: sequelize.QueryTypes.SELECT, model: Usuario, raw: true }).then(function (result) {
-            if (result.length == 1) {
-                if (result[0].id_tipo_usuario == 2) {
-                    crearCarga(fs, result[0].id_usuario)
-                }
-                io.to(sock).emit('login exitoso', { nombre: result[0].nombre, apellidop: result[0].apellido_paterno, apellidom: result[0].apellido_materno, tipousuario: result[0].id_tipo_usuario })
+    login: function (useru, passu, io, sock) {
+        Usuario.find({ where: { usuario: useru, contrasena: passu } }).then(function (result) {
+            if (result != null) {
+                io.to(sock).emit('login exitoso', { nombre: result.dataValues.nombre, apellidop: result.dataValues.apellidoPaterno, apellidom: result.dataValues.apellidMaterno, tipousuario: result.dataValues.idTipoUsuario })
             } else {
-                io.to(sock).emit('login fallido', { mensaje: 'datos incorrectos' })
-            }  
-            })
+                io.to(sock).emit('login fallido', {mensaje: 'datos incorrectos'})
+            }
+        })
     },
 
     /*
     funcion asignar codigo a la correción de una pregunta
     */
     asignacion: function (codigo_asignacion, codigo, io, sock) {
-        var guardar = { body: { idAsignacion: codigo_asignacion, idCodigo: codigo } }
-        var prueba = AsignacionCodigo.create(guardar.body).then(function () {
-            io.to(sock).emit('')
+        return sequelize.transaction(function (t) {
+            return AsignacionCodigo.create({ idAsignacion: codigo_asignacion, idCodigo: codigo }, { transaction: t }).then(function () {
+                io.to(sock).emit('exito asignacionCodigo', { mensaje: 'algo' })
+            }).catch(function (err) {
+                io.to(sock).emit('error asignacionCodigo', { mensaje: 'algo' })
+            })
+        })
+        
+    },
+    cambiarEstadoAsignacion: function (asignacion, estado, io, sock) {
+        return sequelize.transaction(function (t) {
+            return Asignacion.update({ idEstado: 2 }, { where: { idAsignacion: 1 } }, { transaction: t }).then(function () {
+                io.to(sock).emit('estado cambiado', { mensaje: 'algo' })
+            }).catch(function (err) {
+                io.to(sock).emit('error estado', { mensaje: 'algo' })
+            })
         })
     }
 }

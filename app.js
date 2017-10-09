@@ -34,10 +34,11 @@ Cuando se conecta un usuario, espera a el envío de los datos de login.
 */
 io.on('connection', function (socket) {
     socket.on('Iniciar Sesion', function (data) {
-        Funciones.login(data.user, data.pass, io, socket.id, fs)
+        Funciones.login(data.user, data.pass, io, socket.id)
     })
 
     socket.on('Guardar Asignacion', function (data) {
-        Funciones.asignacion(data.idcodigo,io, socket.id)
+        //Funciones.asignacion(data.codigoAsignacion, data.idcodigo, io, socket.id)
+        //Funciones.cambiarEstadoAsignacion(data.idAsignacion, data.estadoNuevo, io, socket.id)
     })
 })
