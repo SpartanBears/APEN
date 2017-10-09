@@ -1,30 +1,34 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('asignacion_codigo', {
-		id_asignacion_codigo: {
+	return sequelize.define('asignacionCodigo', {
+		idAsignacionCodigo: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
+			field: 'id_asignacion_codigo'
 		},
-		id_asignacion: {
+		idAsignacion: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			references: {
 				model: 'asignacion',
 				key: 'id_asignacion'
-			}
+			},
+			field: 'id_asignacion'
 		},
-		id_codigo: {
+		idCodigo: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			references: {
 				model: 'codigo',
 				key: 'id_codigo'
-			}
+			},
+			field: 'id_codigo'
 		}
-	}, {
+    }, {
+        timestamps: false,
 		tableName: 'asignacion_codigo'
-	});
+        });
 };

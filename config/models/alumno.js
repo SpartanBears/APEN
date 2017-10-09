@@ -2,37 +2,45 @@
 
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('alumno', {
-		id_alumno: {
+		idAlumno: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
+			field: 'id_alumno'
 		},
 		nombre: {
 			type: DataTypes.STRING(100),
-			allowNull: false
+			allowNull: false,
+			field: 'nombre'
 		},
-		apellido_paterno: {
+		apellidoPaterno: {
 			type: DataTypes.STRING(45),
-			allowNull: false
+			allowNull: false,
+			field: 'apellido_paterno'
 		},
-		apellido_materno: {
+		apellidoMaterno: {
 			type: DataTypes.STRING(45),
-			allowNull: false
+			allowNull: false,
+			field: 'apellido_materno'
 		},
 		direccion: {
 			type: DataTypes.STRING(255),
-			allowNull: false
+			allowNull: false,
+			field: 'direccion'
 		},
 		ciudad: {
 			type: DataTypes.STRING(100),
-			allowNull: false
+			allowNull: false,
+			field: 'ciudad'
 		},
 		email: {
 			type: DataTypes.STRING(255),
-			allowNull: false
+			allowNull: false,
+			field: 'email'
 		}
-	}, {
+    }, {
+        timestamps: false,
 		tableName: 'alumno'
 	});
 };

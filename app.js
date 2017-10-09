@@ -4,7 +4,8 @@ var express = require('express'),
     http = require('http').createServer(app),
     io = require('socket.io')(http),
     port = 50000,
-    publicDir = express.static(`${__dirname}/views`)
+    publicDir = express.static(`${__dirname}/views`),
+    fs = require('file-system')
 
 app
     .use(publicDir)
@@ -29,15 +30,14 @@ Se carga el js con las funciones
 var Funciones = require('./config/funciones.js')
 
 /*
-Cuando se conecta un usuario, se le envían los datos de la tabla,
-por la funcion buscarTodos.
-El evento 'insertarUsuario', recibe los datos del formulario y los guarda en la base
-a traves de la función isertarUsario
+Cuando se conecta un usuario, espera a el envío de los datos de login.
 */
 io.on('connection', function (socket) {
-    console.log('ingreso alguien')
-    Funciones.buscarTodos(socket)
     socket.on('Iniciar Sesion', function (data) {
-        Funciones.login(data.user, data.pass, io, socket.id)
+        Funciones.login(data.user, data.pass, io, socket.id, fs)
+    })
+
+    socket.on('Guardar Asignacion', function (data) {
+        Funciones.asignacion(data.idcodigo,io, socket.id)
     })
 })

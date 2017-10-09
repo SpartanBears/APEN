@@ -2,21 +2,25 @@
 
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('prueba', {
-		id_prueba: {
+		idPrueba: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
+			field: 'id_prueba'
 		},
 		codigo: {
 			type: DataTypes.STRING(45),
-			allowNull: false
+			allowNull: false,
+			field: 'codigo'
 		},
 		titulo: {
 			type: DataTypes.STRING(255),
-			allowNull: false
+			allowNull: false,
+			field: 'titulo'
 		}
-	}, {
+    }, {
+        timestamps: false,
 		tableName: 'prueba'
 	});
 };

@@ -2,29 +2,35 @@
 
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('thread', {
-		id_thread: {
+		idThread: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
+			field: 'id_thread'
 		},
-		id_remitente: {
+		idRemitente: {
 			type: DataTypes.INTEGER(11),
-			allowNull: false
+			allowNull: false,
+			field: 'id_remitente'
 		},
 		mensaje: {
 			type: DataTypes.TEXT,
-			allowNull: false
+			allowNull: false,
+			field: 'mensaje'
 		},
 		fecha: {
 			type: DataTypes.DATE,
-			allowNull: false
+			allowNull: false,
+			field: 'fecha'
 		},
 		tipo: {
 			type: DataTypes.STRING(255),
-			allowNull: false
+			allowNull: false,
+			field: 'tipo'
 		}
-	}, {
+    }, {
+        timestamps: false,
 		tableName: 'thread'
 	});
 };

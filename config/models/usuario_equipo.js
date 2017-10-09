@@ -1,32 +1,36 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('usuario_equipo', {
-		id_usuario_equipo: {
+	return sequelize.define('usuarioEquipo', {
+		idUsuarioEquipo: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
+			field: 'id_usuario_equipo'
 		},
-		id_usuario: {
+		idUsuario: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
 			references: {
 				model: 'usuario',
 				key: 'id_usuario'
-			}
+			},
+			field: 'id_usuario'
 		},
-		id_equipo: {
+		idEquipo: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
 			references: {
 				model: 'equipo',
 				key: 'id_equipo'
-			}
+			},
+			field: 'id_equipo'
 		}
-	}, {
+    }, {
+        timestamps: false,
 		tableName: 'usuario_equipo'
 	});
 };

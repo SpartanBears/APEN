@@ -1,36 +1,41 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('mensaje_destinatario', {
-		id_thread_destinatario: {
+	return sequelize.define('mensajeDestinatario', {
+		idThreadDestinatario: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
+			field: 'id_thread_destinatario'
 		},
-		id_thread: {
+		idThread: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
 			references: {
 				model: 'thread',
 				key: 'id_thread'
-			}
+			},
+			field: 'id_thread'
 		},
-		id_usuario_destino: {
+		idUsuarioDestino: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
 			references: {
 				model: 'usuario',
 				key: 'id_usuario'
-			}
+			},
+			field: 'id_usuario_destino'
 		},
-		estado_lectura: {
+		estadoLectura: {
 			type: DataTypes.INTEGER(4),
-			allowNull: false
+			allowNull: false,
+			field: 'estado_lectura'
 		}
-	}, {
+    }, {
+        timestamps: false,
 		tableName: 'mensaje_destinatario'
 	});
 };

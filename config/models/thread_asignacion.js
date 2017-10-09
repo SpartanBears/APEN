@@ -1,32 +1,36 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('thread_asignacion', {
-		id_thread_asignacion: {
+	return sequelize.define('threadAsignacion', {
+		idThreadAsignacion: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
+			field: 'id_thread_asignacion'
 		},
-		id_thread: {
+		idThread: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
 			references: {
 				model: 'thread',
 				key: 'id_thread'
-			}
+			},
+			field: 'id_thread'
 		},
-		id_asignacion: {
+		idAsignacion: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
 			references: {
 				model: 'asignacion',
 				key: 'id_asignacion'
-			}
+			},
+			field: 'id_asignacion'
 		}
-	}, {
+    }, {
+        timestamps: false,
 		tableName: 'thread_asignacion'
 	});
 };

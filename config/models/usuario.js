@@ -2,47 +2,56 @@
 
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('usuario', {
-		id_usuario: {
+		idUsuario: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
+			field: 'id_usuario'
 		},
-		id_tipo_usuario: {
+		idTipoUsuario: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
 			references: {
 				model: 'tipo_usuario',
 				key: 'id_tipo_usuario'
-			}
+			},
+			field: 'id_tipo_usuario'
 		},
 		usuario: {
 			type: DataTypes.STRING(100),
 			allowNull: false,
-			primaryKey: true
+			primaryKey: true,
+			field: 'usuario'
 		},
-		contraseña: {
+		contrasena: {
 			type: DataTypes.STRING(45),
-			allowNull: false
+			allowNull: false,
+			field: 'contraseña'
 		},
 		nombre: {
 			type: DataTypes.STRING(100),
-			allowNull: false
+			allowNull: false,
+			field: 'nombre'
 		},
-		apellido_paterno: {
+		apellidoPaterno: {
 			type: DataTypes.STRING(45),
-			allowNull: false
+			allowNull: false,
+			field: 'apellido_paterno'
 		},
-		apellido_materno: {
+		apellidoMaterno: {
 			type: DataTypes.STRING(45),
-			allowNull: false
+			allowNull: false,
+			field: 'apellido_materno'
 		},
 		email: {
 			type: DataTypes.STRING(255),
-			allowNull: false
+			allowNull: false,
+			field: 'email'
 		}
-	}, {
+    }, {
+        timestamps: false,
 		tableName: 'usuario'
 	});
 };

@@ -2,37 +2,43 @@
 
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('mensaje', {
-		id_mensaje: {
+		idMensaje: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true
+			autoIncrement: true,
+			field: 'id_mensaje'
 		},
-		id_thread: {
+		idThread: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			references: {
 				model: 'thread',
 				key: 'id_thread'
-			}
+			},
+			field: 'id_thread'
 		},
-		id_remitente: {
+		idRemitente: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			references: {
 				model: 'usuario',
 				key: 'id_usuario'
-			}
+			},
+			field: 'id_remitente'
 		},
-		estado_lectura: {
+		estadoLectura: {
 			type: DataTypes.INTEGER(4),
-			allowNull: false
+			allowNull: false,
+			field: 'estado_lectura'
 		},
-		estado_envio: {
+		estadoEnvio: {
 			type: DataTypes.INTEGER(4),
-			allowNull: false
+			allowNull: false,
+			field: 'estado_envio'
 		}
-	}, {
+    }, {
+        timestamps: false,
 		tableName: 'mensaje'
 	});
 };
