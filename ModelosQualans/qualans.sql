@@ -57,18 +57,30 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `qualans`.`tipo_estimulo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `qualans`.`tipo_estimulo` (
+  `id_tipo_estimulo` INT(11) NOT NULL,
+  `descripcion` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_tipo_estimulo`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `qualans`.`pregunta`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `qualans`.`pregunta` (
   `id_pregunta` INT(11) NOT NULL AUTO_INCREMENT,
   `id_tipo` INT(11) NOT NULL,
   `id_prueba` INT(11) NOT NULL,
-  `titulo` VARCHAR(255) NOT NULL,
   `enunciado` TEXT NOT NULL,
+  `estimulo` TEXT NOT NULL,
   `activo` TINYINT NOT NULL DEFAULT 1,
+  `id_tipo_estimulo` INT(11) NOT NULL,
   PRIMARY KEY (`id_pregunta`),
   INDEX `fk_Pregunta_Prueba1_idx` (`id_prueba` ASC),
   INDEX `fk_Pregunta_Tipo1_idx` (`id_tipo` ASC),
+  INDEX `fk_pregunta_tipo_estimulo1_idx` (`id_tipo_estimulo` ASC),
   CONSTRAINT `fk_Pregunta_Prueba1`
     FOREIGN KEY (`id_prueba`)
     REFERENCES `qualans`.`prueba` (`id_prueba`)
@@ -78,19 +90,14 @@ CREATE TABLE IF NOT EXISTS `qualans`.`pregunta` (
     FOREIGN KEY (`id_tipo`)
     REFERENCES `qualans`.`tipo` (`id_tipo`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_pregunta_tipo_estimulo1`
+    FOREIGN KEY (`id_tipo_estimulo`)
+    REFERENCES `qualans`.`tipo_estimulo` (`id_tipo_estimulo`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `qualans`.`tipo_estimulo`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `qualans`.`tipo_estimulo` (
-  `id_tipo_estimulo` INT NOT NULL AUTO_INCREMENT,
-  `descripcion` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id_tipo_estimulo`))
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -102,11 +109,9 @@ CREATE TABLE IF NOT EXISTS `qualans`.`respuesta` (
   `id_alumno` INT(11) NOT NULL,
   `valor` TEXT NOT NULL,
   `activo` TINYINT NOT NULL DEFAULT 1,
-  `id_tipo_estimulo` INT NOT NULL,
   PRIMARY KEY (`id_respuesta`, `id_pregunta`, `id_alumno`),
   INDEX `fk_Respuesta_Alumno1_idx` (`id_alumno` ASC),
   INDEX `fk_Respuesta_Pregunta1_idx` (`id_pregunta` ASC),
-  INDEX `fk_respuesta_tipo_estimulo1_idx` (`id_tipo_estimulo` ASC),
   CONSTRAINT `fk_Respuesta_Alumno1`
     FOREIGN KEY (`id_alumno`)
     REFERENCES `qualans`.`alumno` (`id_alumno`)
@@ -116,12 +121,7 @@ CREATE TABLE IF NOT EXISTS `qualans`.`respuesta` (
     FOREIGN KEY (`id_pregunta`)
     REFERENCES `qualans`.`pregunta` (`id_pregunta`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_respuesta_tipo_estimulo1`
-    FOREIGN KEY (`id_tipo_estimulo`)
-    REFERENCES `qualans`.`tipo_estimulo` (`id_tipo_estimulo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
