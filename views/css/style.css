@@ -1,0 +1,55 @@
+/*
+	COLORES
+		BG
+			#dad6d6
+			218 214 214
+		NAVBAR
+			#5386e4
+			83 134 228
+		FONT
+			#0d1321
+			13 19 33
+
+		OTROS
+			#1d2d44
+			29 45 68
+
+			#3e5c76
+			62 92 118
+
+*/
+section.left-panel-ans {
+	/*max-height: 85vh;*/
+	/*overflow-y: auto;*/
+}
+
+.collapsable-left-bar > div > .panel-heading, .family-rigth-bar > div > .panel-heading{
+
+	background-color: #5386e4;
+	color: white;
+}
+
+.collapsable-left-bar > div, .family-rigth-bar > div{
+
+	border-color: #5386e4;
+}
+
+.content{
+
+	margin-top: 6%;
+}
+
+.user-image{
+
+	margin-top: 8% !important;
+}
+
+.user-image>img{
+
+	border-radius: 50%;
+}
+
+.navbar{
+
+	background-color: #5386e4 !important;
+}

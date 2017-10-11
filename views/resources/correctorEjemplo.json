@@ -1,0 +1,76 @@
+﻿{
+  "id_pregunta":1,
+  "enunciado": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
+  "tipo_estimulo":"texto",
+  "estimulo": "Aenean odio ipsum, congue id ullamcorper et, facilisis eget sem. Mauris ullamcorper nunc vitae tellus tincidunt scelerisque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam accumsan justo at ex faucibus cursus. Ut eget purus id massa tincidunt faucibus. Pellentesque quis pellentesque ligula. Suspendisse potenti. Integer molestie posuere lectus id finibus. Integer dapibus odio ut nulla placerat euismod. Quisque quis tellus in est pharetra faucibus. Nulla molestie sem et nisl scelerisque, et porta odio consequat.",
+  "familias": [
+    {
+      "titulo": "Inteligencia general",
+      "descripcion": "define la inteligencia de la persona",
+      "codigos": [
+        {
+          "id_codigo": 1,
+          "valor": "A1",
+          "titulo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed turpis in felis vulputate gravida.",
+          "descripcion": "Nam placerat dignissim convallis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec sed nunc bibendum, aliquet purus sit amet, volutpat magna. Cras gravida turpis et mauris porta, non congue lorem egestas. Maecenas eget justo elementum, hendrerit dui sed, cursus felis. Morbi eu mauris quis elit pharetra dapibus. Nam at tellus commodo, imperdiet lectus in, suscipit mi. Nullam accumsan dui sed suscipit euismod. Ut quis odio eu erat pretium luctus quis vel leo. Curabitur nec vestibulum sem. Vivamus pulvinar pellentesque neque, quis cursus urna scelerisque eu. Aenean congue hendrerit purus vel pellentesque. Nunc sit amet diam non lectus volutpat dictum. Vestibulum dignissim, tortor eget bibendum aliquam, enim diam porttitor nibh, et pretium tortor orci sed velit. Nam ut pretium metus, vel tincidunt nibh."
+        },
+        {
+          "id_codigo": 2,
+          "valor": "A2",
+          "titulo": "Etiam lacinia lorem eros, at convallis dolor feugiat sit amet. Ut tellus urna, pretium eget fermentum vitae, feugiat et ipsum.",
+          "descripcion": "Suspendisse a pulvinar ligula. Integer in varius lectus. Nulla eu metus justo. Pellentesque eu purus pharetra, feugiat lorem ut, fermentum nisl. Cras facilisis convallis sem, ac gravida metus volutpat eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut condimentum tortor nec lectus interdum viverra. In hac habitasse platea dictumst. Maecenas ornare, lorem eget elementum posuere, dui neque feugiat massa, sit amet molestie tortor leo eget libero. Donec sodales libero in quam hendrerit, ac dignissim leo dictum. Donec aliquet dolor est, et iaculis ipsum pretium a. Etiam ac libero ac erat lobortis molestie. Aliquam ac lorem id lorem sollicitudin tincidunt hendrerit faucibus ex. Curabitur interdum risus vitae odio pulvinar, sed elementum odio semper."
+        },
+        {
+          "id_codigo": 3,
+          "valor": "A3",
+          "titulo": "Vivamus elit ex, tempus nec lacus id, dictum vestibulum enim. Nunc eleifend velit nec sapien varius ornare.",
+          "descripcion": "Suspendisse ornare, purus at lacinia pretium, velit tortor venenatis nisi, at dapibus neque augue a ligula. Donec a fringilla nisl. Aenean convallis bibendum urna, sed euismod turpis rutrum non. Quisque id feugiat magna, tempus tincidunt augue. Sed sed finibus metus, id ultricies turpis. Duis eu sapien quis purus facilisis faucibus vel ut turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce a lorem suscipit lectus tincidunt pharetra sit amet id ex. Pellentesque et massa eget turpis viverra mollis. Etiam vitae congue lectus. Fusce vel ornare magna. Fusce pulvinar tempus neque. Donec porttitor dictum elit eget rutrum. Duis sit amet lacus sed nisl mattis aliquam."
+        },
+        {
+          "id_codigo": 4,
+          "valor": "A4",
+          "titulo": "In vitae massa enim. Proin a malesuada nulla. Ut ultrices, eros sed placerat tempus, ipsum ipsum volutpat ipsum, hendrerit bibendum enim mauris at ante.",
+          "descripcion": "Donec imperdiet orci nunc, at cursus libero ultricies ut. Vestibulum aliquet accumsan lacinia. Etiam mollis non velit ac scelerisque. Vestibulum rutrum vel quam dignissim vulputate. Pellentesque placerat urna ut purus tempus tincidunt. Suspendisse velit nibh, pulvinar eu maximus quis, ullamcorper et ligula. Donec tristique laoreet semper. Curabitur tincidunt pellentesque lobortis. Nulla congue dictum felis, a euismod odio commodo non. Vivamus tristique cursus orci, id laoreet nunc rhoncus vitae. Aenean ullamcorper fringilla lorem a pellentesque."
+        },
+        {
+          "id_codigo": 5,
+          "valor": "A5",
+          "titulo": "Etiam faucibus vitae purus eu tempus. Donec commodo, felis ut congue consequat, dolor ligula semper dolor, et posuere purus erat vel mi.",
+          "descripcion": "Integer arcu tortor, tristique in dictum et, pellentesque sit amet diam. Morbi sapien nibh, tincidunt sed dolor et, tincidunt imperdiet felis. Nullam sed sollicitudin neque. Aliquam feugiat est lacinia nibh dignissim pellentesque. In feugiat lacus sit amet nulla tristique, quis blandit dui sagittis. Pellentesque nec justo sodales, suscipit magna ac, facilisis turpis."
+        }
+      ]
+    }
+
+  ],
+  "respuestas": [
+    {
+      "id_respuesta": 1,
+      "valor": "Proin molestie urna nec nunc lobortis, non interdum nulla tempor. Cras ullamcorper ligula at dui vulputate vulputate.",
+      "id_estado": 1	
+    },
+    {
+      "id_respuesta": 2,
+      "titulo": "Mauris urna lacus, faucibus id pretium ac, mollis a ante. Proin at tempus justo, in consectetur tellus.",
+      "descripcion": "Suspendisse efficitur, tortor vitae commodo tincidunt, nibh orci tincidunt nunc, at luctus arcu est in justo. Fusce consectetur, arcu in lobortis elementum, dui nibh varius felis, quis feugiat sapien metus condimentum orci. Sed finibus, turpis ullamcorper scelerisque interdum, orci leo convallis diam, non iaculis quam quam sed arcu. In pretium sodales erat at egestas. Cras at fringilla tellus. Donec ac felis lacinia, rutrum lacus ac, consectetur tortor. Cras felis nulla, rutrum gravida varius eu, scelerisque vel arcu.",
+      "id_estado": 2
+	},
+    {
+      "id_respuesta": 3,
+      "titulo": "Quisque volutpat purus vitae lacus congue, in dignissim massa blandit. Sed laoreet iaculis finibus.",
+      "descripcion": "Nam risus nibh, facilisis eu lorem vitae, aliquet auctor mauris. Nam efficitur euismod ipsum, eget finibus lorem elementum a. Morbi rutrum maximus facilisis. Suspendisse potenti. Nullam a pretium nisl. Pellentesque suscipit turpis quis feugiat faucibus. In eget arcu diam. Vestibulum faucibus et lacus sed mattis. Praesent lectus sapien, tempus non ligula vel, facilisis fermentum lorem. Vestibulum tempor ante at mi congue, a vestibulum turpis interdum. Donec hendrerit nunc sit amet ipsum tristique, sit amet auctor nunc dignissim. Cras lacinia velit vitae sapien faucibus, id ultricies diam ultricies. Maecenas pretium tristique nibh vel aliquet. Donec nunc elit, finibus eget erat eget, mattis congue nibh.",
+      "id_estado": 3
+	},
+    {
+      "id_respuesta": 4,
+      "titulo": "Cras sollicitudin eros vel dui dapibus, vitae auctor magna pharetra. Praesent imperdiet dui nec ante tempor efficitur.",
+      "descripcion": "Fusce dignissim elit sed justo viverra pharetra. Duis hendrerit consequat purus, ac viverra lacus pellentesque id. Fusce condimentum semper nunc sit amet interdum. Sed id accumsan sem. Maecenas vulputate mauris neque, vitae gravida libero pretium a. Proin ornare, ligula sed iaculis interdum, est massa laoreet felis, vitae efficitur tellus nisl ac ipsum. Phasellus lectus arcu, cursus eget nisl in, mollis tincidunt urna.",
+      "id_estado": 2
+	},
+    {
+      "id_respuesta": 5,
+      "titulo": "Aliquam dui neque, elementum et erat eu, faucibus mollis massa. Sed efficitur eu velit eu accumsan.",
+      "descripcion": "Quisque a velit non leo elementum condimentum. Nunc eu bibendum lacus. Praesent efficitur finibus nisl, id mattis leo convallis nec. Nam tincidunt sed nulla a luctus. Donec suscipit elit faucibus mauris ultricies, quis iaculis risus consequat. Quisque volutpat leo sed dui sodales, ac ultrices augue malesuada. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis egestas consectetur sapien et volutpat. Curabitur felis massa, accumsan sed sollicitudin efficitur, fermentum ac ex. Nunc tempor nec eros id aliquam. Integer luctus nisi euismod magna bibendum, sed tincidunt mi gravida. Integer a nisi dui. Morbi vel interdum ipsum, id eleifend quam. Maecenas ut lacus ultrices, ullamcorper orci a, euismod lorem.",
+      "id_estado": 1
+	}
+  ]
+}
