@@ -23,8 +23,8 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			field: 'forma'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'forma'
 	});
 };

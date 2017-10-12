@@ -29,8 +29,8 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			field: 'id_familia'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'filtro'
 	});
 };

@@ -29,8 +29,8 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			field: 'id_pregunta'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'forma_pregunta'
 	});
 };

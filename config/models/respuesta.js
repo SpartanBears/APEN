@@ -39,8 +39,8 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			field: 'descripcion'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'respuesta'
 	});
 };

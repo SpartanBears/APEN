@@ -50,8 +50,8 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			field: 'email'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'usuario'
 	});
 };

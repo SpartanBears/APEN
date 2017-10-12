@@ -37,8 +37,8 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			field: 'enunciado'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'pregunta'
 	});
 };

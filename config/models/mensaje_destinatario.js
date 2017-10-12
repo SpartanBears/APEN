@@ -34,8 +34,8 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			field: 'estado_lectura'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'mensaje_destinatario'
 	});
 };

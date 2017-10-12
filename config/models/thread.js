@@ -29,8 +29,8 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			field: 'tipo'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'thread'
 	});
 };

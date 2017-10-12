@@ -19,8 +19,8 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			field: 'titulo'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'prueba'
 	});
 };

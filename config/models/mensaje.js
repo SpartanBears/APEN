@@ -37,8 +37,8 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			field: 'estado_envio'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'mensaje'
 	});
 };

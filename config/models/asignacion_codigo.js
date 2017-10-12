@@ -27,8 +27,8 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			field: 'id_codigo'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'asignacion_codigo'
-        });
+	});
 };

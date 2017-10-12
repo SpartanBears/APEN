@@ -38,8 +38,8 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			field: 'id_estado'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'asignacion'
 	});
 };

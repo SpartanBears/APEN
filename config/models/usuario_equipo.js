@@ -29,8 +29,8 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			field: 'id_equipo'
 		}
-    }, {
-        timestamps: false,
+	}, {
+		timestamps: false,
 		tableName: 'usuario_equipo'
 	});
 };
