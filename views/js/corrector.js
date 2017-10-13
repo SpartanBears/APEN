@@ -680,13 +680,13 @@ function comprobarRespuesta(respuesta){
 //eventos lanzados por el cliente
 function guardarCorreccion(idres, idcod){
 	
-	io.emit('Guardar Correccion',{id_respuesta:idres,id_codigo:idcod})
+	io.emit('Guardar Correccion',{ id_respuesta:idres, id_codigo:idcod, id_usuario: sessionStorage.idUsuario })
 
 }
 
 function registrarDuda(idres, mensajeDuda){
 	//los datos del usuario son guardados desde el login
-	io.emit('Registrar Duda',{id_respuesta:idres, duda: mensajeDuda, id_usuario:sessionStorage.idUsuario})
+	io.emit('Registrar Duda',{ id_respuesta:idres, duda: mensajeDuda, id_usuario:sessionStorage.idUsuario })
 	
 }
 
