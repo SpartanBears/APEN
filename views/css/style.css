@@ -53,3 +53,13 @@ section.left-panel-ans {
 
 	background-color: #5386e4 !important;
 }
+
+.btn-siguiente{
+
+	float: right;
+}
+
+.btn-duda{
+
+	float: left;
+}

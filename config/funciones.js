@@ -44,9 +44,9 @@ module.exports = {
     asignacion: function (codigo_asignacion, codigo, io, sock) {
         return sequelize.transaction(function (t) {
             return AsignacionCodigo.create({ idAsignacion: codigo_asignacion, idCodigo: codigo }, { transaction: t }).then(function () {
-                io.to(sock).emit('exito asignacionCodigo', { mensaje: 'algo' })
+                io.to(sock).emit('Resultado Correccion', { mensaje: 'ok' })
             }).catch(function (err) {
-                io.to(sock).emit('error asignacionCodigo', { mensaje: 'algo' })
+                io.to(sock).emit('Resultado Correccion', { mensaje: 'error' })
             })
         })
         
@@ -54,9 +54,9 @@ module.exports = {
     cambiarEstadoAsignacion: function (asignacion, estado, io, sock) {
         return sequelize.transaction(function (t) {
             return Asignacion.update({ idEstado: 2 }, { where: { idAsignacion: 1 } }, { transaction: t }).then(function () {
-                io.to(sock).emit('estado cambiado', { mensaje: 'algo' })
+                io.to(sock).emit('Estado Duda', { mensaje: 'ok' })
             }).catch(function (err) {
-                io.to(sock).emit('error estado', { mensaje: 'algo' })
+                io.to(sock).emit('Estado Duda', { mensaje: 'error' })
             })
         })
     }

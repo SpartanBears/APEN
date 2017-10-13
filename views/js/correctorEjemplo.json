@@ -1,8 +1,6 @@
 ﻿{
-  "id_pregunta": 1,
-  "enunciado": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
-  "estimulo": "Aenean odio ipsum, congue id ullamcorper et, facilisis eget sem. Mauris ullamcorper nunc vitae tellus tincidunt scelerisque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam accumsan justo at ex faucibus cursus. Ut eget purus id massa tincidunt faucibus. Pellentesque quis pellentesque ligula. Suspendisse potenti. Integer molestie posuere lectus id finibus. Integer dapibus odio ut nulla placerat euismod. Quisque quis tellus in est pharetra faucibus. Nulla molestie sem et nisl scelerisque, et porta odio consequat.",
-  "id_tipo_estimulo": 1,
+  "pregunta": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
+  "enunciado": "Aenean odio ipsum, congue id ullamcorper et, facilisis eget sem. Mauris ullamcorper nunc vitae tellus tincidunt scelerisque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam accumsan justo at ex faucibus cursus. Ut eget purus id massa tincidunt faucibus. Pellentesque quis pellentesque ligula. Suspendisse potenti. Integer molestie posuere lectus id finibus. Integer dapibus odio ut nulla placerat euismod. Quisque quis tellus in est pharetra faucibus. Nulla molestie sem et nisl scelerisque, et porta odio consequat.",
   "familias": [
     {
       "titulo": "Inteligencia general",
@@ -45,13 +43,15 @@
   "respuestas": [
     {
       "id_respuesta": 1,
-      "valor": "In hac habitasse platea dictumst. Nulla maximus eros ut diam pellentesque, at tempus dui vulputate. Maecenas euismod nunc sed dolor tristique ornare. Donec aliquam diam eu euismod facilisis. Nunc et eros porttitor, faucibus massa eget, pellentesque tortor. Vestibulum consequat eu ante ut hendrerit.",
+      "titulo": "Proin molestie urna nec nunc lobortis, non interdum nulla tempor. Cras ullamcorper ligula at dui vulputate vulputate.",
+      "descripcion": "In hac habitasse platea dictumst. Nulla maximus eros ut diam pellentesque, at tempus dui vulputate. Maecenas euismod nunc sed dolor tristique ornare. Donec aliquam diam eu euismod facilisis. Nunc et eros porttitor, faucibus massa eget, pellentesque tortor. Vestibulum consequat eu ante ut hendrerit.",
 	  "id_estado": 1,
 	  "correccion": []	
-    },
+	},
     {
       "id_respuesta": 2,
-      "valor": "Suspendisse efficitur, tortor vitae commodo tincidunt, nibh orci tincidunt nunc, at luctus arcu est in justo. Fusce consectetur, arcu in lobortis elementum, dui nibh varius felis, quis feugiat sapien metus condimentum orci. Sed finibus, turpis ullamcorper scelerisque interdum, orci leo convallis diam, non iaculis quam quam sed arcu. In pretium sodales erat at egestas. Cras at fringilla tellus. Donec ac felis lacinia, rutrum lacus ac, consectetur tortor. Cras felis nulla, rutrum gravida varius eu, scelerisque vel arcu.",
+      "titulo": "Mauris urna lacus, faucibus id pretium ac, mollis a ante. Proin at tempus justo, in consectetur tellus.",
+      "descripcion": "Suspendisse efficitur, tortor vitae commodo tincidunt, nibh orci tincidunt nunc, at luctus arcu est in justo. Fusce consectetur, arcu in lobortis elementum, dui nibh varius felis, quis feugiat sapien metus condimentum orci. Sed finibus, turpis ullamcorper scelerisque interdum, orci leo convallis diam, non iaculis quam quam sed arcu. In pretium sodales erat at egestas. Cras at fringilla tellus. Donec ac felis lacinia, rutrum lacus ac, consectetur tortor. Cras felis nulla, rutrum gravida varius eu, scelerisque vel arcu.",
       "id_estado": 2,
 	  "correccion": [
 	    {
@@ -64,13 +64,15 @@
 	},
     {
       "id_respuesta": 3,
-      "valor": "Nam risus nibh, facilisis eu lorem vitae, aliquet auctor mauris. Nam efficitur euismod ipsum, eget finibus lorem elementum a. Morbi rutrum maximus facilisis. Suspendisse potenti. Nullam a pretium nisl. Pellentesque suscipit turpis quis feugiat faucibus. In eget arcu diam. Vestibulum faucibus et lacus sed mattis. Praesent lectus sapien, tempus non ligula vel, facilisis fermentum lorem. Vestibulum tempor ante at mi congue, a vestibulum turpis interdum. Donec hendrerit nunc sit amet ipsum tristique, sit amet auctor nunc dignissim. Cras lacinia velit vitae sapien faucibus, id ultricies diam ultricies. Maecenas pretium tristique nibh vel aliquet. Donec nunc elit, finibus eget erat eget, mattis congue nibh.",
+      "titulo": "Quisque volutpat purus vitae lacus congue, in dignissim massa blandit. Sed laoreet iaculis finibus.",
+      "descripcion": "Nam risus nibh, facilisis eu lorem vitae, aliquet auctor mauris. Nam efficitur euismod ipsum, eget finibus lorem elementum a. Morbi rutrum maximus facilisis. Suspendisse potenti. Nullam a pretium nisl. Pellentesque suscipit turpis quis feugiat faucibus. In eget arcu diam. Vestibulum faucibus et lacus sed mattis. Praesent lectus sapien, tempus non ligula vel, facilisis fermentum lorem. Vestibulum tempor ante at mi congue, a vestibulum turpis interdum. Donec hendrerit nunc sit amet ipsum tristique, sit amet auctor nunc dignissim. Cras lacinia velit vitae sapien faucibus, id ultricies diam ultricies. Maecenas pretium tristique nibh vel aliquet. Donec nunc elit, finibus eget erat eget, mattis congue nibh.",
       "id_estado": 3,
 	  "correccion": []
 	},
     {
       "id_respuesta": 4,
-      "valor": "Fusce dignissim elit sed justo viverra pharetra. Duis hendrerit consequat purus, ac viverra lacus pellentesque id. Fusce condimentum semper nunc sit amet interdum. Sed id accumsan sem. Maecenas vulputate mauris neque, vitae gravida libero pretium a. Proin ornare, ligula sed iaculis interdum, est massa laoreet felis, vitae efficitur tellus nisl ac ipsum. Phasellus lectus arcu, cursus eget nisl in, mollis tincidunt urna.",
+      "titulo": "Cras sollicitudin eros vel dui dapibus, vitae auctor magna pharetra. Praesent imperdiet dui nec ante tempor efficitur.",
+      "descripcion": "Fusce dignissim elit sed justo viverra pharetra. Duis hendrerit consequat purus, ac viverra lacus pellentesque id. Fusce condimentum semper nunc sit amet interdum. Sed id accumsan sem. Maecenas vulputate mauris neque, vitae gravida libero pretium a. Proin ornare, ligula sed iaculis interdum, est massa laoreet felis, vitae efficitur tellus nisl ac ipsum. Phasellus lectus arcu, cursus eget nisl in, mollis tincidunt urna.",
       "id_estado": 2,
 	  "correccion": [
 	    {
@@ -83,7 +85,8 @@
 	},
     {
       "id_respuesta": 5,
-      "valor": "Quisque a velit non leo elementum condimentum. Nunc eu bibendum lacus. Praesent efficitur finibus nisl, id mattis leo convallis nec. Nam tincidunt sed nulla a luctus. Donec suscipit elit faucibus mauris ultricies, quis iaculis risus consequat. Quisque volutpat leo sed dui sodales, ac ultrices augue malesuada. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis egestas consectetur sapien et volutpat. Curabitur felis massa, accumsan sed sollicitudin efficitur, fermentum ac ex. Nunc tempor nec eros id aliquam. Integer luctus nisi euismod magna bibendum, sed tincidunt mi gravida. Integer a nisi dui. Morbi vel interdum ipsum, id eleifend quam. Maecenas ut lacus ultrices, ullamcorper orci a, euismod lorem.",
+      "titulo": "Aliquam dui neque, elementum et erat eu, faucibus mollis massa. Sed efficitur eu velit eu accumsan.",
+      "descripcion": "Quisque a velit non leo elementum condimentum. Nunc eu bibendum lacus. Praesent efficitur finibus nisl, id mattis leo convallis nec. Nam tincidunt sed nulla a luctus. Donec suscipit elit faucibus mauris ultricies, quis iaculis risus consequat. Quisque volutpat leo sed dui sodales, ac ultrices augue malesuada. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis egestas consectetur sapien et volutpat. Curabitur felis massa, accumsan sed sollicitudin efficitur, fermentum ac ex. Nunc tempor nec eros id aliquam. Integer luctus nisi euismod magna bibendum, sed tincidunt mi gravida. Integer a nisi dui. Morbi vel interdum ipsum, id eleifend quam. Maecenas ut lacus ultrices, ullamcorper orci a, euismod lorem.",
       "id_estado": 1,
 	  "correccion":[]
 	}
