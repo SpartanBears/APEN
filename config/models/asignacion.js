@@ -37,6 +37,12 @@ module.exports = function(sequelize, DataTypes) {
 				key: 'id_estado'
 			},
 			field: 'id_estado'
+		},
+		activo: {
+			type: DataTypes.INTEGER(4),
+			allowNull: false,
+			defaultValue: '1',
+			field: 'activo'
 		}
 	}, {
 		timestamps: false,

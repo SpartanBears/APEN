@@ -19,8 +19,9 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'id_usuario'
 		},
 		fecha: {
-			type: DataTypes.DATE,
+			type: DataTypes.TIME,
 			allowNull: false,
+			defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
 			field: 'fecha'
 		},
 		descripcion: {

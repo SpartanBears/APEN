@@ -29,15 +29,16 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			field: 'id_alumno'
 		},
-		titulo: {
-			type: DataTypes.STRING(255),
-			allowNull: false,
-			field: 'titulo'
-		},
-		descripcion: {
+		valor: {
 			type: DataTypes.TEXT,
 			allowNull: false,
-			field: 'descripcion'
+			field: 'valor'
+		},
+		activo: {
+			type: DataTypes.INTEGER(4),
+			allowNull: false,
+			defaultValue: '1',
+			field: 'activo'
 		}
 	}, {
 		timestamps: false,

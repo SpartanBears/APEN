@@ -1,27 +1,20 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('tipo', {
-		idTipo: {
+	return sequelize.define('tipoEstimulo', {
+		idTipoEstimulo: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
-			autoIncrement: true,
-			field: 'id_tipo'
+			field: 'id_tipo_estimulo'
 		},
 		descripcion: {
-			type: DataTypes.STRING(255),
+			type: DataTypes.STRING(45),
 			allowNull: false,
 			field: 'descripcion'
-		},
-		activo: {
-			type: DataTypes.INTEGER(4),
-			allowNull: false,
-			defaultValue: '1',
-			field: 'activo'
 		}
 	}, {
 		timestamps: false,
-		tableName: 'tipo'
+		tableName: 'tipo_estimulo'
 	});
 };

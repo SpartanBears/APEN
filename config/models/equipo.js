@@ -13,6 +13,12 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING(45),
 			allowNull: false,
 			field: 'nombre'
+		},
+		activo: {
+			type: DataTypes.INTEGER(4),
+			allowNull: false,
+			defaultValue: '1',
+			field: 'activo'
 		}
 	}, {
 		timestamps: false,

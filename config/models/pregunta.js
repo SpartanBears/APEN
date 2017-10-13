@@ -27,15 +27,30 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			field: 'id_prueba'
 		},
-		titulo: {
-			type: DataTypes.STRING(255),
-			allowNull: false,
-			field: 'titulo'
-		},
 		enunciado: {
 			type: DataTypes.TEXT,
 			allowNull: false,
 			field: 'enunciado'
+		},
+		estimulo: {
+			type: DataTypes.TEXT,
+			allowNull: false,
+			field: 'estimulo'
+		},
+		activo: {
+			type: DataTypes.INTEGER(4),
+			allowNull: false,
+			defaultValue: '1',
+			field: 'activo'
+		},
+		idTipoEstimulo: {
+			type: DataTypes.INTEGER(11),
+			allowNull: false,
+			references: {
+				model: 'tipo_estimulo',
+				key: 'id_tipo_estimulo'
+			},
+			field: 'id_tipo_estimulo'
 		}
 	}, {
 		timestamps: false,
