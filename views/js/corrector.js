@@ -69,7 +69,7 @@ function loadRespuesta(respuesta){
 
 	$('#familiaRespuestas').find('button.btn-primary').removeClass('btn-primary').addClass('btn-default');
 
-	var btnsCodigos = $('#familiaRespuestas').find('button');
+	var btnsCodigos = getBtnsCodigos();
 
 	if(respuesta.correccion.length > 0){
 
@@ -165,6 +165,11 @@ function getRespuestaActiva(){
 function getBtnRespuestaActivo(){
 
 	return $('#noCorregidas > .panel-body, #corregidas > .panel-body, #preguntasDudas > .panel-body').find('.btn-primary')[0];
+}
+
+function getBtnsCodigos(){
+
+	return $('#familiaRespuestas').find('button');;
 }
 
 // PANEL FAMILIAS
@@ -406,14 +411,37 @@ function clickCheckboxCorregida(e){
 
 function changePanel(){
 
+	toggleHighlight();
+
+	toggleCollapsePanelActivo();
+
+	toggleBtnsCodigos();
+}
+
+function toggleHighlight(){
+
 	$('.panel').removeClass('highlight');
+
+	$(getBtnRespuestaActivo()).closest('.panel').addClass('highlight');
+}
+
+function toggleCollapsePanelActivo(){
 
 	if(!$(getBtnRespuestaActivo()).closest('.panel-collapse.collapse').hasClass('in')){
 
 		$(getBtnRespuestaActivo()).closest('.panel-collapse.collapse').addClass('in');
 	}
+}
 
-	$(getBtnRespuestaActivo()).closest('.panel').addClass('highlight');
+function toggleBtnsCodigos(){
+
+	if(getRespuestaActiva().id_estado == 1){
+
+		$(getBtnsCodigos()).attr('disabled', false);
+	}else{
+
+		$(getBtnsCodigos()).attr('disabled', 'disabled');;
+	}
 }
 
 function toggleCorregidaCheckbox(){
