@@ -1,136 +1,25 @@
 var datosRespuestas,
-	listaContestados = [],
-	listaNoContestados = [],
+	listaCorregidas = [],
+	listaNoCorregidas = [],
 	listaDudas = [];
 
 $( document ).ready( function(){
 
-	
 	getData(initCorrectorView);
 });
 
 function initCorrectorView(){
 
-	setCurrentIndex(0);
-	setDataRespuestasNoAsignadas();
-
 	clearContent();
 	generateFamilyCollapsable(datosRespuestas.familias);
 	setPanelButtons(datosRespuestas.respuestas);
 	setEvents();
+	loadPregunta();
 }
 
-function setEvents(){
+function loadPregunta(){
 
-	$('button.btn-siguiente').click(nextBtnEvt);
-	$('button.btn-duda').click(dudaBtnEvt);
-}
-
-function changeActiveBtn(btn){
-
-	$(getArrayBtnRespuesta()).removeClass('btn-primary').addClass('btn-default');
-	$(btn).addClass('btn-primary').removeClass('btn-default');
-}
-
-function findBtnRespuestaFromIdRespuesta(idRespuesta){
-
-	var out = {};
-	var arrayBtn = getArrayBtnRespuesta();
-
-	for (var i = 0; i < arrayBtn.length; i++) {
-		
-		if(arrayBtn[i].idRespuesta == idRespuesta)	out = arrayBtn[i];
-	};
-
-	return out;
-}
-
-// MANEJO DATOS
-
-	function getData(callback){
-
-		var strData;
-
-		$.getJSON( "./resources/correctorEjemplo.json", function( data ) {
-
-			datosRespuestas = data;
-
-			if(callback != undefined)	callback();
-		});
-	}
-
-	function setRespuestasNoAsignadas(newRespuetas){
-
-		sessionStorage.RA = JSON.stringify(newRespuetas);
-	}
-
-	function setDataRespuestasNoAsignadas(){
-
-		var arrayResp = getArrayRespuestas(),
-			respuestasNoAsignadas = [];
-
-		for(var index = 0; index < arrayResp.length; index++){
-
-			if(arrayResp[index].correccion.length == 0 && arrayResp[index].id_estado == 1){
-
-				respuestasNoAsignadas.push(arrayResp[index]);
-
-			}
-		}
-
-		setRespuestasNoAsignadas(respuestasNoAsignadas);
-	}
-
-	function saveInSS(){
-
-		var ci = getCurrentIndex(),
-			respAsignadas = getRespuestasAsignadas();
-
-		if(typeof getRespuestasAsignadas()[ci] != 'undefined'){
-
-			var arrayCodigos = [];
-
-			for(var c = 0; c < $('#familiaRespuestas').find('.btn-primary').length; c++){
-
-				var objResp = {id_codigo: $('#familiaRespuestas').find('.btn-primary')[c].idCodigo};
-
-				arrayCodigos.push(objResp);
-			}
-
-			respAsignadas[ci].correccion = arrayCodigos;
-		}
-
-		setRespuestasNoAsignadas(respAsignadas);
-	}
-
-	function subirDatosRespuesta(respuesta){
-
-		var arrayRespuestas = [];
-			
-
-		if(typeof respuesta.length == 'number')	arrayRespuestas.concat(respuesta);
-		else	arrayRespuestas.push(respuesta);
-	}
-
-	function sendDuda(respuesta){
-
-		console.log(respuesta);
-	}
-// FIN MANEJO DATOS
-
-// NAVEGACION RESPUESTAS
-
-function loadRespuesta(respuesta){
-
-	$('#preguntaDisplay').empty().html('Respuesta N°'+respuesta.id_respuesta);
-
-	var enuTxt = '';
-
-	if(typeof datosRespuestas.enunciado != 'undefined')	respTxt = '<h4>' + datosRespuestas.enunciado + '</h4>';
-	if(typeof datosRespuestas.estimulo != 'undefined')	respTxt += datosRespuestas.estimulo;
-
-	$('#estimuloDisplay').empty().html(datosRespuestas.enunciado);
-	var respTxt = '';
+	var estimuloTxt = '';
 
 	/*
 		tipos de estimulos
@@ -144,26 +33,43 @@ function loadRespuesta(respuesta){
 
 		case '1':
 
-			if(typeof respuesta.titulo != 'undefined')	respTxt = '<h4>' + respuesta.titulo + '</h4>';
-			if(typeof respuesta.descripcion != 'undefined')	respTxt += respuesta.descripcion;
-			if(typeof respuesta.valor != 'undefined')	respTxt += respuesta.valor;
-			if(typeof respuesta.valor != 'undefined')	respTxt += respuesta.estimulo;
+			if(typeof datosRespuestas.enunciado != 'undefined')	estimuloTxt = '<h4>' + datosRespuestas.enunciado + '</h4>';
+			if(typeof datosRespuestas.estimulo != 'undefined')	estimuloTxt += datosRespuestas.estimulo;
 		break;
 
 		default:
-			if(typeof respuesta.titulo != 'undefined')	respTxt = '<h4>' + respuesta.titulo + '</h4>';
-			if(typeof respuesta.descripcion != 'undefined')	respTxt += respuesta.descripcion;
-			if(typeof respuesta.valor != 'undefined')	respTxt += respuesta.valor;
-			if(typeof respuesta.valor != 'undefined')	respTxt += respuesta.estimulo;
+
+		if(typeof datosRespuestas.enunciado != 'undefined')	estimuloTxt = '<h4>' + datosRespuestas.enunciado + '</h4>';
+		if(typeof datosRespuestas.estimulo != 'undefined')	estimuloTxt += datosRespuestas.estimulo;
 		break;
 	}
-	$('#respuestaDisplay').empty().html(respTxt);
+
+	$('#estimuloDisplay').empty().html(estimuloTxt);
+}
+
+function setEvents(){
+
+	$('#chboxDuda').click(clickCheckboxDuda);
+	$('#chBoxCorregida').click(clickCheckboxCorregida);
+	$('.btn-anterior').click(clickPrev);
+	$('.btn-siguiente').click(clickNext);
+}
+
+function clearContent(){
+
+	$('#familiaRespuestas').empty();
+	$('#noCorregidas > .panel-body').empty();
+	$('#corregidas > .panel-body').empty();
+	$('#preguntasDudas > .panel-body').empty();
+}
+
+function loadRespuesta(respuesta){
+
+	$('#preguntaDisplay').empty().html('Respuesta N°'+respuesta.id_respuesta);
 
 	$('#familiaRespuestas').find('button.btn-primary').removeClass('btn-primary').addClass('btn-default');
 
 	var btnsCodigos = $('#familiaRespuestas').find('button');
-
-	console.log(respuesta);
 
 	if(respuesta.correccion.length > 0){
 
@@ -171,7 +77,7 @@ function loadRespuesta(respuesta){
 
 			for(var c = 0; c < btnsCodigos.length; c++){
 
-				if(respuesta.correccion[i].id_codigo == btnsCodigos[c].idCodigo){
+				if(respuesta.correccion[i].id_codigo == btnsCodigos[c].codigoData.id_codigo){
 
 					btnsCodigos[c].classList.add('btn-primary');
 					btnsCodigos[c].classList.remove('btn-default');
@@ -180,17 +86,13 @@ function loadRespuesta(respuesta){
 		}
 	}else if(respuesta.id_estado == 1){
 
-		var respA = getRespuestasAsignadas(),
-			ci = getCurrentIndex();
+		if(typeof respuesta.correccion != 'undefined'){
 
-		// asigna respuestas en ss
-		if(typeof respA[ci].correccion != 'undefined'){
-
-			for (var i = 0; i < respA[ci].correccion.length; i++) {
+			for (var i = 0; i < respuesta.correccion.length; i++) {
 
 				for(var c = 0; c < btnsCodigos.length; c++){
 
-					if(respA[ci].correccion[i].id_codigo == btnsCodigos[c].idCodigo){
+					if(respuesta.correccion[i].id_codigo == btnsCodigos[c].idCodigo){
 
 						btnsCodigos[c].classList.add('btn-primary');
 						btnsCodigos[c].classList.remove('btn-default');
@@ -198,104 +100,72 @@ function loadRespuesta(respuesta){
 				}
 			}
 		}
-
 	}
 
-	changeActiveBtn(findBtnRespuestaFromIdRespuesta(respuesta.id_respuesta));
-}
+	var respuestaTxt = '';
 
-function navPreguntas(direction){
+	if(typeof respuesta.titulo != 'undefined')	respuestaTxt = '<h4>' + respuesta.titulo + '</h4>';
+	if(typeof respuesta.descripcion != 'undefined')	respuestaTxt += respuesta.descripcion;
+	if(typeof respuesta.valor != 'undefined')	respuestaTxt += respuesta.valor;
+	if(typeof respuesta.valor != 'undefined')	respuestaTxt += respuesta.estimulo;
 
-	var arrayRespuestas = getArrayRespuestas();
+	$('#respuestaDisplay').empty().html(respuestaTxt);
 
-	console.log(arrayRespuestas[getRespuestaFromBtnActivo()].id_estado);
+	switch(respuesta.id_estado){
 
-	switch(arrayRespuestas[getRespuestaFromBtnActivo()].id_estado){
-		
+		case 2:
+
+			$('#chBoxCorregida').prop('checked', true);
+			$('#chboxDuda').prop('checked', false);
+
+		break;
+
+			
+		case 3:
+
+			$('#chboxDuda').prop('checked', true);
+			$('#chBoxCorregida').prop('checked', false);
+
+		break;
+
 		case 1:
-			var currentIndex = getCurrentIndex();
-
-			asignarCodigoRespuesta(arrayRespuestas[getRespuestaFromBtnActivo()].id_respuesta);
-
-			// currentIndex = (currentIndex+direction)>=0 ? (currentIndex+direction) %getArrayRespuestas().length : getArrayRespuestas().length-1;
 			
-			var btn = getBtnRespuestaActivo();
+			$('#chBoxCorregida, #chboxDuda').prop('checked', false);
 
-			$(btn).prependTo("#contestadas > .panel-body");
-
-			var index = ((currentIndex+1) % arrayRespuestas.length),
-				respuestaSiguiente = null;
-
-			if(getRespuestasAsignadas().length > 0){
-
-				respuestaSiguiente = getRespuestasAsignadas()[((index+1) % getRespuestasAsignadas().length)];
-				setCurrentIndex(((index+1) % getRespuestasAsignadas().length));
-			}
-
-			if(respuestaSiguiente == null){
-				for(var cont = 0; cont < arrayRespuestas.length; cont++){
-
-					if(arrayRespuestas[index].correccion.length == 0 && arrayRespuestas[index].id_estado == 1){
-
-
-						respuestaSiguiente = getRespuestasAsignadas()[index];
-						cont = arrayRespuestas.length;
-						setCurrentIndex(index);
-					}
-
-					index = (index+1) % arrayRespuestas.length;
-				}
-			}
-
-			if(respuestaSiguiente == null){
-
-				respuestaSiguiente = arrayRespuestas[currentIndex];
-				setCurrentIndex(currentIndex);
-			}
-
-			loadRespuesta(respuestaSiguiente);
-		break;
-
-		default:
-			var currentIndex = getCurrentIndex();
-
-			asignarCodigoRespuesta(arrayRespuestas[getRespuestaFromBtnActivo()].id_respuesta);
-
-			// currentIndex = (currentIndex+direction)>=0 ? (currentIndex+direction) %getArrayRespuestas().length : getArrayRespuestas().length-1;
-			
-
-			var index = ((currentIndex+1) % arrayRespuestas.length),
-				respuestaSiguiente = null;
-
-			if(getRespuestasAsignadas().length > 0){
-
-				respuestaSiguiente = getRespuestasAsignadas()[((index+1) % getRespuestasAsignadas().length)];
-			}
-
-			if(respuestaSiguiente == null){
-				for(var cont = 0; cont < arrayRespuestas.length; cont++){
-
-					if(arrayRespuestas[index].correccion.length == 0 && arrayRespuestas[index].id_estado == 1){
-
-
-						respuestaSiguiente = getRespuestasAsignadas()[index];
-						cont = arrayRespuestas.length;
-						setCurrentIndex(index);
-					}
-
-					index = (index+1) % arrayRespuestas.length;
-				}
-			}
-
-			if(respuestaSiguiente == null)	respuestaSiguiente = arrayRespuestas[currentIndex];
-
-			loadRespuesta(respuestaSiguiente);
 		break;
 	}
-}
-// FIN NAVEGACION RESPUESTAS
 
-// GENERACION DOM
+	toggleCorregidaCheckbox();
+	changePanel();
+}
+
+function updateNoCorregida(respuesta){
+
+	listaNoCorregidas[listaNoCorregidas.indexOf(respuesta)].correccion = getCodigosAsignados();
+	toggleCorregidaCheckbox();
+}
+
+function getCodigosAsignados(){
+
+	var out = [],
+		btnsActivos = $('#familiaRespuestas').find('.btn-primary');
+
+	for (var i = 0; i < btnsActivos.length; i++) {
+		out.push(btnsActivos[i].codigoData);
+	};
+	
+	return out;
+}
+
+function getRespuestaActiva(){
+
+	return getBtnRespuestaActivo().respuestaData;
+}
+
+function getBtnRespuestaActivo(){
+
+	return $('#noCorregidas > .panel-body, #corregidas > .panel-body, #preguntasDudas > .panel-body').find('.btn-primary')[0];
+}
 
 // PANEL FAMILIAS
 	function generateFamilyCollapsable(families){
@@ -335,8 +205,7 @@ function navPreguntas(direction){
 				btnCodigo.type = 'button';
 				btnCodigo.className ='btn btn-block btn-lg btn-default waves-effect';
 				btnCodigo.innerHTML = subElements[index].valor;
-				btnCodigo.titulo = subElements[index].titulo;
-				btnCodigo.descripcion = subElements[index].descripcion;
+				btnCodigo.codigoData = subElements[index];
 				btnCodigo.idCodigo = subElements[index].id_codigo;
 
 				btnCodigo.onclick = clickCodigoEvt;
@@ -387,24 +256,21 @@ function setPanelButtons(subElements){
 			btnCodigo.type = 'button';
 			btnCodigo.className ='btn btn-block btn-lg waves-effect';
 			btnCodigo.innerHTML = 'Respuesta N°' + subElements[index].id_respuesta;
-			btnCodigo.titulo = subElements[index].titulo;
-			btnCodigo.descripcion = subElements[index].descripcion;
-			btnCodigo.arrayIndex = index;
-			btnCodigo.idRespuesta = subElements[index].id_respuesta;
+			btnCodigo.respuestaData = subElements[index];
 			btnCodigo.onclick = clickRespuestaEvt;
 
 		switch(subElements[index].id_estado){
 
 			// 1 es de una respuesta no corregida
 			case 1:
-				listaNoContestados.push(subElements[index]);
-				$('#noContestados > .panel-body').append(btnCodigo);
+				listaNoCorregidas.push(subElements[index]);
+				$('#noCorregidas > .panel-body').append(btnCodigo);
 			break;
 
 			// 2 corregida
 			case 2:
-				listaContestados.push(subElements[index]);
-				$('#contestadas > .panel-body').append(btnCodigo);
+				listaCorregidas.push(subElements[index]);
+				$('#corregidas > .panel-body').append(btnCodigo);
 			break;
 
 			// 3 duda
@@ -418,93 +284,22 @@ function setPanelButtons(subElements){
 
 			btnCodigo.classList.add('btn-default');
 		}else{
-			loadRespuesta(subElements[index]);
+			
 			btnCodigo.classList.add('btn-primary');
+			loadRespuesta(subElements[index]);
 		}
 	}
 }
 
-// FIN GENERACION DOM
-
-// EVENTS
-
-function dudaBtnEvt(e){
-
-	var respuesta = findRespuestaFromArrayIndex(getRespuestaFromBtnActivo());
-
-	if(respuesta.id_estado != 3){
-
-		var toDuda = {};
-		switch(respuesta.id_estado){
-
-			case 1:
-
-				toDuda = listaNoContestados.splice(listaNoContestados.indexOf(respuesta), 1);
-			break;
-
-			case 2:
-
-				toDuda = listaContestados.splice(listaContestados.indexOf(respuesta), 1);
-			break;
-		}
-
-		respuesta.id_estado = 3;
-		listaDudas.push(respuesta);
-		$(getBtnRespuestaActivo()).prependTo('#preguntasDudas > .panel-body');
-	}else if(respuesta.id_estado == 3){
-
-		listaDudas.splice(listaDudas.indexOf(respuesta), 1);
-
-		if(respuesta.correccion.length > 0){
-
-			respuesta.id_estado = 2;
-			listaContestados.push(respuesta);
-			$(getBtnRespuestaActivo()).prependTo('#contestadas > .panel-body');
-		}else{
-
-			respuesta.id_estado = 1;
-			listaNoContestados.push(respuesta);
-			$(getBtnRespuestaActivo()).appendTo('#noContestados > .panel-body');
-		}
-	}
-
-	changeBtnDudaTxt();
-}
-
+// 
 function clickRespuestaEvt(e){
 
-	var contPreguntas = '#noContestados > .panel-body, #contestadas > .panel-body, #preguntasDudas > .panel-body';
-
-	var arrayRespuesta = getArrayRespuestas(),
-		respAsignadas = getRespuestasAsignadas(),
-		ci = getCurrentIndex();
-
-	saveInSS();
-
-	setCurrentIndex($(contPreguntas).children().index(this));
+	var contPreguntas = '#noCorregidas > .panel-body, #corregidas > .panel-body, #preguntasDudas > .panel-body';
 
 	$(contPreguntas).children().not(this).removeClass('btn-primary').addClass('btn-default');
 	$(this).removeClass('btn-default').addClass('btn-primary');
 
-	loadRespuesta(arrayRespuesta[this.arrayIndex]);
-
-	changeBtnDudaTxt();
-}
-
-function changeBtnDudaTxt(){
-
-	var RespActiva = findRespuestaFromArrayIndex(getRespuestaFromBtnActivo());
-
-	switch(RespActiva.id_estado){
-
-		case 3:
-			$('.btn-duda').html('Desmarcar de dudas');
-		break;
-
-		default:
-			$('.btn-duda').html('Reportar duda');
-		break;
-	}
+	loadRespuesta(this.respuestaData);
 }
 
 function clickCodigoEvt(e){
@@ -517,186 +312,160 @@ function clickCodigoEvt(e){
 		$(this).addClass('btn-default').removeClass('btn-primary');
 	}
 
+	updateNoCorregida(getRespuestaActiva());
+
 	saveInSS();
 }
 
-function nextBtnEvt(e){
+function clickPrev(e){
 
-	navPreguntas(1);
+	navRespuetas(-1);
 }
 
-function prevBtnEvt(e){
+function clickNext(e){
 
-	navPreguntas(-1);
-}
-// FIN EVENTS
-
-// SETTERS GETTERS
-
-function findRespuestaFromArrayIndex(index){
-
-	return datosRespuestas.respuestas[index];
+	navRespuetas(1);
 }
 
-function setCurrentIndex(newIndex){
+function clickCheckboxDuda(e){
 
-	return sessionStorage.CI = newIndex;
-}
+	var isInDuda = e.target.checked;
 
-function getCurrentIndex(){
+	if(isInDuda){
 
-	var currentIndex = 0;
+		switch(getRespuestaActiva().id_estado){
 
-	switch(typeof sessionStorage.CI){
+			case 1:
 
-		case 'number':
+				listaNoCorregidas.splice(listaNoCorregidas.indexOf(getRespuestaActiva()), 1);
+			break;
 
-			currentIndex = sessionStorage.CI;
-		break;
+			case 2:
 
-		case 'string':
+				listaCorregidas.splice(listaCorregidas.indexOf(getRespuestaActiva()), 1);
+			break;	
+		}
 
-			currentIndex = parseInt(sessionStorage.CI);
-		break;
+		getRespuestaActiva().id_estado = 3;
+		listaDudas.push(getRespuestaActiva());
+		$(getBtnRespuestaActivo()).prependTo('#preguntasDudas > .panel-body');
+	}else{
 
-		case 'undefined':
+		if(getRespuestaActiva().correccion.length > 0){
 
-			currentIndex = 0;
-			setCurrentIndex(currentIndex);
-		break;
-	}
+			getRespuestaActiva().id_estado = 2;
 
-	return currentIndex;
-}
+			listaCorregidas.push(getRespuestaActiva());
+			listaDudas.splice(listaDudas.indexOf(getRespuestaActiva()), 1);
 
-function getArrayRespuestas(){
+			$(getBtnRespuestaActivo()).prependTo('#corregidas > .panel-body');
+		}else{
 
-	return datosRespuestas.respuestas;
-}
+			getRespuestaActiva().id_estado = 1;
 
-function getRespuestasAsignadas(){
-
-	var out = {};
-
-	if(typeof sessionStorage.RA == 'string')	out	= JSON.parse(sessionStorage.RA);
-	else out = {};
-
-	return listaNoContestados;
-}
-
-function getBtnRespuestaActivo(){
-
-	return $('#noContestados > .panel-body, #contestadas > .panel-body, #preguntasDudas > .panel-body').find('.btn-primary');
-}
-
-function getArrayBtnRespuesta(){
-
-	return $('#noContestados > .panel-body, #contestadas > .panel-body, #preguntasDudas > .panel-body').find('button');
-}
-
-function setListaNoContestadas(newLista){
-
-	listaNoContestados = newLista;
-}
-
-function setListaContestadas(newLista){
-
-	listaContestados = newLista;
-}
-
-function setListaDudas(newLista){
-
-	listaDudas = newLista;
-}
-
-function getListaNoContestadas(){
-
-	return listaNoContestados;
-}
-
-function getListaContestadas(){
-
-	return listaContestados;
-}
-
-function getListaDudas(){
-
-	return listaDudas;
-}
-// FIN SETTERS GETTERS
-
-function clearContent(){
-
-	$('#familiaRespuestas').empty();
-	$('#noContestados > .panel-body').empty();
-	$('#contestadas > .panel-body').empty();
-	$('#preguntasDudas > .panel-body').empty();
-}
-
-function getRespuestaFromBtnActivo(){
-
-	return getBtnRespuestaActivo()[0].arrayIndex;
-}
-
-function asignarCodigoRespuesta(idRespuesta){
-
-	var indexRespuesta = 0;
-
-	for(var i=0; i<datosRespuestas.respuestas.length; i++){
-
-		if(datosRespuestas.respuestas[i].id_respuesta == idRespuesta){
-		
-			indexRespuesta = i;
-			i = datosRespuestas.respuestas.length;
+			listaNoCorregidas.push(getRespuestaActiva());
+			listaDudas.splice(listaDudas.indexOf(getRespuestaActiva()), 1);
+			$(getBtnRespuestaActivo()).appendTo('#noCorregidas > .panel-body');
 		}
 	}
 
-	switch(datosRespuestas.respuestas[indexRespuesta].id_estado){
+	toggleCorregidaCheckbox();
+	changePanel();
+}
 
-		case 1:
+function clickCheckboxCorregida(e){
 
-			var ci = getCurrentIndex();
-			var ra = getRespuestasAsignadas();
-				ra[ci].id_estado = 2;
+	var isInDuda = $('#chboxDuda').prop('checked'),
+		isCorregida = e.target.checked;
 
-			datosRespuestas.respuestas[indexRespuesta] = ra[ci];
+	if(getRespuestaActiva().correccion.length > 0){
+		if(!isInDuda){
 
-			subirDatosRespuesta(ra[ci]);
+			if(isCorregida){
 
-			ra.splice(ci, 1);
+				getRespuestaActiva().id_estado = 2;
 
-			setRespuestasNoAsignadas(ra);
-		break;
+				listaCorregidas.push(getRespuestaActiva());
+				listaNoCorregidas.splice(listaNoCorregidas.indexOf(getRespuestaActiva()), 1);
+
+				$(getBtnRespuestaActivo()).prependTo('#corregidas > .panel-body');
+			}else{
+
+				getRespuestaActiva().id_estado = 1;
+
+				listaNoCorregidas.push(getRespuestaActiva());
+				listaCorregidas.splice(listaCorregidas.indexOf(getRespuestaActiva()), 1);
+				$(getBtnRespuestaActivo()).appendTo('#noCorregidas > .panel-body');
+			}
+		}
+	}
+
+	changePanel();
+}
+// 
+
+function changePanel(){
+
+	$('.panel').removeClass('highlight');
+
+	if(!$(getBtnRespuestaActivo()).closest('.panel-collapse.collapse').hasClass('in')){
+
+		$(getBtnRespuestaActivo()).closest('.panel-collapse.collapse').addClass('in');
+	}
+
+	$(getBtnRespuestaActivo()).closest('.panel').addClass('highlight');
+}
+
+function toggleCorregidaCheckbox(){
+
+	if(getRespuestaActiva().correccion.length > 0){
+
+		$('#chBoxCorregida').attr('disabled', false);
+	}else{
+
+		$('#chBoxCorregida').attr('disabled', 'disabled');
 	}
 }
 
-function comprobarRespuesta(respuesta){
+function navRespuetas(direction){
 
-	return true;
+	var arrayBtns = $(getBtnRespuestaActivo()).parent().children(),
+		currentIndex = arrayBtns.index(getBtnRespuestaActivo());
+
+	var newIndex = 0;
+
+	newIndex = (currentIndex+direction)>=0 ? (currentIndex+direction) %arrayBtns.length : arrayBtns.length-1;
+
+	$(getBtnRespuestaActivo()).removeClass('btn-primary').addClass('btn-default');
+	$(arrayBtns[newIndex]).removeClass('btn-default').addClass('btn-primary');
+
+	loadRespuesta(arrayBtns[newIndex].respuestaData);
 }
 
-//Eventos socket
+function saveInSS(){
 
-//eventos lanzados por el cliente
-function guardarCorreccion(idres, idcod){
-	
-	io.emit('Guardar Correccion',{ id_respuesta:idres, id_codigo:idcod, id_usuario: sessionStorage.idUsuario })
 
 }
 
-function registrarDuda(idres, mensajeDuda){
-	//los datos del usuario son guardados desde el login
-	io.emit('Registrar Duda',{ id_respuesta:idres, duda: mensajeDuda, id_usuario:sessionStorage.idUsuario })
-	
+function getData(callback){
+
+	var strData;
+
+	$.getJSON( "./resources/correctorEjemplo.json", function( data ) {
+
+		datosRespuestas = data;
+
+		if(callback != undefined)	callback();
+	});
 }
 
 //eventos que son lanzados por el servidor
-io.on('Resultado Correccion', function(data){
+// io.on('Resultado Correccion', function(data){
 	
-	//"data.mensaje" devuelve el resultado del intento de guardado: ok, si todo sale bien, error si falla
-})
+// 	//"data.mensaje" devuelve el resultado del intento de guardado: ok, si todo sale bien, error si falla
+// })
 
-io.on('Estado Duda', function(data){
+// io.on('Estado Duda', function(data){
 	
-	//"data.mensaje" devuelve el resultado al intentar registrar la duda: ok, si todo sale bien, error si falla
-})
+// 	//"data.mensaje" devuelve el resultado al intentar registrar la duda: ok, si todo sale bien, error si falla
+// })

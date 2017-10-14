@@ -217,14 +217,14 @@
 				
 					<div class="panel-group full-body collapsable-left-bar" id="accordion_19" role="tablist" aria-multiselectable="true">
 						<div class="panel collapse-no-contestado">
-							<div class="panel-heading" role="tab" id="noContestadosHead">
+							<div class="panel-heading" role="tab" id="noCorregidasHead">
 								<h4 class="panel-title">
-									<a role="button" data-toggle="collapse" href="#noContestados" aria-expanded="true" aria-controls="noContestados">
-										<i class="material-icons">event_note</i> No Contestados
+									<a role="button" data-toggle="collapse" href="#noCorregidas" aria-expanded="true" aria-controls="noCorregidas">
+										<i class="material-icons">event_note</i> No Corregidos
 									</a>
 								</h4>
 							</div>
-							<div id="noContestados" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="noContestadosHead">
+							<div id="noCorregidas" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="noCorregidasHead">
 								<div class="panel-body">
 									
 								</div>
@@ -245,14 +245,14 @@
 							</div>
 						</div>
 						<div class="panel collapse-contestados">
-							<div class="panel-heading" role="tab" id="contestadasHead">
+							<div class="panel-heading" role="tab" id="corregidasHead">
 								<h4 class="panel-title">
-									<a class="collapsed" role="button" data-toggle="collapse" href="#contestadas" aria-expanded="false" aria-controls="contestadas">
-										<i class="material-icons">done_all</i> Contestados
+									<a class="collapsed" role="button" data-toggle="collapse" href="#corregidas" aria-expanded="false" aria-controls="corregidas">
+										<i class="material-icons">done_all</i> Corregidos
 									</a>
 								</h4>
 							</div>
-							<div id="contestadas" class="panel-collapse collapse" role="tabpanel" aria-labelledby="contestadasHead">
+							<div id="corregidas" class="panel-collapse collapse" role="tabpanel" aria-labelledby="corregidasHead">
 								<div class="panel-body">
 								</div>
 							</div>
@@ -268,32 +268,37 @@
 						<div class="block-header">
 							<!-- <h2>BLANK PAGE</h2> -->
 						</div>
-						<div class="card">
-							<div id="preguntaDisplay" class="body pregunta-container">
-								Ejemplo Pregunta
+						
+						<div class="row">
+							<div class="col-xs-10">
+								<h3 id="preguntaDisplay" class="body pregunta-container">
+									Ejemplo Pregunta
+								</h3>
+							</div>
+							<div class="col-xs-2 btns-status-contaienr">
+								<div class="btns-status">
+									<input type="checkbox" id="chboxDuda" />
+									<label for="chboxDuda">Duda</label>
+								</div>
+								<div class="btns-status">
+									<input type="checkbox" id="chBoxCorregida" />
+									<label for="chBoxCorregida">Corregido</label>
+								</div>
 							</div>
 						</div>
+						
 						<div class="card">
 							<div id="estimuloDisplay" class="body estimulo-container">
-								<strong>Ejemplo Estimulo</strong>
-								<br><br>
-								Aenean odio ipsum, congue id ullamcorper et, facilisis eget sem. Mauris ullamcorper nunc vitae tellus tincidunt scelerisque. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam accumsan justo at ex faucibus cursus. Ut eget purus id massa tincidunt faucibus. Pellentesque quis pellentesque ligula. Suspendisse potenti. Integer molestie posuere lectus id finibus. Integer dapibus odio ut nulla placerat euismod. Quisque quis tellus in est pharetra faucibus. Nulla molestie sem et nisl scelerisque, et porta odio consequat.
+								<strong>Estimulo</strong>
 							</div>
 						</div>
 						<div class="card">
 							<div id="respuestaDisplay" class="body respuesta-container">
-								<strong>Ejemplo Respuesta</strong>
-								<br><br>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-								cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+								<strong>Respuesta</strong>
 							</div>
 						</div>
 					</div>
-					<button type="button" class="btn btn-lg btn-warning waves-effect btn-duda">Reportar duda</button>
+					<button type="button" class="btn btn-lg btn-success waves-effect btn-anterior">Anterior</button>
 					<button type="button" class="btn btn-lg btn-success waves-effect btn-siguiente">Siguiente</button>
 				</section>
 			</div>
