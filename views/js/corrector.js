@@ -460,12 +460,12 @@ function getData(callback){
 }
 
 //eventos que son lanzados por el servidor
-// io.on('Resultado Correccion', function(data){
+io.on('Resultado Correccion', function(data){
 	
-// 	//"data.mensaje" devuelve el resultado del intento de guardado: ok, si todo sale bien, error si falla
-// })
+	//"data.mensaje" devuelve el resultado del intento de guardado: ok, si todo sale bien, error si falla
+})
 
-// io.on('Estado Duda', function(data){
+io.on('Estado Duda', function(data){
 	
-// 	//"data.mensaje" devuelve el resultado al intentar registrar la duda: ok, si todo sale bien, error si falla
-// })
+	//"data.mensaje" devuelve el resultado al intentar registrar la duda: ok, si todo sale bien, error si falla
+})
