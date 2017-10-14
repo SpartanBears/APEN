@@ -350,7 +350,7 @@ function clickDescripcionCodigo(e){
 	var familia = $(this).closest('button').closest('.panel-collapse').siblings().find('a')[0].lastChild.textContent;
 
 	$('#modalContent > .modal-header > .modal-title').html(datosCodigo.titulo);
-	$('#modalContent > .modal-header > label.bg-cyan').html('Codigo: ' + datosCodigo.valor);
+	$('#modalContent > .modal-header > label.label-info').html('Codigo: ' + datosCodigo.valor);
 	$('#modalContent > .modal-header > label.label-primary').html(familia);
 
 	$('#modalContent > .modal-body').html(datosCodigo.descripcion);
