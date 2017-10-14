@@ -427,7 +427,11 @@ function clickCheckboxCorregida(e){
 				listaCorregidas.push(getRespuestaActiva());
 				listaNoCorregidas.splice(listaNoCorregidas.indexOf(getRespuestaActiva()), 1);
 
-				$(getBtnRespuestaActivo()).prependTo('#corregidas > .panel-body');
+				var btnActivo = getBtnRespuestaActivo();
+
+				navRespuetas(1);
+
+				$(btnActivo).prependTo('#corregidas > .panel-body');
 			}else{
 
 				getRespuestaActiva().id_estado = 1;
