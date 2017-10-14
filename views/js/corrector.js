@@ -468,6 +468,8 @@ function toggleCollapsePanelActivo(){
 	if(!$(getBtnRespuestaActivo()).closest('.panel-collapse.collapse').hasClass('in')){
 
 		$(getBtnRespuestaActivo()).closest('.panel-collapse.collapse').addClass('in');
+		$(getBtnRespuestaActivo()).closest('.panel-collapse.collapse').attr('aria-expanded', true);
+		$(getBtnRespuestaActivo()).closest('.panel-collapse.collapse').css('height', '');
 	}
 }
 
