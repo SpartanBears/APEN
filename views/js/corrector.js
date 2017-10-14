@@ -169,7 +169,12 @@ function getBtnRespuestaActivo(){
 
 function getBtnsCodigos(){
 
-	return $('#familiaRespuestas').find('button');;
+	return $('.btn-codigo');
+}
+
+function getBtnsCodigosMismaFamilia(btn){
+
+	return $(btn).closest('.panel-body').find('button.btn-codigo');
 }
 
 // PANEL FAMILIAS
@@ -206,16 +211,32 @@ function getBtnsCodigos(){
 
 		for(var index = 0; index < subElements.length; index++){
 
+			var btnGroup = document.createElement('div');
+				btnGroup.className = 'btn-group btn-group-justified';
+				btnGroup.setAttribute('role', 'group');
+
 			var btnCodigo = document.createElement('button');
 				btnCodigo.type = 'button';
-				btnCodigo.className ='btn btn-block btn-lg btn-default waves-effect';
+				btnCodigo.className ='btn btn-lg btn-default waves-effect btn-codigo';
 				btnCodigo.innerHTML = subElements[index].valor;
 				btnCodigo.codigoData = subElements[index];
 				btnCodigo.idCodigo = subElements[index].id_codigo;
 
 				btnCodigo.onclick = clickCodigoEvt;
 
-				divPanelBody.appendChild(btnCodigo);
+			var btnDescripcion = document.createElement('button');
+				btnDescripcion.setAttribute('type', 'button');
+				btnDescripcion.className = 'btn btn-default waves-effect btn-desc-codigo';
+				btnDescripcion.innerHTML = '<i class="material-icons">lightbulb_outline</i>';
+				btnDescripcion.dataset.toggle = 'modal';
+				btnDescripcion.dataset.target = '#defaultModal';
+				btnDescripcion.onclick = clickDescripcionCodigo;
+
+			btnGroup.appendChild(btnCodigo);
+			btnGroup.appendChild(btnDescripcion);
+			divPanelBody.appendChild(btnGroup);
+
+			// divPanelBody.appendChild(btnCodigo);
 		}
 
 		divTabPanel.appendChild(divPanelBody);
@@ -309,7 +330,6 @@ function clickRespuestaEvt(e){
 
 function clickCodigoEvt(e){
 
-	$(this).parent().children().not(this).removeClass('btn-primary').addClass('btn-default');
 
 	if(!$(this).hasClass('btn-primary')){
 		$(this).removeClass('btn-default').addClass('btn-primary');
@@ -317,9 +337,23 @@ function clickCodigoEvt(e){
 		$(this).addClass('btn-default').removeClass('btn-primary');
 	}
 
+	$(getBtnsCodigosMismaFamilia(this)).not(this).removeClass('btn-primary').addClass('btn-default');
+
 	updateNoCorregida(getRespuestaActiva());
 
 	saveInSS();
+}
+
+function clickDescripcionCodigo(e){
+
+	var datosCodigo = $(e.target).closest('button').siblings('.btn-codigo')[0].codigoData;
+	var familia = $(this).closest('button').closest('.panel-collapse').siblings().find('a')[0].lastChild.textContent;
+
+	$('#modalContent > .modal-header > .modal-title').html(datosCodigo.titulo);
+	$('#modalContent > .modal-header > label.bg-cyan').html('Codigo: ' + datosCodigo.valor);
+	$('#modalContent > .modal-header > label.label-primary').html(familia);
+
+	$('#modalContent > .modal-body').html(datosCodigo.descripcion);
 }
 
 function clickPrev(e){
