@@ -1,7 +1,8 @@
 var datosRespuestas,
 	listaCorregidas = [],
 	listaNoCorregidas = [],
-	listaDudas = [];
+	listaDudas = [],
+	io = io();
 
 $( document ).ready( function(){
 
@@ -423,7 +424,7 @@ function clickCheckboxCorregida(e){
 			if(isCorregida){
 
 				getRespuestaActiva().id_estado = 2;
-
+				guardarCorreccion(getRespuestaActiva());
 				listaCorregidas.push(getRespuestaActiva());
 				listaNoCorregidas.splice(listaNoCorregidas.indexOf(getRespuestaActiva()), 1);
 
@@ -525,6 +526,10 @@ function getData(callback){
 
 		if(callback != undefined)	callback();
 	});
+}
+
+function guardarCorreccion(data){
+	io.emit('Guardar Correccion',{ id_respuesta:data.id_respuesta, codigo:data.correccion, id_usuario: 1 })
 }
 
 //eventos que son lanzados por el servidor

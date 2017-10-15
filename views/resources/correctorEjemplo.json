@@ -45,20 +45,20 @@
 			"descripcion": "define la psicosociales de la Aptitudes",
 			"codigos": [
 				{
-					"id_codigo": 11,
-					"valor": "A1",
+					"id_codigo": 6,
+					"valor": "B1",
 					"titulo": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed turpis in felis vulputate gravida.",
 					"descripcion": "Nam placerat dignissim convallis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec sed nunc bibendum, aliquet purus sit amet, volutpat magna. Cras gravida turpis et mauris porta, non congue lorem egestas. Maecenas eget justo elementum, hendrerit dui sed, cursus felis. Morbi eu mauris quis elit pharetra dapibus. Nam at tellus commodo, imperdiet lectus in, suscipit mi. Nullam accumsan dui sed suscipit euismod. Ut quis odio eu erat pretium luctus quis vel leo. Curabitur nec vestibulum sem. Vivamus pulvinar pellentesque neque, quis cursus urna scelerisque eu. Aenean congue hendrerit purus vel pellentesque. Nunc sit amet diam non lectus volutpat dictum. Vestibulum dignissim, tortor eget bibendum aliquam, enim diam porttitor nibh, et pretium tortor orci sed velit. Nam ut pretium metus, vel tincidunt nibh."
 				},
 				{
-					"id_codigo": 12,
-					"valor": "A2",
+					"id_codigo": 7,
+					"valor": "B2",
 					"titulo": "Etiam lacinia lorem eros, at convallis dolor feugiat sit amet. Ut tellus urna, pretium eget fermentum vitae, feugiat et ipsum.",
 					"descripcion": "Suspendisse a pulvinar ligula. Integer in varius lectus. Nulla eu metus justo. Pellentesque eu purus pharetra, feugiat lorem ut, fermentum nisl. Cras facilisis convallis sem, ac gravida metus volutpat eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut condimentum tortor nec lectus interdum viverra. In hac habitasse platea dictumst. Maecenas ornare, lorem eget elementum posuere, dui neque feugiat massa, sit amet molestie tortor leo eget libero. Donec sodales libero in quam hendrerit, ac dignissim leo dictum. Donec aliquet dolor est, et iaculis ipsum pretium a. Etiam ac libero ac erat lobortis molestie. Aliquam ac lorem id lorem sollicitudin tincidunt hendrerit faucibus ex. Curabitur interdum risus vitae odio pulvinar, sed elementum odio semper."
 				},
 				{
-					"id_codigo": 13,
-					"valor": "A3",
+					"id_codigo": 8,
+					"valor": "B3",
 					"titulo": "Vivamus elit ex, tempus nec lacus id, dictum vestibulum enim. Nunc eleifend velit nec sapien varius ornare.",
 					"descripcion": "Suspendisse ornare, purus at lacinia pretium, velit tortor venenatis nisi, at dapibus neque augue a ligula. Donec a fringilla nisl. Aenean convallis bibendum urna, sed euismod turpis rutrum non. Quisque id feugiat magna, tempus tincidunt augue. Sed sed finibus metus, id ultricies turpis. Duis eu sapien quis purus facilisis faucibus vel ut turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce a lorem suscipit lectus tincidunt pharetra sit amet id ex. Pellentesque et massa eget turpis viverra mollis. Etiam vitae congue lectus. Fusce vel ornare magna. Fusce pulvinar tempus neque. Donec porttitor dictum elit eget rutrum. Duis sit amet lacus sed nisl mattis aliquam."
 				}

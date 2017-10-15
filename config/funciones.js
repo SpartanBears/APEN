@@ -33,28 +33,21 @@ module.exports = {
     funcion asignar codigo a la correción de una pregunta
     */
     guardarCorreccion: function (respuesta, codigo, usuario, io, sock) {
-        return sequelize.transaction(function (t) {
-			return Asignacion.find({where: {idUsuario: usuario, idRespuesta: respuesta }}).then(function(result){
-				if(result==null){
-					return AsignacionCodigo.create({idAsignacion: result.dataValues.idAsignacion, idCodigo: codigo},{transaction: t}).then(function(data){
-						return Asignacion.update({idEstado: 2 }, {where: { idAsignacion: data.dataValues.idAsignacion}}, { transaction: t }).then(function(){
-							io.to(sock).emit('Resultado Correccion',{ mensaje: 'ok' })
-						}).catch(function(err){
-							io.to(sock).emit('Resultado Correccion',{ mensaje: 'error' })
-						})
-					}).catch(function(err){
-						io.to(sock).emit('Resultado Correccion',{ mensaje: 'error' })
-					})
-				}else{
-					return AsignacionCodigo.update({idCodigo: codigo},{where:{idAsignacion: result.dataValues.idAsignacion}},{ transaction: t }).then(function(){
-						io.to(sock).emit('Resultado Correccion', { mensaje: 'ok' })
-					}).catch(function(err){
-						io.to(sock).emit('Resultado Correccion', { mensaje: 'error' })
-					})
-				}
-				
+
+			Asignacion.find({where: {idUsuario: usuario, idRespuesta: respuesta }}).then(function(result){
+				AsignacionCodigo.findAll({where:{ idAsignacion: result.dataValues.idAsignacion }}).then(function(data){
+
+						if(data.length>0){
+							for(var i = 0; i<codigo.length; i++){
+								updateCorreccion(data[i].idAsignacion,codigo[i].id_codigo,data[i].idAsignacionCodigo)
+							}
+						}else{
+							for(var i = 0; i<codigo.length; i++){
+								saveCorreccion(result.idAsignacion, codigo[i].id_codigo)
+							}					
+						}
+				})				
 			})
-        })
         
     },
     registrarDuda: function (respuesta, duda, usuario, io, sock) {
@@ -69,6 +62,40 @@ module.exports = {
     }
 }
 
+
+function saveCorreccion(asignacion, codigo){
+	return sequelize.transaction(function(t){
+		return AsignacionCodigo.create({idAsignacion: asignacion, idCodigo: codigo}, { transaction: t }).then(function(r){
+			
+		}).then(function(){
+			updateEstado(2,asignacion)								
+		}).catch(function(err){
+											
+		})
+	})
+}
+
+function updateEstado(estado, asignacion){
+	return sequelize.transaction(function(t){
+		return Asignacion.update({idEstado: estado}, {where: { idAsignacion: asignacion }},{transaction: t}).then(function(){
+			
+		}).catch(function(err){
+			
+		})
+	})
+	
+}
+
+function updateCorreccion(asignacion, codigo, codigoAsignacion){
+	return sequelize.transaction(function(t){
+		return AsignacionCodigo.update({idCodigo: codigo},{where:{idAsignacionCodigo: codigoAsignacion}}, { transaction: t }).then(function(r){
+		}).then(function(){
+			updateEstado(2, asignacion)								
+		}).catch(function(err){
+											
+		})
+	})
+}
 /*
 función que obtiene los datos actualizados de la tabla
 */

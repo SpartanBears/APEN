@@ -16,7 +16,7 @@ app
         res.sendFile("/views/VistasEjemploAPEN/blank.html", { root: __dirname });
     })
     .get('/usuario', function (req, res) {
-        res.sendFile("/views/login.html", { root: __dirname })
+        res.sendFile("/views/vistaCorrector.html", { root: __dirname })
     })
 
 http.listen(port, function (cb) {
@@ -37,8 +37,9 @@ io.on('connection', function (socket) {
         Funciones.login(data.user, data.pass, io, socket.id)
     })
 
-    socket.on('Guardar Asignacion', function (data) {
-        //Funciones.asignacion(data.codigoAsignacion, data.idcodigo, io, socket.id)
+    socket.on('Guardar Correccion', function (data) {
+		console.log(data.codigo.length)
+        Funciones.guardarCorreccion(data.id_respuesta, data.codigo, data.id_usuario,io, socket.id)
         //Funciones.cambiarEstadoAsignacion(data.idAsignacion, data.estadoNuevo, io, socket.id)
     })
 })

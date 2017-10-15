@@ -10,7 +10,7 @@ var sequelize = new Sequelize(conf.mysql.database, conf.mysql.user, conf.mysql.p
     host: conf.mysql.host,
     dialect: conf.mysql.dialect,
     pool: {
-        max: 5,
+        max: 100,
         min: 0,
         idle: 10000
     }
