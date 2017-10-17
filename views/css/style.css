@@ -89,3 +89,26 @@ section.left-panel-ans {
 
 	float: left;
 }
+
+/* LOGIN START*/
+	
+.login-page{
+	background-color: #dad6d6; 
+}
+
+.login-page .login-box .logo a{
+
+	color: #337ab7;
+}
+
+.login-page .login-box .logo small{
+
+	color: #337ab7;
+}
+
+.login-page .login-box a{
+
+	color: #337ab7;
+}
+
+/* LOGIN END */

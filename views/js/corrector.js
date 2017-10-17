@@ -6,6 +6,13 @@ var datosRespuestas,
 
 $( document ).ready( function(){
 
+	$.AdminBSB.browser.activate();
+    $.AdminBSB.navbar.activate();
+    $.AdminBSB.dropdownMenu.activate();
+    $.AdminBSB.input.activate();
+    $.AdminBSB.select.activate();
+    $.AdminBSB.search.activate();
+
 	getData(initCorrectorView);
 });
 

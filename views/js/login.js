@@ -1,5 +1,16 @@
 ﻿
     'use strict'
+
+$(document).ready(function(){
+
+    $.AdminBSB.browser.activate();
+    $.AdminBSB.navbar.activate();
+    $.AdminBSB.dropdownMenu.activate();
+    $.AdminBSB.input.activate();
+    $.AdminBSB.select.activate();
+    $.AdminBSB.search.activate();
+});
+
 var io = io()
 /*
 evento 'buscador', recibe un objeto con los datos de la tabla usuario
