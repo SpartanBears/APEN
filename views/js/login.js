@@ -12,15 +12,6 @@ $(document).ready(function(){
 });
 
 var io = io()
-/*
-evento 'buscador', recibe un objeto con los datos de la tabla usuario
-y los envía al la tabla que esta en el html.
-*/
-io.on('buscador', function (resultado) {
-    resultado.forEach(function (item) {
-        $('#data_container').append("<tr>\n" + "<td>" + item.id + "</td>\n" + "<td>" + item.user + "</td>\n" + "<td>" + item.pass + "</td>\n" + "</tr>")
-        })
-})
 
 /*
 Al presionar el boton guardar del formulario
@@ -39,9 +30,10 @@ $(document).on('click', '#login', function (e) {
 evento de login exitoso, trae los datos del usuario para redireccionarlo
 */
 io.on('login exitoso', function (respuesta) {
-    sessionStorage.userdata = respuesta
-    console.log('llego la respuesta')
-    console.log(respuesta.tipousuario)
+    sessionStorage.nombre = respuesta.nombre;
+    sessionStorage.apellidoP = respuesta.apellidoP;
+	sessionStorage.apellidoM = respuesta.apellidoM;
+	
     if (respuesta.tipousuario == 1) {
         window.location.replace('/admin');
     } else {
