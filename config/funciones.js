@@ -140,6 +140,15 @@ Mensaje.hasMany(Usuario, {as: 'mensajeUsuario', foreignKey: 'id_remitente', sour
 Usuario.belongsTo(Mensaje, {as: 'mensajeU', foreignKey: 'id_usuario', targetKey: 'id_remitente'});
 
 
+//asociaciones "thread_asignacion"
+
+ThreadAsignacion.hasMany(Asignacion, {as: 'atAsignacion', foreignKey: 'id_asignacion', sourceKey: 'id_asignacion'});
+Asignacion.belongsTo(ThreadAsignacion, {as: 'taa', foreignKey: 'id_asignacion', targetKey: 'id_asignacion'});
+
+ThreadAsignacion.hasMany(Thread, {as: 'ThreadT', foreignKey: 'id_thread', sourceKey: 'id_thread'});
+Thread.belongsTo(ThreadAsignacion, {as: 'tat', foreignKey: 'id_thread', targetKey: 'id_thread'});
+
+
 
 
 
