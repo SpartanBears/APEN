@@ -1,0 +1,29 @@
+TABS
+	GENERAL / PRUEBA
+
+GENERAL
+	-item a evaluar	=	"estudiantes"
+	-items corregidos / no corregidos 	=	"sedes totales"
+	-numeros de correctores
+
+	-grafico de barra (verticales)	=		cuadro texto
+		+muestre avance por prueba / prueba
+
+
+	-correctores // por pregunta = tabes
+	-tabla por corrector
+		{cod corrector	|	item asignados	|	items corregidos	|	indice de avance (%) 	|	indice consistencia(cuantas inconcistecias tiene 1/100)<%>	|	carga de trabajo(sigma(asignaciones))}
+		click
+			cuales son las preguntas asignadas
+
+	-tabla por pregunta
+		{cod pregunta	|	cantidad de veces asignada	|	cantidad de veces corregida	|	indice de avance de la pregunta	|	concistencia <0..1>}
+		click vista fila
+			modal:::: resumen de pregunta que se seleccion
+				debe mostrar:
+					a quien fue asignado
+						click: que codifico para esa pregunta
+
+
+----------------------
+cada asignacion tiene n correccion deseado (solo cuanta como corregida en caso de los n correctores ya contectaron)

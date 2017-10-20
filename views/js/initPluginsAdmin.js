@@ -1,11 +1,32 @@
 window.onload = function(){
 
 	createDonut('donut1', donutVal);
-	createDonutSnd('knotEx', 53);
-	createDonut('donut3', donutVal2);
-
+	createBarsGraph('grafAvancePrueba', null);
 	createUITableTabs(instrumentos);
+	setEvents();
+	$('.count-to').countTo();
 };
+
+function createBarsGraph(id, values){
+
+	Morris.Bar({
+		element: id,
+		data: [
+			{ y: 'Prueba 1', a: 70},
+			{ y: 'Prueba 2', a: 30},
+			{ y: 'Prueba 3', a: 52},
+			{ y: 'Prueba 4', a: 25},
+			{ y: 'Prueba 5', a: 65},
+			{ y: 'Prueba 6', a: 45},
+			{ y: 'Prueba 7', a: 35}
+		],
+		xkey: 'y',
+		ykeys: ['a'],
+		labels: ['Respuestas corregidas'],
+		//stacked: true
+		orientation: 'horizontal'
+	});
+}
 
 function createUITableTabs(elements){
 
@@ -49,7 +70,9 @@ function createUITableTabs(elements){
 		$(panesContainer).append(tabPanes);
 	}
 
-	$(divContainer).append(ulTabs);
+	// $(divContainer).append(ulTabs);
+	// $(divContainer).append(panesContainer);
+
 	$(divContainer).append(panesContainer);
 
 	for(var index = 0; index < elements.length; index++){
@@ -186,52 +209,72 @@ function clearModal(){
 	$('#detailModal').find('.modal-body').empty();
 }
 
+function setEvents(){
 
+	$('#btnGrupo > a')[0].onclick = function(e){
+
+		$('#btnGrupo > a').removeClass("btn-primary");
+		$(this).addClass('btn-primary');
+
+		$('.tab-content').children().removeClass('active');
+		$('.tab-content').children()[0].classList.add('active');
+	}
+
+	$('#btnGrupo > a')[1].onclick = function(e){
+
+		$('#btnGrupo > a').removeClass("btn-primary");
+		$(this).addClass('btn-primary');
+
+		$('.tab-content').children().removeClass('active');
+		$('.tab-content').children()[1].classList.add('active');
+	}
+}
 
 
 // DATOS FALSOS
 
-var tablaConsistecia = {
+var tablaPorCorrector = {
 	columns:[
-		{title:"Preguntas"},
-		{title:"Total respuestas (n)"},
-		{title:"Distribuidas/Asignadas (n)"},
-		{title:"Corregidas (n)"},
-		{title:"Consistencia (%)"},
+		{title:"Cod. Corrector"},
+		{title:"Items Asignados"},
+		{title:"Items Corregidos"},
+		{title:"Índice de Avance"},
+		{title:"Índice de Consistencia"},
+		{title:"Carga de Trabajo"},
 	],
 	dataSet:[
-		["P1", 5392, 4115, 24, 0.9],
-		["P2", 3750, 5913, 24, 0.2],
-		["P3", 6704, 6166, 24, 0.6],
-		["P4", 6515, 6156, 34, 0.3],
-		["P5", 4255, 5712, 38, 0.1],
-		["P6", 4523, 5892, 1, 0.0],
-		["P7", 6686, 3462, 4, 0.8],
-		["P8", 7819, 4887, 21, 0.4],
-		["P9", 6270, 7722, 31, 0.4],
-		["P10", 5242, 7111, 21, 0.1]
+		["C1", 13, 7, 0.5, 0.9, 20],
+		["C2", 6, 6, 1, 0.2, 11],
+		["C3", 11, 10, 0.9, 0.6, 12],
+		["C4", 10, 10, 1, 0.3, 13],
+		["C5", 15, 12, 0.8, 0.1, 14],
+		["C6", 7, 6, 0.8, 0.0, 10],
+		["C7", 2, 2, 1, 0.8, 5],
+		["C8", 8, 0, 0, 0.4, 17],
+		["C9", 12, 7, 0.65, 0.4, 13],
+		["C10", 14, 9, 0.75, 0.1, 2], 
 	]
 };
 
-var tablaConsistecia2 = {
+var tablaPorPregunta = {
 	columns:[
-		{title:"Preguntas"},
-		{title:"Total respuestas (n)"},
-		{title:"Distribuidas/Asignadas (n)"},
-		{title:"Corregidas (n)"},
-		{title:"Consistencia (%)"},
+		{title:"Cod. Pregunta"},
+		{title:"Cantidad de veces Asignada"},
+		{title:"Cantidad de veces Corregidas"},
+		{title:"Índice de Avance"},
+		{title:"Consistencia"},
 	],
 	dataSet:[
-		['P1', 5660, 5197, 20, 0.9],
-		['P2', 7359, 6765, 23, 0.5],
-		['P3', 6481, 3695, 3, 0.2],
-		['P4', 5354, 5839, 18, 0.9],
-		['P5', 7294, 5526, 9, 0.8],
-		['P6', 7959, 7187, 40, 0.2],
-		['P7', 3593, 4137, 2, 0.0],
-		['P8', 3233, 6802, 35, 0.9],
-		['P9', 5311, 7468, 36, 0.6],
-		['P10', 4753, 4700, 11, 0.4]
+		['P1', 5660, 5197, 20, 0.9, 0.8],
+		['P2', 7359, 6765, 23, 0.5, 1],
+		['P3', 6481, 3695, 3, 0.2, 0.9],
+		['P4', 5354, 5839, 18, 0.9, 0.89],
+		['P5', 7294, 5526, 9, 0.8, 0.78],
+		['P6', 7959, 7187, 40, 0.2, 0.65],
+		['P7', 3593, 4137, 2, 0.0, 0.1],
+		['P8', 3233, 6802, 35, 0.9, 0.9],
+		['P9', 5311, 7468, 36, 0.6, 0.98],
+		['P10', 4753, 4700, 11, 0.4, 0.87]
 	]
 };
 
@@ -258,7 +301,7 @@ var tablaConsistecia3 = {
 };
 
 
-var arrayTabas = [tablaConsistecia, tablaConsistecia2, tablaConsistecia3];
+var arrayTabas = [tablaPorCorrector, tablaPorPregunta, tablaConsistecia3];
 
 var donutVal = [
 	{

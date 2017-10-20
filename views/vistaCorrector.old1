@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
 	<meta charset="UTF-8">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<title>Administrador</title>
+	<title>Corrector</title>
 	<!-- Favicon-->
 	<link rel="icon" href="./vendors/AdminBSB/favicon.ico" type="image/x-icon">
 
@@ -29,7 +29,7 @@
 		<!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
 		<link href="./vendors/AdminBSB/css/themes/all-themes.css" rel="stylesheet" />
 
-	<link rel="stylesheet" type="text/css" href="./css/style.css">
+		<link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 
 <body class="theme-red">
@@ -209,104 +209,124 @@
 			</div>
 		</div>
 	</nav>
-	<section class="container-fluid" style="margin-top: 8%;">
-		<div class="card col-md-10 col-md-offset-1">
-			<div class="body">
-				<ul class="nav nav-tabs tab-nav-right" role="tablist">
-					<li role="presentation" class="active">
-						<a href="#home" data-toggle="tab" aria-expanded="true">General</a>
-					</li>
-					<li role="presentation" class="">
-						<a href="#profile" data-toggle="tab" aria-expanded="false">Prueba 1</a>
-					</li>
-					<li role="presentation" class="">
-						<a href="#messages" data-toggle="tab" aria-expanded="false">Prueba 2</a>
-					</li>
-					<li role="presentation">
-						<a href="#settings" data-toggle="tab">Prueba 3</a>
-					</li>
-				</ul>
-				<div class="row">
-
-					<div class="col-xs-12">
+	<div class="container content">
+		<div class="row">
+			<!-- NAV RESPUESTAS -->
+			<div class="col-md-3">
+				<section class="left-panel-ans">
+				
+					<div class="panel-group full-body collapsable-left-bar" id="accordion_19" role="tablist" aria-multiselectable="true">
+						<div class="panel collapse-no-contestado">
+							<div class="panel-heading" role="tab" id="noCorregidasHead">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" href="#noCorregidas" aria-expanded="true" aria-controls="noCorregidas">
+										<i class="material-icons">event_note</i> No Corregidos
+									</a>
+								</h4>
+							</div>
+							<div id="noCorregidas" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="noCorregidasHead">
+								<div class="panel-body">
+									
+								</div>
+							</div>
+						</div>
+						<div class="panel collapse-dudas">
+							<div class="panel-heading" role="tab" id="dudasHead">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" href="#preguntasDudas" aria-expanded="false" aria-controls="preguntasDudas">
+										<i class="material-icons">report</i> Dudas
+									</a>
+								</h4>
+							</div>
+							<div id="preguntasDudas" class="panel-collapse collapse" role="tabpanel" aria-labelledby="dudasHead">
+								<div class="panel-body">
+									
+								</div>
+							</div>
+						</div>
+						<div class="panel collapse-contestados">
+							<div class="panel-heading" role="tab" id="corregidasHead">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" href="#corregidas" aria-expanded="false" aria-controls="corregidas">
+										<i class="material-icons">done_all</i> Corregidos
+									</a>
+								</h4>
+							</div>
+							<div id="corregidas" class="panel-collapse collapse" role="tabpanel" aria-labelledby="corregidasHead">
+								<div class="panel-body">
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<!-- FIN NAV RESPUESTAS -->
+			<!-- #Top Bar -->
+			<div class="col-md-6">
+				<section class="middle-panel">
+					<div class="container-fluid">
+						<div class="block-header">
+							<!-- <h2>BLANK PAGE</h2> -->
+						</div>
+						
+						<div class="row">
+							<div class="col-xs-10">
+								<h3 id="preguntaDisplay" class="body pregunta-container">
+									Ejemplo Pregunta
+								</h3>
+							</div>
+							<div class="col-xs-2 btns-status-contaienr">
+								<div class="btns-status">
+									<input type="checkbox" id="chboxDuda" />
+									<label for="chboxDuda">Duda</label>
+								</div>
+								<div class="btns-status">
+									<input type="checkbox" id="chBoxCorregida" />
+									<label for="chBoxCorregida">Corregido</label>
+								</div>
+							</div>
+						</div>
+						
 						<div class="card">
-							<div class="header">
-								<h2>Monitoreo</h2>
+							<div id="estimuloDisplay" class="body estimulo-container">
+								<strong>Estimulo</strong>
 							</div>
-							<div class="body">
-								<div class="row">
-									<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="margin-top: 7%;">
-										<div class="info-box">
-											<div class="icon bg-blue">
-												<i class="material-icons">bookmark</i>
-											</div>
-											<div class="content" style="margin-top: 0">
-												<div class="text">Item a evaluar</div>
-												<div class="number count-to" data-from="0" data-to="53" data-speed="10" data-fresh-interval="5">53</div>
-											</div>
-										</div>
-										<div class="info-box">
-											<div class="icon bg-blue">
-												<i class="material-icons">person</i>
-											</div>
-											<div class="content" style="margin-top: 0">
-												<div class="text">Correctores Asignados</div>
-												<div class="number count-to" data-from="0" data-to="53" data-speed="10" data-fresh-interval="5">12</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
-										<!-- <h3>Progreso</h3> -->
-										<div id="donut1" class="graph"></div>
-									</div>
-									<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-										<!-- <h3>Avance por Prueba</h3> -->
-										<div id="grafAvancePrueba" class="graph"></div>
-									</div>
-								</div>
+						</div>
+						<div class="card">
+							<div id="respuestaDisplay" class="body respuesta-container">
+								<strong>Respuesta</strong>
 							</div>
 						</div>
 					</div>
+					<button type="button" class="btn btn-lg btn-success waves-effect btn-anterior">Anterior</button>
+					<button type="button" class="btn btn-lg btn-success waves-effect btn-siguiente">Siguiente</button>
+				</section>
+			</div>
+			<div class="col-md-3">
+				<section class="family-panel">
+					<div class="panel-group full-body family-rigth-bar" id="familiaRespuestas" role="tablist" aria-multiselectable="true">
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div id="modalContent" class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="defaultModalLabel">Modal title</h4>
+					<label class="label label-info"></label>
+					<label class="label label-primary"></label>
 				</div>
-				<div class="row">
-					<div class="">
-						<div class="row clearfix">
-							<div class="col-xs-12">
-								<div class="card">
-									<div class="row">
-										<div class="col-md-offset-1 col-md-3">
-											<div id="btnGrupo" class="btn-group btn-group-justified m-t-25 m-b-15" role="group" aria-label="Justified button group with nested dropdown">
-												<a href="javascript:void(0);" class="btn btn-primary btn-lg waves-effect" role="button">Corrector</a>
-												<a href="javascript:void(0);" class="btn btn-lg waves-effect" role="button">Por Pregunta</a>
-											</div>
-										</div>
-									</div>
-									<div id="tableContainer" class="body">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="modal-body">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
 				</div>
 			</div>
 		</div>
-
-		<!-- Large Size -->
-			<div class="modal fade" id="detailModal" tabindex="-1" role="dialog">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="largeModalLabel">Modal title</h4>
-						</div>
-						<div class="modal-body">
-						</div>
-						<div class="modal-footer">
-						</div>
-					</div>
-				</div>
-			</div>
-	</section>
-
+	</div>
 
 	<!-- PRELOADED ADMINBSB -->
 		<!-- Jquery Core Js -->
@@ -330,25 +350,9 @@
 		<!-- Demo Js -->
 		<script src="./vendors/AdminBSB/js/demo.js"></script>
 
-		<!-- Morris Plugin Js -->
-		<script src="./vendors/AdminBSB/plugins/raphael/raphael.min.js"></script>
-		<script src="./vendors/AdminBSB/plugins/morrisjs/morris.js"></script>
-		<!-- Jquery Knob Plugin Js -->
-		<script src="./vendors/AdminBSB/plugins/jquery-knob/jquery.knob.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>	
 
-		<!-- Jquery DataTable Plugin Js -->
-		<script src="./vendors/AdminBSB/plugins/jquery-datatable/jquery.dataTables.js"></script>
-		<script src="./vendors/AdminBSB/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-		<script src="./vendors/AdminBSB/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
-		<script src="./vendors/AdminBSB/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
-		<script src="./vendors/AdminBSB/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
-		<script src="./vendors/AdminBSB/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
-		<script src="./vendors/AdminBSB/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
-		<script src="./vendors/AdminBSB/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
-		<script src="./vendors/AdminBSB/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
-
-	<script type="text/javascript" src="./js/admin.js"></script>
-	<script type="text/javascript" src="./js/initPluginsAdmin.js"></script>
+		<script type="text/javascript" src="./js/corrector.js"></script>
 </body>
 
 </html>
