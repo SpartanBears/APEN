@@ -211,8 +211,60 @@
 	</nav>
 	<div class="container content">
 		<div class="row">
+			<div class="col-xs-12">
+				<div class="card">
+					<div class="header">
+						<h4>Instrumento > Pregunta</h4>
+					</div>
+					<div class="body">
+						<div class="row heightfix">
+							<div class="col-md-9 cols-corrector">
+								<div class="row">
+									<div id="preguntaContainer" class="col-md-12">
+										<div class="card">
+											<div id="estimuloDisplay" class="body estimulo-container">
+												Pregunta
+											</div>
+										</div>
+									</div>
+									<div id="respuestaContainer" class="col-md-12">
+										<div class="card">
+											<div class="header row">
+												<div id="tituloRespuesta" class="col-md-9">
+													Respuesta A50
+												</div>
+												<div class="col-md-3">
+													<input type="text" class="form-control" placeholder="Buscar">
+												</div>
+												
+											</div>
+											<div class="body">
+												<div id="respuestaDisplay" class="body respuesta-container">
+													Respuesta
+												</div>
+												<div>
+													<button type="button" class="btn btn-lg btn-success waves-effect btn-anterior">Anterior</button>
+													<button type="button" class="btn btn-lg btn-success waves-effect btn-siguiente">Siguiente</button>
+												</div>
+												<div id="listadoRespuestas">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3 cols-corrector">
+								<section class="family-panel">
+									<div class="panel-group full-body family-rigth-bar" id="familiaRespuestas" role="tablist" aria-multiselectable="true">
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- NAV RESPUESTAS -->
-			<div class="col-md-3">
+			<!-- <div class="col-md-3">
 				<section class="left-panel-ans">
 				
 					<div class="panel-group full-body collapsable-left-bar" id="accordion_19" role="tablist" aria-multiselectable="true">
@@ -259,14 +311,13 @@
 						</div>
 					</div>
 				</section>
-			</div>
+			</div> -->
 			<!-- FIN NAV RESPUESTAS -->
 			<!-- #Top Bar -->
-			<div class="col-md-6">
+			<!-- <div class="col-md-6">
 				<section class="middle-panel">
 					<div class="container-fluid">
 						<div class="block-header">
-							<!-- <h2>BLANK PAGE</h2> -->
 						</div>
 						
 						<div class="row">
@@ -301,13 +352,13 @@
 					<button type="button" class="btn btn-lg btn-success waves-effect btn-anterior">Anterior</button>
 					<button type="button" class="btn btn-lg btn-success waves-effect btn-siguiente">Siguiente</button>
 				</section>
-			</div>
-			<div class="col-md-3">
+			</div> -->
+			<!-- <div class="col-md-3">
 				<section class="family-panel">
 					<div class="panel-group full-body family-rigth-bar" id="familiaRespuestas" role="tablist" aria-multiselectable="true">
 					</div>
 				</section>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">

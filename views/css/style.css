@@ -90,6 +90,62 @@ section.left-panel-ans {
 	float: left;
 }
 
+.row.heightfix > div{
+
+	
+}
+
+.row.heightfix{
+
+	display: flex !important;
+	/*max-height: 79vh;*/
+	overflow: hidden;
+}
+
+#familiasContainer{
+
+	overflow-y: auto; 
+}
+
+.cols-corrector{
+
+	/*max-height: 79vh;*/
+}
+
+.cols-corrector>.row{
+
+	height: 100%;
+}
+
+.cols-corrector>.row>div:first-child{
+
+	height: 40%;
+}
+
+.cols-corrector>.row>div:nth-child(2){
+
+	height: 60%;
+}
+
+
+.cols-corrector>.row>div .card{
+
+	height: 98%;
+}
+
+.header.row, .header.row>*{
+
+/*	padding-bottom: 0 !important;
+	margin-bottom: 0 !important;*/
+}
+
+
+
+
+
+
+
+
 /* LOGIN START*/
 	
 .login-page{
@@ -110,5 +166,4 @@ section.left-panel-ans {
 
 	color: #337ab7;
 }
-
 /* LOGIN END */
