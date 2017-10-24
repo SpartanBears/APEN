@@ -6,29 +6,29 @@ var Sequelize = require('sequelize')
 /*
 Se importan los modelos
 */
-var TipoUsuario = sequelize.import('./models/tipo_usuario'),
-	UsuarioEquipo = sequelize.import('./models/usuario_equipo'),
-	Equipo = sequelize.import('./models/equipo'),
-	MensajeDestinatario = sequelize.import('./models/mensaje_destinatario'),
-	Alumno = sequelize.import('./models/alumno'),
+var TipoUsuario = sequelize.import('./models/tipo_usuario.js'),
+	UsuarioEquipo = sequelize.import('./models/usuario_equipo.js'),
+	Equipo = sequelize.import('./models/equipo.js'),
+	MensajeDestinatario = sequelize.import('./models/mensaje_destinatario.js'),
+	Alumno = sequelize.import('./models/alumno.js'),
 	Usuario = sequelize.import('./models/usuario.js'),
-	Log = sequelize.import('./models/log'),
+	Log = sequelize.import('./models/log.js'),
 	Respuesta = sequelize.import('./models/respuesta.js'),
-	Pregunta = sequelize.import('./models/pregunta'),
-	TipoEstimulo = sequelize.import('./models/tipo_estimulo'),
+	Pregunta = sequelize.import('./models/pregunta.js'),
+	TipoEstimulo = sequelize.import('./models/tipo_estimulo.js'),
 	Asignacion = sequelize.import('./models/asignacion.js'),
 	ThreadAsignacion = sequelize.import('./models/thread_asignacion.js'),
 	Thread = sequelize.import('./models/thread.js'),
 	AsignacionCodigo = sequelize.import('./models/asignacion_codigo.js'),
-	Prueba = sequelize.import('./models/prueba'),
-	Estado = sequelize.import('./models/estado'),
-	Forma = sequelize.import('./models/forma'),
-	Mensaje = sequelize.import('./models/mensaje'),
-	FormaPregunta = sequelize.import('./models/forma_pregunta'),
-	Tipo = sequelize.import('./models/tipo'),
-	Codigo = sequelize.import('./models/codigo'),
-	Filtro = sequelize.import('./models/filtro'),
-	Familia = sequelize.import('./models/familia')
+	Prueba = sequelize.import('./models/prueba.js'),
+	Estado = sequelize.import('./models/estado.js'),
+	Forma = sequelize.import('./models/forma.js'),
+	Mensaje = sequelize.import('./models/mensaje.js'),
+	FormaPregunta = sequelize.import('./models/forma_pregunta.js'),
+	Tipo = sequelize.import('./models/tipo.js'),
+	Codigo = sequelize.import('./models/codigo.js'),
+	Filtro = sequelize.import('./models/filtro.js'),
+	Familia = sequelize.import('./models/familia.js');
 
 
 /*
@@ -37,116 +37,116 @@ Asociaciones de las tablas
 
 //asociaciones "asignacion"
 
-Asignacion.hasMany(Usuario, {as: 'asignaciones', foreignKey: 'id_usuario', sourceKey: 'id_usuario'});
-Usuario.belongsTo(Asignacion, {as: 'corrector', foreignKey: 'id_usuario', targetKey: 'id_usuario'});
+Usuario.hasMany(Asignacion, {as: 'asignaciones', foreignKey: 'fk_asignacion_usuario', sourceKey: 'idUsuario'});
+Asignacion.belongsTo(Usuario, {as: 'corrector', foreignKey: 'fk_usuario_asignacion', targetKey: 'idUsuario'});
 
-Asignacion.hasMany(Estado, {as: 'estadoActual', foreignKey: 'id_estado', sourceKey: 'id_estado'});
-Estado.belongsTo(Asignacion, {as: 'asignacionesEstado', foreignKey: 'id_estado', targetKey: 'id_estado'});
+Asignacion.hasMany(Estado, {as: 'estadoActual', foreignKey: 'fk_estado_asignacion', sourceKey: 'idEstado'});
+Estado.belongsTo(Asignacion, {as: 'asignacionesEstado', foreignKey: 'fk_asignacion_estado', targetKey: 'idEstado'});
 	
-Asignacion.hasMany(Respuesta, {as: 'answer', foreignKey: 'id_respuesta', sourceKey: 'id_respuesta'});
-Respuesta.belongsTo(Asignacion, {as: 'asignacionAnswer', foreignKey: 'id_respuesta', targetKey: 'id_respuesta'});
+Asignacion.hasMany(Respuesta, {as: 'answer', foreignKey: 'fk_respuesta_asignacion', sourceKey: 'idRespuesta'});
+Respuesta.belongsTo(Asignacion, {as: 'asignacionAnswer', foreignKey: 'fk_asignacion_respuesta', targetKey: 'idRespuesta'});
 
 
 //asociaciones "usuario"
 
-Usuario.hasMany(TipoUsuario, {as: 'rol', foreignKey: 'id_tipo_usuario', sourceKey: 'id_tipo_usuario'});
-TipoUsuario.belongsTo(Usuario, {as: 'usuariosRol', foreignKey: 'id_tipo_usuario', targetKey: 'id_tipo_usuario'});
+Usuario.hasMany(TipoUsuario, {as: 'rol', foreignKey: 'fk_tipo_usuario_usuario', sourceKey: 'idTipoUsuario'});
+TipoUsuario.belongsTo(Usuario, {as: 'usuariosRol', foreignKey: 'fk_usuario_tipo_usuario', targetKey: 'idTipoUsuario'});
 
 
 //asociaciones "usuario_equipo"
 
-UsuarioEquipo.hasMany(Usuario, {as: 'userEquipo', foreignKey: 'id_usuario', sourceKey: 'id_usuario'});
-Usuario.belongsTo(UsuarioEquipo, {as: 'teamUser', foreignKey: 'id_usuario', targetKey: 'id_usuario'});
+UsuarioEquipo.hasMany(Usuario, {as: 'userEquipo', foreignKey: 'fk_usuario_usuario_equipo', sourceKey: 'idUsuario'});
+Usuario.belongsTo(UsuarioEquipo, {as: 'teamUser', foreignKey: 'fk_usuario_equipo_usuario', targetKey: 'idUsuario'});
 
-UsuarioEquipo.hasMany(Equipo, {as: 'team', foreignKey: 'id_equipo', sourceKey: 'id_equipo'});
-Equipo.belongsTo(UsuarioEquipo, {as: 'teamUE', foreignKey: 'id_equipo', targetKey: 'id_equipo'});
+UsuarioEquipo.hasMany(Equipo, {as: 'team', foreignKey: 'fk_equipo_usuario_equipo', sourceKey: 'idEquipo'});
+Equipo.belongsTo(UsuarioEquipo, {as: 'teamUE', foreignKey: 'fk_usuario_equipo_equipo', targetKey: 'idEquipo'});
 
 
 //asociaciones "mensaje_destinatario"
 
-MensajeDestinatario.hasMany(Usuario, {as: 'usuarioDestino', foreignKey: 'id_usuario_destino', sourceKey: 'id_usuario'});
-Usuario.belongsTo(MensajeDestinatario, {as: 'userMD', foreignKey: 'id_usuario', targetKey: 'id_usuario_destino'});
+MensajeDestinatario.hasMany(Usuario, {as: 'usuarioDestino', foreignKey: 'fk_usuario_mensaje_destinatario', sourceKey: 'idUsuarioDestino'});
+Usuario.belongsTo(MensajeDestinatario, {as: 'userMD', foreignKey: 'fk_mensaje_destinatario_usuario', targetKey: 'idUsuarioDestino'});
 
-MensajeDestinatario.hasMany(Thread, {as: 'MDThread', foreignKey: 'id_thread', sourceKey: 'id_thread'});
-Thread.belongsTo(MensajeDestinatario, {as: 'threadMD', foreignKey: 'id_thread', targetKey: 'id_thread'});
+MensajeDestinatario.hasMany(Thread, {as: 'MDThread', foreignKey: 'fk_thread_mensaje_destinatario', sourceKey: 'idThread'});
+Thread.belongsTo(MensajeDestinatario, {as: 'threadMD', foreignKey: 'fk_mensaje_destinatario_thread', targetKey: 'idThread'});
 
 
 //asociaciones "log"
 
-Log.hasMany(Usuario, {as: 'logUsuario', foreignKey: 'id_usuario', sourceKey: 'id_usuario'});
-Usuario.belongsTo(Log, {as: 'registro', foreignKey: 'id_usuario', targetKey: 'id_usuario'});
+Log.hasMany(Usuario, {as: 'logUsuario', foreignKey: 'fk_usuario_log', sourceKey: 'idUsuario'});
+Usuario.belongsTo(Log, {as: 'registro', foreignKey: 'fk_log_usuario', targetKey: 'idUsuario'});
 
 
 //asociaciones "pregunta"
 
-Pregunta.hasMany(Prueba, {as: 'qPrueba', foreignKey: 'id_prueba', sourceKey: 'id_prueba'});
-Prueba.belongsTo(Pregunta, {as: 'questions', foreignKey: 'id_prueba', targetKey: 'id_prueba'});
+Pregunta.hasMany(Prueba, {as: 'qPrueba', foreignKey: 'fk_prueba_pregunta', sourceKey: 'idPrueba'});
+Prueba.belongsTo(Pregunta, {as: 'questions', foreignKey: 'fk_pregunta_prueba', targetKey: 'idPrueba'});
 
-Pregunta.hasMany(Tipo, {as: 'qTipo', foreignKey: 'id_tipo', sourceKey: 'id_tipo'});
-Tipo.belongsTo(Pregunta, {as: 'questionsTipo', foreignKey: 'id_tipo', targetKey: 'id_tipo'});
+Pregunta.hasMany(Tipo, {as: 'qTipo', foreignKey: 'fk_tipo_pregunta', sourceKey: 'idTipo'});
+Tipo.belongsTo(Pregunta, {as: 'questionsTipo', foreignKey: 'fk_pregunta_tipo', targetKey: 'idTipo'});
 
-Pregunta.hasMany(TipoEstimulo, {as: 'qTipoE', foreignKey: 'id_tipo_estimulo', sourceKey: 'id_tipo_estimulo'});
-TipoEstimulo.belongsTo(Pregunta, {as: 'questionsTipoE', foreignKey: 'id_tipo_estimulo', targetKey: 'id_tipo_estimulo'});
+Pregunta.hasMany(TipoEstimulo, {as: 'qTipoE', foreignKey: 'fk_tipo_estimulo_pregunta', sourceKey: 'idTipoEstimulo'});
+TipoEstimulo.belongsTo(Pregunta, {as: 'questionsTipoE', foreignKey: 'fk_pregunta_tipo_estimulo', targetKey: 'idTipoEstimulo'});
 
 
 //asociaciones "respuesta"
 
-Respuesta.hasMany(Alumno, {as: 'aAlumno', foreignKey: 'id_alumno', sourceKey: 'id_alumno'});
-Alumno.belongsTo(Respuesta, {as: 'answerAlumno', foreignKey: 'id_alumno', targetKey: 'id_alumno'});
+Respuesta.hasMany(Alumno, {as: 'aAlumno', foreignKey: 'fk_alumno_respuesta', sourceKey: 'idAlumno'});
+Alumno.belongsTo(Respuesta, {as: 'answerAlumno', foreignKey: 'fk_respuesta_alumno', targetKey: 'idAlumno'});
 
-Respuesta.hasMany(Pregunta, {as: 'aPregunta', foreignKey: 'id_pregunta', sourceKey: 'id_pregunta'});
-Pregunta.belongsTo(Respuesta, {as: 'answerQ', foreignKey: 'id_pregunta', targetKey: 'id_pregunta'});
+Respuesta.hasMany(Pregunta, {as: 'aPregunta', foreignKey: 'fk_pregunta_respuesta', sourceKey: 'idPregunta'});
+Pregunta.belongsTo(Respuesta, {as: 'answerQ', foreignKey: 'fk_respuesta_pregunta', targetKey: 'idPregunta'});
 
 
 //asociaciones "forma"
 
-Forma.hasMany(Prueba, {as: 'fPrueba', foreignKey: 'id_prueba', sourceKey: 'id_prueba'});
-Prueba.belongsTo(Forma, {as: 'formaPrueba', foreignKey: 'id_prueba', targetKey: 'id_prueba'});
+Forma.hasMany(Prueba, {as: 'fPrueba', foreignKey: 'fk_prueba_forma', sourceKey: 'idPrueba'});
+Prueba.belongsTo(Forma, {as: 'formaPrueba', foreignKey: 'fk_forma_prueba', targetKey: 'idPrueba'});
 
 
 //asociaciones "forma_pregunta"
 
-FormaPregunta.hasMany(Forma, {as: 'fpForma', foreignKey: 'id_forma', sourceKey: 'id_forma'});
-Forma.belongsTo(FormaPregunta, {as: 'fpf', foreignKey: 'id_forma', targetKey: 'id_forma'});
+FormaPregunta.hasMany(Forma, {as: 'fpForma', foreignKey: 'fk_forma_forma_pregunta', sourceKey: 'idForma'});
+Forma.belongsTo(FormaPregunta, {as: 'fpf', foreignKey: 'fk_forma_pregunta_forma', targetKey: 'idForma'});
 
-FormaPregunta.hasMany(Pregunta, {as: 'fpPregunta', foreignKey: 'id_pregunta', sourceKey: 'id_pregunta'});
-Pregunta.belongsTo(FormaPregunta, {as: 'fpp', foreignKey: 'id_pregunta', targetKey: 'id_pregunta'});
+FormaPregunta.hasMany(Pregunta, {as: 'fpPregunta', foreignKey: 'fk_pregunta_forma_pregunta', sourceKey: 'idPregunta'});
+Pregunta.belongsTo(FormaPregunta, {as: 'fpp', foreignKey: 'fk_forma_pregunta_pregunta', targetKey: 'idPregunta'});
 
 
 //asociaciones "asignacion_codigo"
 
-AsignacionCodigo.hasMany(Asignacion, {as: 'aCodigo', foreignKey: 'id_asignacion', sourceKey: 'id_asignacion'});
-Asignacion.belongsTo(AsignacionCodigo, {as: 'aca', foreignKey: 'id_asignacion', targetKey: 'id_asignacion'});
+AsignacionCodigo.hasMany(Asignacion, {as: 'aCodigo', foreignKey: 'fk_asignacion_asignacion_codigo', sourceKey: 'idAsignacion'});
+Asignacion.belongsTo(AsignacionCodigo, {as: 'aca', foreignKey: 'fk_asignacion_codigo_asignacion', targetKey: 'idAsignacion'});
 
-AsignacionCodigo.hasMany(Codigo, {as: 'acCodigo', foreignKey: 'id_codigo', sourceKey: 'id_codigo'});
-Codigo.belongsTo(AsignacionCodigo, {as: 'acc', foreignKey: 'id_codigo', targetKey: 'id_codigo'});
+AsignacionCodigo.hasMany(Codigo, {as: 'acCodigo', foreignKey: 'fk_codigo_asignacion_codigo', sourceKey: 'idCodigo'});
+Codigo.belongsTo(AsignacionCodigo, {as: 'acc', foreignKey: 'fk_asignacion_codigo_codigo', targetKey: 'idCodigo'});
 
 
 //asociaciones "filtro"
 
-Filtro.hasMany(Codigo, {as: 'fCodigo', foreignKey: 'id_codigo', sourceKey: 'id_codigo'});
-Codigo.belongsTo(Filtro, {as: 'fc', foreignKey: 'id_codigo', targetKey: 'id_codigo'});
+Filtro.hasMany(Codigo, {as: 'fCodigo', foreignKey: 'fk_codigo_filtro', sourceKey: 'idCodigo'});
+Codigo.belongsTo(Filtro, {as: 'fc', foreignKey: 'fk_filtro_codigo', targetKey: 'idCodigo'});
 
-Filtro.hasMany(Familia, {as: 'fFamilia', foreignKey: 'id_familia', sourceKey: 'id_familia'});
-Familia.belongsTo(Filtro, {as: 'ff', foreignKey: 'id_familia', targetKey: 'id_familia'});
+Filtro.hasMany(Familia, {as: 'fFamilia', foreignKey: 'fk_familia_filtro', sourceKey: 'idFamilia'});
+Familia.belongsTo(Filtro, {as: 'ff', foreignKey: 'fk_filtro_familia', targetKey: 'idFamilia'});
 
 
 //asociaciones "mensaje"
 
-Mensaje.hasMany(Thread, {as: 'mensajeThread', foreignKey: 'id_thread', sourceKey: 'id_thread'});
-Thread.belongsTo(Mensaje, {as: 'mensajeT', foreignKey: 'id_thread', targetKey: 'id_thread'});
+Mensaje.hasMany(Thread, {as: 'mensajeThread', foreignKey: 'fk_thread_mensaje', sourceKey: 'idThread'});
+Thread.belongsTo(Mensaje, {as: 'mensajeT', foreignKey: 'fk_mensaje_thread', targetKey: 'idThread'});
 
-Mensaje.hasMany(Usuario, {as: 'mensajeUsuario', foreignKey: 'id_remitente', sourceKey: 'id_usuario'});
-Usuario.belongsTo(Mensaje, {as: 'mensajeU', foreignKey: 'id_usuario', targetKey: 'id_remitente'});
+Mensaje.hasMany(Usuario, {as: 'mensajeUsuario', foreignKey: 'fk_usuario_mensaje', sourceKey: 'idRemitente'});
+Usuario.belongsTo(Mensaje, {as: 'mensajeU', foreignKey: 'fk_mensaje_usuario', targetKey: 'idRemitente'});
 
 
 //asociaciones "thread_asignacion"
 
-ThreadAsignacion.hasMany(Asignacion, {as: 'atAsignacion', foreignKey: 'id_asignacion', sourceKey: 'id_asignacion'});
-Asignacion.belongsTo(ThreadAsignacion, {as: 'taa', foreignKey: 'id_asignacion', targetKey: 'id_asignacion'});
+ThreadAsignacion.hasMany(Asignacion, {as: 'atAsignacion', foreignKey: 'fk_asignacion_thread_asignacion', sourceKey: 'idAsignacion'});
+Asignacion.belongsTo(ThreadAsignacion, {as: 'taa', foreignKey: 'fk_thread_asignacion_asignacion', targetKey: 'idAsignacion'});
 
-ThreadAsignacion.hasMany(Thread, {as: 'ThreadT', foreignKey: 'id_thread', sourceKey: 'id_thread'});
-Thread.belongsTo(ThreadAsignacion, {as: 'tat', foreignKey: 'id_thread', targetKey: 'id_thread'});
+ThreadAsignacion.hasMany(Thread, {as: 'ThreadT', foreignKey: 'fk_thread_thread_asignacion', sourceKey: 'idThread'});
+Thread.belongsTo(ThreadAsignacion, {as: 'tat', foreignKey: 'fk_thread_asignacion_thread', targetKey: 'idThread'});
 
 
 
@@ -208,6 +208,33 @@ module.exports = {
 		}).then(function(d){
 			fs.writeFile("./config/carga/deita.json", JSON.stringify(d)); 
 		})
+	},
+	rawIn: function rawInsert(codigo){
+		var q = 'INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES ';
+
+		for (var i = 0; i < codigo.length; i++) {
+			if(i>0){
+				q+= ',('+1+','+codigo[i].id_codigo+')'	
+			}else{
+				q+= '('+1+','+codigo[i].id_codigo+')'
+			}
+		
+		}
+		q+= ';'
+
+		console.log(q)
+
+		return sequelize.transaction(function(t){
+			return sequelize.query(q,{transaction: t}).then(function(){
+				return sequelize.query ('UPDATE asignacion SET `id_estado`=2 WHERE `id_asignacion`=1;',{transaction: t});
+			})
+
+			}).then(function(){
+				console.log('todo guardado')
+
+			}).catch(function(){
+				console.log('algun error')
+			})
 	}
 }
 
@@ -263,3 +290,4 @@ function crearCarga(fs, id) {
      
    */
 }
+
