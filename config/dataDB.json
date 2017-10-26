@@ -2,8 +2,8 @@
 	"mysql":{
 		"host": "localhost",
 		"dialect": "mysql",
-		"user": "root",
-		"pass": "root",
+		"user": "qualans",
+		"pass": "spartan123321BEARS",
 		"database": "qualans"
 	}
 }
