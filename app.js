@@ -3,7 +3,7 @@ var express = require('express'),
     app = express(),
     http = require('http').createServer(app),
     io = require('socket.io')(http),
-    port = 50000,
+    port = 51440,
     publicDir = express.static(`${__dirname}/views`),
     fs = require('file-system')
 
