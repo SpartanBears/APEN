@@ -38,8 +38,8 @@ io.on('connection', function (socket) {
     })
 
     socket.on('Guardar Correccion', function (data) {
-		console.log(data.codigo.length)
-        Funciones.guardarCorreccion(data.id_respuesta, data.codigo, data.id_usuario,io, socket.id)
-        //Funciones.cambiarEstadoAsignacion(data.idAsignacion, data.estadoNuevo, io, socket.id)
+		//console.log(data.codigo.length)
+        //Funciones.guardarCorreccion(data.id_respuesta, data.codigo, data.id_usuario,io, socket.id)
+		//Funciones.rawIn(data.codigo)
     })
 })

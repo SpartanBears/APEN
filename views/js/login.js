@@ -18,11 +18,11 @@ Al presionar el boton guardar del formulario
 se envían los datos al servidor por medio del evento 'insertarUsuario'
 y se limpia el formulario.
 */
-$(document).on('click', '#login', function (e) {
+$(document).on('click', '#Entrar', function (e) {
     e.preventDefault();
-    var userName = $('#userName').val()
-    var passUser = $('#userPass').val()
-    document.getElementById("insertar").reset();
+    var userName = $('#username').val()
+    var passUser = $('#password').val()
+    document.getElementById("sign_in").reset();
     io.emit('Iniciar Sesion', { user: userName, pass: passUser })
 })
 
@@ -35,9 +35,9 @@ io.on('login exitoso', function (respuesta) {
 	sessionStorage.apellidoM = respuesta.apellidoM;
 	
     if (respuesta.tipousuario == 1) {
-        window.location.replace('/admin');
+        window.location.replace('/vistaSupervisor.html');
     } else {
-        window.location.replace('/usuario')
+        window.location.replace('/vistaCorrector.html')
     }
 })
 

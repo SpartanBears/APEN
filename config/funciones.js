@@ -49,32 +49,32 @@ Respuesta.belongsTo(Asignacion, {as: 'asignacionAnswer', foreignKey: 'fk_asignac
 
 //asociaciones "usuario"
 
-Usuario.hasMany(TipoUsuario, {as: 'rol', foreignKey: 'fk_tipo_usuario_usuario', sourceKey: 'idTipoUsuario'});
-TipoUsuario.belongsTo(Usuario, {as: 'usuariosRol', foreignKey: 'fk_usuario_tipo_usuario', targetKey: 'idTipoUsuario'});
+Usuario.hasMany(TipoUsuario, {as: 'rol', foreignKey: 'idTipoUsuario', sourceKey: 'idTipoUsuario'});
+TipoUsuario.belongsTo(Usuario, {as: 'usuariosRol', foreignKey: 'idTipoUsuario', targetKey: 'idTipoUsuario'});
 
 
 //asociaciones "usuario_equipo"
 
-UsuarioEquipo.hasMany(Usuario, {as: 'userEquipo', foreignKey: 'fk_usuario_usuario_equipo', sourceKey: 'idUsuario'});
-Usuario.belongsTo(UsuarioEquipo, {as: 'teamUser', foreignKey: 'fk_usuario_equipo_usuario', targetKey: 'idUsuario'});
+UsuarioEquipo.hasMany(Usuario, {as: 'userEquipo', foreignKey: 'idUsuario', sourceKey: 'idUsuario'});
+Usuario.belongsTo(UsuarioEquipo, {as: 'teamUser', foreignKey: 'idUsuario', targetKey: 'idUsuario'});
 
-UsuarioEquipo.hasMany(Equipo, {as: 'team', foreignKey: 'fk_equipo_usuario_equipo', sourceKey: 'idEquipo'});
-Equipo.belongsTo(UsuarioEquipo, {as: 'teamUE', foreignKey: 'fk_usuario_equipo_equipo', targetKey: 'idEquipo'});
+UsuarioEquipo.hasMany(Equipo, {as: 'team', foreignKey: 'idEquipo', sourceKey: 'idEquipo'});
+Equipo.belongsTo(UsuarioEquipo, {as: 'teamUE', foreignKey: 'idEquipo', targetKey: 'idEquipo'});
 
 
 //asociaciones "mensaje_destinatario"
 
-MensajeDestinatario.hasMany(Usuario, {as: 'usuarioDestino', foreignKey: 'fk_usuario_mensaje_destinatario', sourceKey: 'idUsuarioDestino'});
-Usuario.belongsTo(MensajeDestinatario, {as: 'userMD', foreignKey: 'fk_mensaje_destinatario_usuario', targetKey: 'idUsuarioDestino'});
+MensajeDestinatario.hasMany(Usuario, {as: 'usuarioDestino', foreignKey: 'idUsuario', sourceKey: 'idUsuarioDestino'});
+Usuario.belongsTo(MensajeDestinatario, {as: 'userMD', foreignKey: 'idUsuario', targetKey: 'idUsuarioDestino'});
 
-MensajeDestinatario.hasMany(Thread, {as: 'MDThread', foreignKey: 'fk_thread_mensaje_destinatario', sourceKey: 'idThread'});
-Thread.belongsTo(MensajeDestinatario, {as: 'threadMD', foreignKey: 'fk_mensaje_destinatario_thread', targetKey: 'idThread'});
+MensajeDestinatario.hasMany(Thread, {as: 'MDThread', foreignKey: 'idThread', sourceKey: 'idThread'});
+Thread.belongsTo(MensajeDestinatario, {as: 'threadMD', foreignKey: 'idThread', targetKey: 'idThread'});
 
 
 //asociaciones "log"
 
-Log.hasMany(Usuario, {as: 'logUsuario', foreignKey: 'fk_usuario_log', sourceKey: 'idUsuario'});
-Usuario.belongsTo(Log, {as: 'registro', foreignKey: 'fk_log_usuario', targetKey: 'idUsuario'});
+Log.hasMany(Usuario, {as: 'logUsuario', foreignKey: 'idUsuario', sourceKey: 'idUsuario'});
+Usuario.belongsTo(Log, {as: 'registro', foreignKey: 'idUsuario', targetKey: 'idUsuario'});
 
 
 //asociaciones "pregunta"
@@ -133,11 +133,11 @@ Familia.belongsTo(Filtro, {as: 'ff', foreignKey: 'fk_filtro_familia', targetKey:
 
 //asociaciones "mensaje"
 
-Mensaje.hasMany(Thread, {as: 'mensajeThread', foreignKey: 'fk_thread_mensaje', sourceKey: 'idThread'});
-Thread.belongsTo(Mensaje, {as: 'mensajeT', foreignKey: 'fk_mensaje_thread', targetKey: 'idThread'});
+Mensaje.hasMany(Thread, {as: 'mensajeThread', foreignKey: 'idThread', sourceKey: 'idThread'});
+Thread.belongsTo(Mensaje, {as: 'mensajeT', foreignKey: 'idThread', targetKey: 'idThread'});
 
-Mensaje.hasMany(Usuario, {as: 'mensajeUsuario', foreignKey: 'fk_usuario_mensaje', sourceKey: 'idRemitente'});
-Usuario.belongsTo(Mensaje, {as: 'mensajeU', foreignKey: 'fk_mensaje_usuario', targetKey: 'idRemitente'});
+Mensaje.hasMany(Usuario, {as: 'mensajeUsuario', foreignKey: 'idUsuario', sourceKey: 'idRemitente'});
+Usuario.belongsTo(Mensaje, {as: 'mensajeU', foreignKey: 'idUsuario', targetKey: 'idRemitente'});
 
 
 //asociaciones "thread_asignacion"
@@ -160,6 +160,7 @@ module.exports = {
     login: function (useru, passu, io, sock) {
         Usuario.find({ where: { usuario: useru, contrasena: passu } }).then(function (result) {
             if (result != null) {
+            	console.log(result)
                 io.to(sock).emit('login exitoso', { nombre: result.dataValues.nombre, apellidop: result.dataValues.apellidoPaterno, apellidom: result.dataValues.apellidMaterno, tipousuario: result.dataValues.idTipoUsuario })
             } else {
                 io.to(sock).emit('login fallido', {mensaje: 'datos incorrectos'})
@@ -209,7 +210,7 @@ module.exports = {
 			fs.writeFile("./config/carga/deita.json", JSON.stringify(d)); 
 		})
 	},
-	rawIn: function rawInsert(codigo){
+	rawIn: function (codigo){
 		var q = 'INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES ';
 
 		for (var i = 0; i < codigo.length; i++) {
@@ -222,7 +223,6 @@ module.exports = {
 		}
 		q+= ';'
 
-		console.log(q)
 
 		return sequelize.transaction(function(t){
 			return sequelize.query(q,{transaction: t}).then(function(){
@@ -230,12 +230,74 @@ module.exports = {
 			})
 
 			}).then(function(){
-				console.log('todo guardado')
+		
+			}).catch(function(){
+				
+			})
+	},
+	crearEquipo: function(name){
+		return sequelize.transaction(function(t){
+			return Equipo.create({nombre: name}, {transaction: t}).then(function(r){
 
 			}).catch(function(){
-				console.log('algun error')
+
 			})
+		})
+	},
+	agregarUsuariosEquipo: function(users, team){
+		var q = 'INSERT INTO usuario_equipo(`id_usuario`,`id_equipo`) VALUES '
+
+		for (var i = 0; i < users.length; i++) {
+			if(i>0){
+				q+= ',('+users.id+','+team+')'
+			}else{
+				q+= '('+users.id+','+team+')'
+			}
+		}
+		q+= ';'
+
+		return sequelize.transaction(function(t){
+			return sequelize.query(q,{transaction: t});
+		}).then(function(){
+
+		}).catch(function(){
+
+		})
+	},
+	crearInstrumento: function(prueba, questions){
+		return sequelize.transaction(function(t){
+			return Prueba.create({codigo: prueba.codigo, titulo: prueba.titulo},{transaction: t}).then(function(r){
+				var q = "INSERT INTO pregunta(`id_tipo`,`id_prueba`,`enunciado`,`estimulo`,`id_tipo_estimulo`) VALUES "
+
+				for (var i = 0; i < questions.length; i++) {
+					if(i>0){
+						q+= ",("+questions.tipo+","+r.dataValues.idPrueba+",'"+questions.enunciado+"','"+questions.estimulo+"',"+questions.idTipoEstimulo+")"
+					}else{
+						q+= "("+questions.tipo+","+r.dataValues.idPrueba+",'"+questions.enunciado+"','"+questions.estimulo+"',"+questions.idTipoEstimulo+")"
+					}
+				}
+				q+=";"
+				return sequelize.query(q,{transaction: t});
+			})
+		}).then(function(){
+
+		}).catch(function(){
+
+		})
+	},
+	agregarAlumnos: function(alumnos){
+		var q = "INSERT INTO alumno(`nombre`,`apellido_paterno`,`apellido_materno`,`direccion`,`ciudad`,`email`) VALUES "
+
+		for (var i = 0; i < alumnos.length; i++) {
+			if(i>0){
+				q+= ",('"+alumnos.nombre+"','"+alumnos.apellidoP+"','"+alumnos.apellidoM+"','"+alumnos.direccion+"','"+alumnos.ciudad+"','"+alumnos.ciudad+"')"
+			}else{
+				q+= "('"+alumnos.nombre+"','"+alumnos.apellidoP+"','"+alumnos.apellidoM+"','"+alumnos.direccion+"','"+alumnos.ciudad+"','"+alumnos.ciudad+"')"
+			}
+		}
+		q+= ";"
 	}
+
 }
 
 
