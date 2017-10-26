@@ -119,27 +119,7 @@ function loadRespuesta(respuesta){
 
 	$('#respuestaDisplay').empty().html(respuestaTxt);
 
-	// switch(respuesta.id_estado){
-
-	// 	case 2:
-
-	// 		$('#chboxDuda').prop('checked', false);
-
-	// 	break;
-
-			
-	// 	case 3:
-
-	// 		$('#chboxDuda').prop('checked', true);
-
-	// 	break;
-
-	// 	case 1:
-			
-	// 		$('#chboxDuda').prop('checked', false);
-
-	// 	break;
-	// }
+	setCheckboxDudaChecked(respuesta);
 
 	toggleCorregidaCheckbox();
 	changePanel();
@@ -147,8 +127,33 @@ function loadRespuesta(respuesta){
 
 function updateNoCorregida(respuesta){
 
-	listaNoCorregidas[listaNoCorregidas.indexOf(respuesta)].correccion = getCodigosAsignados();
-	toggleCorregidaCheckbox();
+	// listaNoCorregidas[listaNoCorregidas.indexOf(respuesta)].correccion = getCodigosAsignados();
+	// toggleCorregidaCheckbox();
+
+	var newAsignacion = getCodigosAsignados();
+
+	datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].correccion = newAsignacion;
+
+	if(newAsignacion.length > 0 && !isDudaRespuesta(respuesta)){
+
+		datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].id_estado = 2;
+	}else if (newAsignacion.length == 0 && !isDudaRespuesta(respuesta)){
+
+		datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].id_estado = 1;
+	}
+
+	// console.log(, respuesta);
+}
+
+function isDudaRespuesta(respuesta){
+
+	if (respuesta.id_estado == 3) {
+
+		return true;
+	}else{
+
+		return false;
+	}
 }
 
 function getCodigosAsignados(){
@@ -286,13 +291,12 @@ function setPanelButtons(subElements){
 
 		var btnCodigo = document.createElement('button');
 			btnCodigo.type = 'button';
-			btnCodigo.className ='btn btn-circle-lg waves-effect waves-circle waves-float';
+			btnCodigo.className ='btn btn-circle-lg waves-effect waves-circle waves-float btn-respuestas';
 			btnCodigo.innerHTML = subElements[index].id_respuesta;
 			btnCodigo.respuestaData = subElements[index];
 			btnCodigo.onclick = clickRespuestaEvt;
 
 		$('#listadoRespuestas').append(btnCodigo);
-		console.log(subElements[index].id_estado);
 
 		if(index != 0){
 
@@ -330,6 +334,16 @@ function clickRespuestaEvt(e){
 
 	var arrayBtnRespuetas = $(contPreguntas).children().not(this);
 
+	resetBtnStyle(arrayBtnRespuetas);
+
+	$(this).removeClass('btn-default btn-success btn-warning').addClass('btn-primary');
+
+
+	loadRespuesta(this.respuestaData);
+}
+
+function resetBtnStyle(arrayBtnRespuetas){
+
 	for (var i = 0; i < arrayBtnRespuetas.length; i++) {
 
 		// switch
@@ -353,11 +367,6 @@ function clickRespuestaEvt(e){
 			break;
 		}
 	};
-
-	$(this).removeClass('btn-default btn-success btn-warning').addClass('btn-primary');
-
-
-	loadRespuesta(this.respuestaData);
 }
 
 function clickCodigoEvt(e){
@@ -374,6 +383,19 @@ function clickCodigoEvt(e){
 	updateNoCorregida(getRespuestaActiva());
 
 	saveInSS();
+}
+
+function setCheckboxDudaChecked(respuesta){
+
+	var cb = $('#chboxDuda')[0];
+
+	if(respuesta.id_estado == 3){
+
+		cb.checked = true;
+	}else{
+
+		cb.checked = false;
+	}
 }
 
 function clickDescripcionCodigo(e){
@@ -404,16 +426,24 @@ function clickCheckboxDuda(e){
 
 	if(isInDuda){
 
+		datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(getRespuestaActiva())].id_estado = 3;
 		
 	}else{
 
-		
+		if(datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(getRespuestaActiva())].correccion.length>0){
+
+			datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(getRespuestaActiva())].id_estado = 2;
+		}else{
+
+			datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(getRespuestaActiva())].id_estado = 1;
+		}
 	}
 
-	toggleCorregidaCheckbox();
-	changePanel();
+	// toggleCorregidaCheckbox();
+	// changePanel();
 }
 
+// DEPRECADO
 function clickCheckboxCorregida(e){
 
 	var isInDuda = $('#chboxDuda').prop('checked'),
@@ -449,6 +479,8 @@ function clickCheckboxCorregida(e){
 }
 // 
 
+// funciones que se ejecutan al momento de cambiar de panel de respuestas
+// DEPRECADO
 function changePanel(){
 
 	toggleHighlight();
@@ -458,6 +490,8 @@ function changePanel(){
 	toggleBtnsCodigos();
 }
 
+// resalta el panel de respuestas en donde se está navegando
+// DEPRECADO
 function toggleHighlight(){
 
 	$('.panel').removeClass('highlight');
@@ -465,6 +499,8 @@ function toggleHighlight(){
 	$(getBtnRespuestaActivo()).closest('.panel').addClass('highlight');
 }
 
+// ayuda a expandir el acordeon de los paneles de respuestas
+// -----DEPRECADO
 function toggleCollapsePanelActivo(){
 
 	if(!$(getBtnRespuestaActivo()).closest('.panel-collapse.collapse').hasClass('in')){
@@ -475,17 +511,22 @@ function toggleCollapsePanelActivo(){
 	}
 }
 
+// activa o desactiva los botones de codigos en caso de que ya estén
+// asignados ----DEPRECADO
 function toggleBtnsCodigos(){
 
-	if(getRespuestaActiva().id_estado == 1){
+	// if(getRespuestaActiva().id_estado == 1){
 
-		$(getBtnsCodigos()).attr('disabled', false);
-	}else{
+	// 	$(getBtnsCodigos()).attr('disabled', false);
+	// }else{
 
-		$(getBtnsCodigos()).attr('disabled', 'disabled');;
-	}
+	// 	$(getBtnsCodigos()).attr('disabled', 'disabled');;
+	// }
 }
 
+// activa o desactiva el checkbox de corregida en caso de que ya se le haya asignado
+// un codigo
+// DEPRECADO
 function toggleCorregidaCheckbox(){
 
 	if(getRespuestaActiva().correccion.length > 0){
@@ -497,6 +538,8 @@ function toggleCorregidaCheckbox(){
 	}
 }
 
+// navega entre las respuestas
+// se utiliza en los eventos de anterior y siguiente
 function navRespuetas(direction){
 
 	var arrayBtns = $(getBtnRespuestaActivo()).parent().children(),
@@ -506,17 +549,22 @@ function navRespuetas(direction){
 
 	newIndex = (currentIndex+direction)>=0 ? (currentIndex+direction) %arrayBtns.length : arrayBtns.length-1;
 
-	$(getBtnRespuestaActivo()).removeClass('btn-primary').addClass('btn-default');
-	$(arrayBtns[newIndex]).removeClass('btn-default').addClass('btn-primary');
+	resetBtnStyle(arrayBtns);
+
+	// $(getBtnRespuestaActivo()).removeClass('btn-primary').addClass('btn-default');
+	$(arrayBtns[newIndex]).removeClass('btn-default btn-success btn-warning').addClass('btn-primary');
 
 	loadRespuesta(arrayBtns[newIndex].respuestaData);
 }
 
+// almacena los datos de las respuestas y preguntas en SS
+// implementar la version LS
 function saveInSS(){
 
 
 }
 
+// funcion que carga los datos de la pregunta
 function getData(callback){
 
 	var strData;

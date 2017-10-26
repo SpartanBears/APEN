@@ -19,6 +19,39 @@
 
 */
 
+.header > .row > div{
+
+	margin: 0 !important;
+}
+
+.btn-respuestas{
+
+	margin: 5% 0.5%;
+}
+
+#respuestaContainer .card>.body{
+
+	position:relative;
+}
+
+.btn-status{
+
+	position: absolute;
+	top: 3%;
+	left: 2%;
+}
+
+#listadoRespuestas{
+
+	text-align: center;
+}
+
+.respuesta-container{
+
+	height: 30vh;
+    overflow-y: auto;
+}
+
 .btn-group.btn-group-justified {
 	
 	margin-bottom: 2%;
