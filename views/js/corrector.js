@@ -13,6 +13,9 @@ $( document ).ready( function(){
     $.AdminBSB.select.activate();
     $.AdminBSB.search.activate();
 
+	$('.cols-corrector > .family-panel').css('width', $('.col-md-3.cols-corrector').width());
+	$('.cols-corrector > .family-panel').css('height', $('.col-md-3.cols-corrector').height());
+
 	getData(initCorrectorView);
 });
 
@@ -61,6 +64,27 @@ function setEvents(){
 	$('#chBoxCorregida').click(clickCheckboxCorregida);
 	$('.btn-anterior').click(clickPrev);
 	$('.btn-siguiente').click(clickNext);
+	$(document).on('scroll', scrollHandler);
+}
+
+function scrollHandler(e){
+
+	var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+	// console.log(scrollTop, $('.cols-corrector')[1].offsetTop);
+
+	if(scrollTop > $('.cols-corrector')[1].offsetTop){
+
+		console.log(scrollTop - $('.cols-corrector')[1].offsetTop);
+
+		$('.cols-corrector > .family-panel').addClass('fixed');
+
+		$('.cols-corrector > .family-panel').css('top', scrollTop - $('.cols-corrector')[1].offsetTop+'px');
+
+	}else if ($('.cols-corrector > .family-panel').hasClass('fixed')){
+
+		$('.cols-corrector > .family-panel').removeClass('fixed');
+		$('.cols-corrector > .family-panel').css('top', 0);
+	}
 }
 
 function clearContent(){

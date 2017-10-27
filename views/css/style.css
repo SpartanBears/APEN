@@ -18,6 +18,15 @@
 			62 92 118
 
 */
+.family-panel{
+
+	overflow-y: auto;
+}
+
+.fixed{
+
+	position: absolute;
+}
 
 .header > .row > div{
 
