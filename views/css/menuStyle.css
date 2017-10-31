@@ -1,0 +1,14 @@
+.user-image{
+
+	margin-top: 8% !important;
+}
+
+.user-image>img{
+
+	border-radius: 50%;
+}
+
+.navbar{
+
+	background-color: #5386e4 !important;
+}
