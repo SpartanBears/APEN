@@ -37,14 +37,14 @@ Asociaciones de las tablas
 
 //asociaciones "asignacion"
 
-Usuario.hasMany(Asignacion, {as: 'asignaciones', foreignKey: 'fk_asignacion_usuario', sourceKey: 'idUsuario'});
-Asignacion.belongsTo(Usuario, {as: 'corrector', foreignKey: 'fk_usuario_asignacion', targetKey: 'idUsuario'});
+Usuario.hasMany(Asignacion, {as: 'asignaciones', foreignKey: 'idUsuario', sourceKey: 'idUsuario'});
+Asignacion.belongsTo(Usuario, {as: 'corrector', foreignKey: 'idUsuario', targetKey: 'idUsuario'});
 
-Asignacion.hasMany(Estado, {as: 'estadoActual', foreignKey: 'fk_estado_asignacion', sourceKey: 'idEstado'});
-Estado.belongsTo(Asignacion, {as: 'asignacionesEstado', foreignKey: 'fk_asignacion_estado', targetKey: 'idEstado'});
+Asignacion.hasMany(Estado, {as: 'estadoActual', foreignKey: 'idEstado', sourceKey: 'idEstado'});
+Estado.belongsTo(Asignacion, {as: 'asignacionesEstado', foreignKey: 'idEstado', targetKey: 'idEstado'});
 	
-Asignacion.hasMany(Respuesta, {as: 'answer', foreignKey: 'fk_respuesta_asignacion', sourceKey: 'idRespuesta'});
-Respuesta.belongsTo(Asignacion, {as: 'asignacionAnswer', foreignKey: 'fk_asignacion_respuesta', targetKey: 'idRespuesta'});
+Asignacion.hasMany(Respuesta, {as: 'answer', foreignKey: 'idRespuesta', sourceKey: 'idRespuesta'});
+Respuesta.belongsTo(Asignacion, {as: 'asignacionAnswer', foreignKey: 'idRespuesta', targetKey: 'idRespuesta'});
 
 
 //asociaciones "usuario"
@@ -79,56 +79,56 @@ Usuario.belongsTo(Log, {as: 'registro', foreignKey: 'idUsuario', targetKey: 'idU
 
 //asociaciones "pregunta"
 
-Pregunta.hasMany(Prueba, {as: 'qPrueba', foreignKey: 'fk_prueba_pregunta', sourceKey: 'idPrueba'});
-Prueba.belongsTo(Pregunta, {as: 'questions', foreignKey: 'fk_pregunta_prueba', targetKey: 'idPrueba'});
+Pregunta.hasMany(Prueba, {as: 'qPrueba', foreignKey: 'idPrueba', sourceKey: 'idPrueba'});
+Prueba.belongsTo(Pregunta, {as: 'questions', foreignKey: 'idPrueba', targetKey: 'idPrueba'});
 
-Pregunta.hasMany(Tipo, {as: 'qTipo', foreignKey: 'fk_tipo_pregunta', sourceKey: 'idTipo'});
-Tipo.belongsTo(Pregunta, {as: 'questionsTipo', foreignKey: 'fk_pregunta_tipo', targetKey: 'idTipo'});
+Pregunta.hasMany(Tipo, {as: 'qTipo', foreignKey: 'idTipo', sourceKey: 'idTipo'});
+Tipo.belongsTo(Pregunta, {as: 'questionsTipo', foreignKey: 'idtipo', targetKey: 'idTipo'});
 
-Pregunta.hasMany(TipoEstimulo, {as: 'qTipoE', foreignKey: 'fk_tipo_estimulo_pregunta', sourceKey: 'idTipoEstimulo'});
-TipoEstimulo.belongsTo(Pregunta, {as: 'questionsTipoE', foreignKey: 'fk_pregunta_tipo_estimulo', targetKey: 'idTipoEstimulo'});
+Pregunta.hasMany(TipoEstimulo, {as: 'qTipoE', foreignKey: 'idTipoEstimulo', sourceKey: 'idTipoEstimulo'});
+TipoEstimulo.belongsTo(Pregunta, {as: 'questionsTipoE', foreignKey: 'idTipoEstimulo', targetKey: 'idTipoEstimulo'});
 
 
 //asociaciones "respuesta"
 
-Respuesta.hasMany(Alumno, {as: 'aAlumno', foreignKey: 'fk_alumno_respuesta', sourceKey: 'idAlumno'});
-Alumno.belongsTo(Respuesta, {as: 'answerAlumno', foreignKey: 'fk_respuesta_alumno', targetKey: 'idAlumno'});
+Respuesta.hasMany(Alumno, {as: 'aAlumno', foreignKey: 'idAlumno', sourceKey: 'idAlumno'});
+Alumno.belongsTo(Respuesta, {as: 'answerAlumno', foreignKey: 'idAlumno', targetKey: 'idAlumno'});
 
-Respuesta.hasMany(Pregunta, {as: 'aPregunta', foreignKey: 'fk_pregunta_respuesta', sourceKey: 'idPregunta'});
-Pregunta.belongsTo(Respuesta, {as: 'answerQ', foreignKey: 'fk_respuesta_pregunta', targetKey: 'idPregunta'});
+Respuesta.hasMany(Pregunta, {as: 'aPregunta', foreignKey: 'idPregunta', sourceKey: 'idPregunta'});
+Pregunta.belongsTo(Respuesta, {as: 'answerQ', foreignKey: 'idPregunta', targetKey: 'idPregunta'});
 
 
 //asociaciones "forma"
 
-Forma.hasMany(Prueba, {as: 'fPrueba', foreignKey: 'fk_prueba_forma', sourceKey: 'idPrueba'});
-Prueba.belongsTo(Forma, {as: 'formaPrueba', foreignKey: 'fk_forma_prueba', targetKey: 'idPrueba'});
+Forma.hasMany(Prueba, {as: 'fPrueba', foreignKey: 'idPrueba', sourceKey: 'idPrueba'});
+Prueba.belongsTo(Forma, {as: 'formaPrueba', foreignKey: 'idPrueba', targetKey: 'idPrueba'});
 
 
 //asociaciones "forma_pregunta"
 
-FormaPregunta.hasMany(Forma, {as: 'fpForma', foreignKey: 'fk_forma_forma_pregunta', sourceKey: 'idForma'});
-Forma.belongsTo(FormaPregunta, {as: 'fpf', foreignKey: 'fk_forma_pregunta_forma', targetKey: 'idForma'});
+FormaPregunta.hasMany(Forma, {as: 'fpForma', foreignKey: 'idForma', sourceKey: 'idForma'});
+Forma.belongsTo(FormaPregunta, {as: 'fpf', foreignKey: 'idForma', targetKey: 'idForma'});
 
-FormaPregunta.hasMany(Pregunta, {as: 'fpPregunta', foreignKey: 'fk_pregunta_forma_pregunta', sourceKey: 'idPregunta'});
-Pregunta.belongsTo(FormaPregunta, {as: 'fpp', foreignKey: 'fk_forma_pregunta_pregunta', targetKey: 'idPregunta'});
+FormaPregunta.hasMany(Pregunta, {as: 'fpPregunta', foreignKey: 'idPregunta', sourceKey: 'idPregunta'});
+Pregunta.belongsTo(FormaPregunta, {as: 'fpp', foreignKey: 'idPregunta', targetKey: 'idPregunta'});
 
 
 //asociaciones "asignacion_codigo"
 
-AsignacionCodigo.hasMany(Asignacion, {as: 'aCodigo', foreignKey: 'fk_asignacion_asignacion_codigo', sourceKey: 'idAsignacion'});
-Asignacion.belongsTo(AsignacionCodigo, {as: 'aca', foreignKey: 'fk_asignacion_codigo_asignacion', targetKey: 'idAsignacion'});
+AsignacionCodigo.hasMany(Asignacion, {as: 'aCodigo', foreignKey: 'idAsignacion', sourceKey: 'idAsignacion'});
+Asignacion.belongsTo(AsignacionCodigo, {as: 'aca', foreignKey: 'idAsignacion', targetKey: 'idAsignacion'});
 
-AsignacionCodigo.hasMany(Codigo, {as: 'acCodigo', foreignKey: 'fk_codigo_asignacion_codigo', sourceKey: 'idCodigo'});
-Codigo.belongsTo(AsignacionCodigo, {as: 'acc', foreignKey: 'fk_asignacion_codigo_codigo', targetKey: 'idCodigo'});
+AsignacionCodigo.hasMany(Codigo, {as: 'acCodigo', foreignKey: 'idCodigo', sourceKey: 'idCodigo'});
+Codigo.belongsTo(AsignacionCodigo, {as: 'acc', foreignKey: 'idCodigo', targetKey: 'idCodigo'});
 
 
 //asociaciones "filtro"
 
-Filtro.hasMany(Codigo, {as: 'fCodigo', foreignKey: 'fk_codigo_filtro', sourceKey: 'idCodigo'});
-Codigo.belongsTo(Filtro, {as: 'fc', foreignKey: 'fk_filtro_codigo', targetKey: 'idCodigo'});
+Filtro.hasMany(Codigo, {as: 'fCodigo', foreignKey: 'idCodigo', sourceKey: 'idCodigo'});
+Codigo.belongsTo(Filtro, {as: 'fc', foreignKey: 'idCodigo', targetKey: 'idCodigo'});
 
-Filtro.hasMany(Familia, {as: 'fFamilia', foreignKey: 'fk_familia_filtro', sourceKey: 'idFamilia'});
-Familia.belongsTo(Filtro, {as: 'ff', foreignKey: 'fk_filtro_familia', targetKey: 'idFamilia'});
+Filtro.hasMany(Familia, {as: 'fFamilia', foreignKey: 'idFamilia', sourceKey: 'idFamilia'});
+Familia.belongsTo(Filtro, {as: 'ff', foreignKey: 'idFamilia', targetKey: 'idFamilia'});
 
 
 //asociaciones "mensaje"
@@ -142,11 +142,11 @@ Usuario.belongsTo(Mensaje, {as: 'mensajeU', foreignKey: 'idUsuario', targetKey: 
 
 //asociaciones "thread_asignacion"
 
-ThreadAsignacion.hasMany(Asignacion, {as: 'atAsignacion', foreignKey: 'fk_asignacion_thread_asignacion', sourceKey: 'idAsignacion'});
-Asignacion.belongsTo(ThreadAsignacion, {as: 'taa', foreignKey: 'fk_thread_asignacion_asignacion', targetKey: 'idAsignacion'});
+ThreadAsignacion.hasMany(Asignacion, {as: 'atAsignacion', foreignKey: 'idAsignacion', sourceKey: 'idAsignacion'});
+Asignacion.belongsTo(ThreadAsignacion, {as: 'taa', foreignKey: 'idAsignacion', targetKey: 'idAsignacion'});
 
-ThreadAsignacion.hasMany(Thread, {as: 'ThreadT', foreignKey: 'fk_thread_thread_asignacion', sourceKey: 'idThread'});
-Thread.belongsTo(ThreadAsignacion, {as: 'tat', foreignKey: 'fk_thread_asignacion_thread', targetKey: 'idThread'});
+ThreadAsignacion.hasMany(Thread, {as: 'ThreadT', foreignKey: 'idThread', sourceKey: 'idThread'});
+Thread.belongsTo(ThreadAsignacion, {as: 'tat', foreignKey: 'idThread', targetKey: 'idThread'});
 
 
 
@@ -165,6 +165,8 @@ module.exports = {
             } else {
                 io.to(sock).emit('login fallido', {mensaje: 'datos incorrectos'})
             }
+        }).catch(function(){
+        	io.to(sock).emit('fallo sql',{mensaje: 'fallo'})
         })
     },
 
@@ -244,60 +246,317 @@ module.exports = {
 			})
 		})
 	},
-	agregarUsuariosEquipo: function(users, team){
-		var q = 'INSERT INTO usuario_equipo(`id_usuario`,`id_equipo`) VALUES '
-
-		for (var i = 0; i < users.length; i++) {
-			if(i>0){
-				q+= ',('+users.id+','+team+')'
-			}else{
-				q+= '('+users.id+','+team+')'
-			}
-		}
-		q+= ';'
-
+	editarEquipo: function(team){
 		return sequelize.transaction(function(t){
-			return sequelize.query(q,{transaction: t});
+			return Equipo.update({nombre: team.nombre},{where:{idEquipo: team.id}},{transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarEquipo: function(team){
+		return sequelize.transaction(function(t){
+			return Equipo.update({activo: 0}, {where: {idEquipo: team.id}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarUsuarioEquipo: function(data){
+		return sequelize.transaction(function(t){
+			return UsuarioEquipo.create({idUsuario: data.idUsuario, idEquipo: data.idEquipo}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarUsuarioEquipo: function(data){
+		return sequelize.transaction(function(t){
+			return UsuarioEquipo.update({idUsuario: data.idUsuario, idEquipo: data.idEquipo}, {where: {idUsuarioEquipo: data.id}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarUsuarioEquipo: function(data){
+		return sequelize.transaction(function(t){
+			return UsuarioEquipo.destroy({where: {idUsuarioEquipo: data.idUsuarioEquipo}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+			
+		})
+	},
+	crearInstrumento: function(prueba){
+		return sequelize.transaction(function(t){
+			return Prueba.create({{codigo: prueba.codigo, titulo: prueba.titulo}},{transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarInstrumento: function(prueba){
+		return sequelize.transaction(function(t){
+			return Prueba.update({codigo: prueba.codigo, titulo: prueba.titulo}, {where:{idPrueba: prueba.id}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarInstrumento: function(prueba){
+		return sequelize.transaction(function(t){
+			return Prueba.update({activo: 0}, {where: {idPrueba: prueba.id}}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarAlumno: function(alumno){
+		return sequelize.transaction(function(t){
+			return Alumno.create({nombre: alumno.nombre, apellidoPaterno: alumno.apellido_paterno, apellidoMaterno: alumno.apellido_materno, direccion: alumno.direccion, 
+				ciudad: alumno.ciudad, email: alumno.email},{transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarAlumno: function(alumno){
+		return sequelize.transaction(function(t){
+			return Alumno.update({nombre: alumno.nombre, apellidoPaterno: alumno.apellido_paterno, apellidoMaterno: alumno.apellido_materno, direccion: alumno.direccion, 
+				ciudad: alumno.ciudad, email: alumno.email},{where: {idAlumno: alumno.id}}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarAlumno: function(alumno){
+		return sequelize.transaction(function(t){
+			return Alumno.update({activo: 0}, {where:{idAlumno: alumno.id}}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarUsuario: function(user){
+		return sequelize.transaction(function(t){
+			return Usuario.create({idTipoUsuario: user.tipo_usuario, usuario: user.usuario, contrasena: user.pass, nombre: user.nombre, apellidoPaterno: user.apellido_paterno,
+				apellidoMaterno: user.apellido_materno, email: user.email}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(){
 
 		})
 	},
-	crearInstrumento: function(prueba, questions){
+	editarUsuario: function(user){
 		return sequelize.transaction(function(t){
-			return Prueba.create({codigo: prueba.codigo, titulo: prueba.titulo},{transaction: t}).then(function(r){
-				var q = "INSERT INTO pregunta(`id_tipo`,`id_prueba`,`enunciado`,`estimulo`,`id_tipo_estimulo`) VALUES "
-
-				for (var i = 0; i < questions.length; i++) {
-					if(i>0){
-						q+= ",("+questions.tipo+","+r.dataValues.idPrueba+",'"+questions.enunciado+"','"+questions.estimulo+"',"+questions.idTipoEstimulo+")"
-					}else{
-						q+= "("+questions.tipo+","+r.dataValues.idPrueba+",'"+questions.enunciado+"','"+questions.estimulo+"',"+questions.idTipoEstimulo+")"
-					}
-				}
-				q+=";"
-				return sequelize.query(q,{transaction: t});
-			})
+			return Usuario.update({idTipoUsuario: user.tipo_usuario, usuario: user.usuario, contrasena: user.pass, nombre: user.nombre, apellidoPaterno: user.apellido_paterno,
+				apellidoMaterno: user.apellido_materno, email: user.email}, {where: {idUsuario: user.id}}, {transaction : t});
 		}).then(function(){
 
-		}).catch(function(){
+		}).catch(function(err){
 
 		})
 	},
-	agregarAlumnos: function(alumnos){
-		var q = "INSERT INTO alumno(`nombre`,`apellido_paterno`,`apellido_materno`,`direccion`,`ciudad`,`email`) VALUES "
+	eliminarUsuario: function(user){
+		return sequelize.transaction(function(t){
+			return Usuario.update({activo:0}, {where: {idUsuario: user.id}}, {transaction: t});
+		}).then(function(){
 
-		for (var i = 0; i < alumnos.length; i++) {
-			if(i>0){
-				q+= ",('"+alumnos.nombre+"','"+alumnos.apellidoP+"','"+alumnos.apellidoM+"','"+alumnos.direccion+"','"+alumnos.ciudad+"','"+alumnos.ciudad+"')"
-			}else{
-				q+= "('"+alumnos.nombre+"','"+alumnos.apellidoP+"','"+alumnos.apellidoM+"','"+alumnos.direccion+"','"+alumnos.ciudad+"','"+alumnos.ciudad+"')"
-			}
-		}
-		q+= ";"
+		}).catch(function(err){
+
+		})
+	},
+	agregarForma: function(form){
+		return sequelize.transaction(function(t){
+			return Forma.create({idPrueba: form.idPrueba, forma: form.forma}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarForma: function(form){
+		return sequelize.transaction(function(t){
+			return Forma.update({idPrueba: form.idPrueba, forma: form.forma},{where: {idForma: form.idForma}}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarForma: function(form){
+		return sequelize.transaction(function(t){
+			return Forma.update({activo: 0},{where: {idForma: form.idForma}}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarPreguntaForma: function(data){
+		return sequelize.transaction(function(t){
+			return FormaPregunta.create({idForma: data.idForma, idPregunta: data.idPregunta}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarPreguntaForma: function(data){
+		return sequelize.transaction(function(t){
+			return FormaPregunta.update({idForma: data.idForma, idPregunta: data.idPregunta}, {where: {idFormaPregunta: data.idFormaPregunta}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarPreguntaForma: function(data){
+		return sequelize.transaction(function(t){
+			return FormaPregunta.destroy({where: {idFormaPregunta: data.idFormaPregunta}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarPregunta: function(q){
+		return sequelize.transaction(function(t){
+			return Pregunta.create({idTipo: q.idTipo, idPrueba: q.idPrueba, enunciado: q.enunciado, estimulo: q.estimulo, idTipoEstimulo: q.tipoEstimulo}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarPregunta: function(q){
+		return sequelize.transaction(function(t){
+			return Pregunta.update({idTipo: q.idTipo, idPrueba: q.idPrueba, enunciado: q.enunciado, estimulo: q.estimulo, idTipoEstimulo: q.tipoEstimulo},
+				{where:{idPregunta: q.idPregunta}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarPregunta: function(q){
+		return sequelize.transaction(function(t){
+			return Pregunta.update({activo: 0}, {where: {idPregunta: q.idPregunta}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarAsignacion: function(asignacion){
+		return sequelize.transaction(function(t){
+			return Asignacion.create({idUsuario: asignacion.idUsuario, idRespuesta: asignacion.idRespuesta, idEstado: asignacion.idEstado }, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarAsignacion: function(asignacion){
+		return sequelize.transaction(function(t){
+			return Asignacion.update({idUsuario: asignacion.idUsuario, idRespuesta: asignacion.idRespuesta, idEstado: asignacion.idEstado },{where:{idAsignacion: asignacion.idAsignacion}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarAsignacion: function(asignacion){
+		return sequelize.transaction(function(t){
+			return Asignacion.update({activo: 0},{where: {idAsignacion: asignacion.idAsignacion}},{transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarCodigo: function(cod){
+		return sequelize.transaction(function(t){
+			return Codigo.create({valor: cod.valor, titulo: cod.titulo, descripcion: cod.descripcion}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarCodigo: function(cod){
+		return sequelize.transaction(function(t){
+			return Codigo.update({valor: cod.valor, titulo: cod.titulo, descripcion: cod.descripcion}, {where: {idCodigo: cod.idCodigo}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarCodigo: function(cod){
+		return sequelize.transaction(function(t){
+			return Codigo.update({activo: 0},{where: {idCodigo: cod.idCodigo}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarFamilia: function(fam){
+		return sequelize.transaction(function(t){
+			return Familia.create({titulo: fam.titulo, descripcion: fam.descripcion}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarFamilia: function(fam){
+		return sequelize.transaction(function(t){
+			return Familia.update({titulo: fam.titulo, descripcion: fam.descripcion},{where: {idFamilia: fam.idFamilia}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarCodigoFiltro: function(data){
+		return sequelize.transaction(function(t){
+			return Filtro.create({idCodigo: data.idCodigo, idFamilia: data.idFamilia}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarCodigoFiltro: function(data){
+		return sequelize.transaction(function(t){
+			return Filtro.update({idCodigo: data.idCodigo, idFamilia: data.idFamilia},{transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarCodigoFiltro: function(data){
+		return sequelize.transaction(function(t){
+			return Filtro.destroy({where:{idFiltro: data.idFiltro}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
 	}
-
 }
 
 
