@@ -237,7 +237,7 @@ module.exports = {
 				
 			})
 	},
-	crearEquipo: function(name){
+	agregarEquipo: function(name){
 		return sequelize.transaction(function(t){
 			return Equipo.create({nombre: name}, {transaction: t}).then(function(r){
 
@@ -246,311 +246,374 @@ module.exports = {
 			})
 		})
 	},
-	editarEquipo: function(team){
+	editarEquipo: function(name, id){
 		return sequelize.transaction(function(t){
-			return Equipo.update({nombre: team.nombre},{where:{idEquipo: team.id}},{transaction : t});
+			return Equipo.update({nombre: name},{where:{idEquipo: id}},{transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarEquipo: function(team){
+	eliminarEquipo: function(id){
 		return sequelize.transaction(function(t){
-			return Equipo.update({activo: 0}, {where: {idEquipo: team.id}}, {transaction : t});
+			return Equipo.update({activo: 0}, {where: {idEquipo: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarUsuarioEquipo: function(data){
+	agregarUsuarioEquipo: function(idUser, idTeam){
 		return sequelize.transaction(function(t){
-			return UsuarioEquipo.create({idUsuario: data.idUsuario, idEquipo: data.idEquipo}, {transaction: t});
+			return UsuarioEquipo.create({idUsuario: idUser, idEquipo: idTeam}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	editarUsuarioEquipo: function(data){
+	editarUsuarioEquipo: function(idUser, idTeam, id){
 		return sequelize.transaction(function(t){
-			return UsuarioEquipo.update({idUsuario: data.idUsuario, idEquipo: data.idEquipo}, {where: {idUsuarioEquipo: data.id}}, {transaction : t});
+			return UsuarioEquipo.update({idUsuario: idUser, idEquipo: idTeam}, {where: {idUsuarioEquipo: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarUsuarioEquipo: function(data){
+	eliminarUsuarioEquipo: function(id){
 		return sequelize.transaction(function(t){
-			return UsuarioEquipo.destroy({where: {idUsuarioEquipo: data.idUsuarioEquipo}}, {transaction : t});
+			return UsuarioEquipo.destroy({where: {idUsuarioEquipo: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 			
 		})
 	},
-	crearInstrumento: function(prueba){
+	agregarInstrumento: function(cod, title){
 		return sequelize.transaction(function(t){
-			return Prueba.create({{codigo: prueba.codigo, titulo: prueba.titulo}},{transaction : t});
+			return Prueba.create({{codigo: cod, titulo: title}},{transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	editarInstrumento: function(prueba){
+	editarInstrumento: function(cod, title, id){
 		return sequelize.transaction(function(t){
-			return Prueba.update({codigo: prueba.codigo, titulo: prueba.titulo}, {where:{idPrueba: prueba.id}}, {transaction : t});
+			return Prueba.update({codigo: cod, titulo: title}, {where:{idPrueba: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarInstrumento: function(prueba){
+	eliminarInstrumento: function(id){
 		return sequelize.transaction(function(t){
-			return Prueba.update({activo: 0}, {where: {idPrueba: prueba.id}}, {transaction: t});
+			return Prueba.update({activo: 0}, {where: {idPrueba: id}}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarAlumno: function(alumno){
+	agregarAlumno: function(name, apeP, apeM, address, city, mail){
 		return sequelize.transaction(function(t){
-			return Alumno.create({nombre: alumno.nombre, apellidoPaterno: alumno.apellido_paterno, apellidoMaterno: alumno.apellido_materno, direccion: alumno.direccion, 
-				ciudad: alumno.ciudad, email: alumno.email},{transaction: t});
+			return Alumno.create({nombre: name, apellidoPaterno: apeP, apellidoMaterno: apeM, direccion: address, 
+				ciudad: city, email: mail},{transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	editarAlumno: function(alumno){
+	editarAlumno: function(name, apeP, apeM, address, city, mail, id){
 		return sequelize.transaction(function(t){
-			return Alumno.update({nombre: alumno.nombre, apellidoPaterno: alumno.apellido_paterno, apellidoMaterno: alumno.apellido_materno, direccion: alumno.direccion, 
-				ciudad: alumno.ciudad, email: alumno.email},{where: {idAlumno: alumno.id}}, {transaction: t});
+			return Alumno.update({nombre: name, apellidoPaterno: apeP, apellidoMaterno: apeM, direccion: address, 
+				ciudad: city, email: mail},{where: {idAlumno: id}}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarAlumno: function(alumno){
+	eliminarAlumno: function(id){
 		return sequelize.transaction(function(t){
-			return Alumno.update({activo: 0}, {where:{idAlumno: alumno.id}}, {transaction: t});
+			return Alumno.update({activo: 0}, {where:{idAlumno: id}}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarUsuario: function(user){
+	agregarUsuario: function(idTipo, user, pass, name, apeP, apeM, mail){
 		return sequelize.transaction(function(t){
-			return Usuario.create({idTipoUsuario: user.tipo_usuario, usuario: user.usuario, contrasena: user.pass, nombre: user.nombre, apellidoPaterno: user.apellido_paterno,
-				apellidoMaterno: user.apellido_materno, email: user.email}, {transaction: t});
+			return Usuario.create({idTipoUsuario: idTipo, usuario: user, contrasena: pass, nombre: name, apellidoPaterno: apeP,
+				apellidoMaterno: apeM, email: mail}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(){
 
 		})
 	},
-	editarUsuario: function(user){
+	editarUsuario: function(idTipo, user, pass, name, apeP, apeM, mail, id){
 		return sequelize.transaction(function(t){
-			return Usuario.update({idTipoUsuario: user.tipo_usuario, usuario: user.usuario, contrasena: user.pass, nombre: user.nombre, apellidoPaterno: user.apellido_paterno,
-				apellidoMaterno: user.apellido_materno, email: user.email}, {where: {idUsuario: user.id}}, {transaction : t});
+			return Usuario.update({idTipoUsuario: idTipo, usuario: user, contrasena: pass, nombre: name, apellidoPaterno: apeP,
+				apellidoMaterno: apeM, email: mail}, {where: {idUsuario: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarUsuario: function(user){
+	eliminarUsuario: function(id){
 		return sequelize.transaction(function(t){
-			return Usuario.update({activo:0}, {where: {idUsuario: user.id}}, {transaction: t});
+			return Usuario.update({activo:0}, {where: {idUsuario: id}}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarForma: function(form){
+	agregarForma: function(idIns, form){
 		return sequelize.transaction(function(t){
-			return Forma.create({idPrueba: form.idPrueba, forma: form.forma}, {transaction: t});
+			return Forma.create({idPrueba: idIns, forma: form}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	editarForma: function(form){
+	editarForma: function(idIns, form, id){
 		return sequelize.transaction(function(t){
-			return Forma.update({idPrueba: form.idPrueba, forma: form.forma},{where: {idForma: form.idForma}}, {transaction: t});
+			return Forma.update({idPrueba: idIns, forma: form},{where: {idForma: id}}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarForma: function(form){
+	eliminarForma: function(id){
 		return sequelize.transaction(function(t){
-			return Forma.update({activo: 0},{where: {idForma: form.idForma}}, {transaction: t});
+			return Forma.update({activo: 0},{where: {idForma: id}}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarPreguntaForma: function(data){
+	agregarPreguntaForma: function(idForm, idQues){
 		return sequelize.transaction(function(t){
-			return FormaPregunta.create({idForma: data.idForma, idPregunta: data.idPregunta}, {transaction : t});
+			return FormaPregunta.create({idForma: idForm, idPregunta: idQues}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	editarPreguntaForma: function(data){
+	editarPreguntaForma: function(idForm, idQues, id){
 		return sequelize.transaction(function(t){
-			return FormaPregunta.update({idForma: data.idForma, idPregunta: data.idPregunta}, {where: {idFormaPregunta: data.idFormaPregunta}}, {transaction : t});
+			return FormaPregunta.update({idForma: idForm, idPregunta: idQues}, {where: {idFormaPregunta: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarPreguntaForma: function(data){
+	eliminarPreguntaForma: function(id){
 		return sequelize.transaction(function(t){
-			return FormaPregunta.destroy({where: {idFormaPregunta: data.idFormaPregunta}}, {transaction : t});
+			return FormaPregunta.destroy({where: {idFormaPregunta: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarPregunta: function(q){
+	agregarPregunta: function(idType, idIns, enun, est, idTE){
 		return sequelize.transaction(function(t){
-			return Pregunta.create({idTipo: q.idTipo, idPrueba: q.idPrueba, enunciado: q.enunciado, estimulo: q.estimulo, idTipoEstimulo: q.tipoEstimulo}, {transaction: t});
+			return Pregunta.create({idTipo: idType, idPrueba: idIns, enunciado: enun, estimulo: est, idTipoEstimulo: idTE}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	editarPregunta: function(q){
+	editarPregunta: function(idType, idIns, enun, est, idTE, id){
 		return sequelize.transaction(function(t){
-			return Pregunta.update({idTipo: q.idTipo, idPrueba: q.idPrueba, enunciado: q.enunciado, estimulo: q.estimulo, idTipoEstimulo: q.tipoEstimulo},
-				{where:{idPregunta: q.idPregunta}}, {transaction : t});
+			return Pregunta.update({idTipo: idType, idPrueba: idIns, enunciado: enun, estimulo: est, idTipoEstimulo: idTE},
+				{where:{idPregunta: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarPregunta: function(q){
+	eliminarPregunta: function(id){
 		return sequelize.transaction(function(t){
-			return Pregunta.update({activo: 0}, {where: {idPregunta: q.idPregunta}}, {transaction : t});
+			return Pregunta.update({activo: 0}, {where: {idPregunta: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarAsignacion: function(asignacion){
+	agregarAsignacion: function(idUser, idAns, idE){
 		return sequelize.transaction(function(t){
-			return Asignacion.create({idUsuario: asignacion.idUsuario, idRespuesta: asignacion.idRespuesta, idEstado: asignacion.idEstado }, {transaction : t});
+			return Asignacion.create({idUsuario: idUser, idRespuesta: idAns, idEstado: idE }, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	editarAsignacion: function(asignacion){
+	editarAsignacion: function(idUser, idAns, idE, id){
 		return sequelize.transaction(function(t){
-			return Asignacion.update({idUsuario: asignacion.idUsuario, idRespuesta: asignacion.idRespuesta, idEstado: asignacion.idEstado },{where:{idAsignacion: asignacion.idAsignacion}}, {transaction : t});
+			return Asignacion.update({idUsuario: idUser, idRespuesta: idAns, idEstado: idE },{where:{idAsignacion: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarAsignacion: function(asignacion){
+	eliminarAsignacion: function(id){
 		return sequelize.transaction(function(t){
-			return Asignacion.update({activo: 0},{where: {idAsignacion: asignacion.idAsignacion}},{transaction: t});
+			return Asignacion.update({activo: 0},{where: {idAsignacion: id}},{transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarCodigo: function(cod){
+	agregarCodigo: function(val, title, desc){
 		return sequelize.transaction(function(t){
-			return Codigo.create({valor: cod.valor, titulo: cod.titulo, descripcion: cod.descripcion}, {transaction : t});
+			return Codigo.create({valor: val, titulo: title, descripcion: desc}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	editarCodigo: function(cod){
+	editarCodigo: function(val, title, desc, id){
 		return sequelize.transaction(function(t){
-			return Codigo.update({valor: cod.valor, titulo: cod.titulo, descripcion: cod.descripcion}, {where: {idCodigo: cod.idCodigo}}, {transaction : t});
+			return Codigo.update({valor: val, titulo: title, descripcion: desc}, {where: {idCodigo: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarCodigo: function(cod){
+	eliminarCodigo: function(id){
 		return sequelize.transaction(function(t){
-			return Codigo.update({activo: 0},{where: {idCodigo: cod.idCodigo}}, {transaction : t});
+			return Codigo.update({activo: 0},{where: {idCodigo: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarFamilia: function(fam){
+	agregarFamilia: function(title, desc){
 		return sequelize.transaction(function(t){
-			return Familia.create({titulo: fam.titulo, descripcion: fam.descripcion}, {transaction: t});
+			return Familia.create({titulo: title, descripcion: desc}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarFamilia: function(fam){
+	editarFamilia: function(title, desc, id){
 		return sequelize.transaction(function(t){
-			return Familia.update({titulo: fam.titulo, descripcion: fam.descripcion},{where: {idFamilia: fam.idFamilia}}, {transaction : t});
+			return Familia.update({titulo: title, descripcion: desc}, {where: {idFamilia: id}}, {transaction: t});
+		}).then(function(){
+
+		}).catch(function(){
+
+		})
+	},
+	eliminarFamilia: function(id){
+		return sequelize.transaction(function(t){
+			return Familia.update({activo: 0},{where: {idFamilia: id}}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	agregarCodigoFiltro: function(data){
+	agregarCodigoFiltro: function(idCod, idFam){
 		return sequelize.transaction(function(t){
-			return Filtro.create({idCodigo: data.idCodigo, idFamilia: data.idFamilia}, {transaction : t});
+			return Filtro.create({idCodigo: idCod, idFamilia: idFam}, {transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	editarCodigoFiltro: function(data){
+	editarCodigoFiltro: function(idCod, idFam, id){
 		return sequelize.transaction(function(t){
-			return Filtro.update({idCodigo: data.idCodigo, idFamilia: data.idFamilia},{transaction : t});
+			return Filtro.update({idCodigo: idCod, idFamilia: idFam},{where: {idFiltro: id}},{transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
 
 		})
 	},
-	eliminarCodigoFiltro: function(data){
+	eliminarCodigoFiltro: function(id){
 		return sequelize.transaction(function(t){
-			return Filtro.destroy({where:{idFiltro: data.idFiltro}}, {transaction : t});
+			return Filtro.destroy({where:{idFiltro: id}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarRespuesta: function(idQues, idAlum, val){
+		return sequelize.transaction(function(t){
+			return Respuesta.create({idPregunta: idQues, idAlumno: idAlum, valor: val}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarRespuesta: function(idQues, idAlum, val, id){
+		return sequelize.transaction(function(t){
+			return Respuesta.update({idPregunta: idQues, idAlumno: idAlum, valor: val}, {where: {idRespuesta: id}}, {transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarRespuesta: function(id){
+		return sequelize.transaction(function(t){
+			return Respuesta.update({activo: 0},{where:{idRespuesta: id}},{transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	agregarTipoPregunta: function(desc){
+		return sequelize.transaction(function(t){
+			return Tipo.create({descripcion: desc},{transaction : t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	editarTipoPregunta: function(desc, id){
+		return sequelize.transaction(function(t){
+			return Tipo.update({descripcion: desc},{where: {idTipo: id}},{transaction: t});
+		}).then(function(){
+
+		}).catch(function(err){
+
+		})
+	},
+	eliminarTipoPregunta: function(id){
+		return sequelize.transaction(function(t){
+			return Tipo.update({activo: 0},{where: {idTipo: id}}, {transaction: t});
 		}).then(function(){
 
 		}).catch(function(err){
