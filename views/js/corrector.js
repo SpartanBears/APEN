@@ -1,11 +1,11 @@
 var datosRespuestas;
+var datosSinCambios = null;
 // listaCorregidas
 // listaNoCorregidas
 // listaDudas
-// var io = io();
+var io = io();
 
 $( document ).ready( function(){
-
 	$.AdminBSB.browser.activate();
     $.AdminBSB.navbar.activate();
     $.AdminBSB.dropdownMenu.activate();
@@ -26,6 +26,7 @@ function initCorrectorView(){
 	setPanelButtons(datosRespuestas.respuestas);
 	setEvents();
 	loadPregunta();
+
 }
 
 function loadPregunta(){
@@ -156,16 +157,18 @@ function updateNoCorregida(respuesta){
 
 	var newAsignacion = getCodigosAsignados();
 
+	if(datosSinCambios=== null){
+		datosSinCambios = getRespuestaActiva();
+	}
+
 	datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].correccion = newAsignacion;
 
 	if(newAsignacion.length > 0 && !isDudaRespuesta(respuesta)){
-
 		datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].id_estado = 2;
 	}else if (newAsignacion.length == 0 && !isDudaRespuesta(respuesta)){
 
 		datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].id_estado = 1;
 	}
-
 	// console.log(, respuesta);
 }
 
@@ -435,12 +438,11 @@ function clickDescripcionCodigo(e){
 }
 
 function clickPrev(e){
-
 	navRespuetas(-1);
 }
 
 function clickNext(e){
-
+    enviarCorreccion(getRespuestaActiva())
 	navRespuetas(1);
 }
 
@@ -469,7 +471,6 @@ function clickCheckboxDuda(e){
 
 // DEPRECADO
 function clickCheckboxCorregida(e){
-
 	var isInDuda = $('#chboxDuda').prop('checked'),
 		isCorregida = e.target.checked;
 
@@ -596,13 +597,26 @@ function getData(callback){
 	$.getJSON( "./resources/correctorEjemplo.json", function( data ) {
 
 		datosRespuestas = data;
-
+		if(datosSinCambios===null){
+			datosSinCambios = data;
+		}
+		
 		if(callback != undefined)	callback();
 	});
 }
 
 function guardarCorreccion(data){
 	io.emit('Guardar Correccion',{ id_respuesta:data.id_respuesta, codigo:data.correccion, id_usuario: 1 })
+}
+
+
+
+function enviarCorreccion(respuesta){
+	if(JSON.stringify(datosSinCambios)!== JSON.stringify(respuesta)){
+		console.log('DISTINTO')
+		io.emit('Guardar Correccion',{id_respuesta: respuesta.id_respuesta, codigo: respuesta.correccion, nombre_usuario: sessionStorage.nombre, carga: datosRespuestas})
+	}
+
 }
 
 // //eventos que son lanzados por el servidor

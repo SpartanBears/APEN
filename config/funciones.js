@@ -173,19 +173,18 @@ module.exports = {
     /*
     funcion asignar codigo a la correción de una pregunta
     */
-    guardarCorreccion: function (respuesta, codigo, usuario, io, sock) {
+    guardarCorreccion: function (respuesta, codigo, usuario, carga, io, sock, fs) {
 
-			Asignacion.find({where: {idUsuario: usuario, idRespuesta: respuesta }}).then(function(result){
+			Asignacion.find({where: {idUsuario: 1, idRespuesta: respuesta }}).then(function(result){
 				AsignacionCodigo.findAll({where:{ idAsignacion: result.dataValues.idAsignacion }}).then(function(data){
 
 						if(data.length>0){
 							for(var i = 0; i<codigo.length; i++){
 								updateCorreccion(data[i].idAsignacion,codigo[i].id_codigo,data[i].idAsignacionCodigo)
 							}
-						}else{
-							for(var i = 0; i<codigo.length; i++){
-								saveCorreccion(result.idAsignacion, codigo[i].id_codigo)
-							}					
+						}else{							
+								//saveCorreccion(result.idAsignacion, codigo[i].id_codigo)
+								saveCorreccion(result, codigo, carga, usuario, fs)					
 						}
 				})				
 			})
@@ -293,7 +292,7 @@ module.exports = {
 	},
 	agregarInstrumento: function(cod, title){
 		return sequelize.transaction(function(t){
-			return Prueba.create({{codigo: cod, titulo: title}},{transaction : t});
+			return Prueba.create({codigo: cod, titulo: title},{transaction : t});
 		}).then(function(){
 
 		}).catch(function(err){
@@ -623,37 +622,44 @@ module.exports = {
 }
 
 
-function saveCorreccion(asignacion, codigo){
+function saveCorreccion(asignacion, codigo, carga, usuario, fs){
+	q = 'INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES '
+	for (var i = 0; i < codigo.length; i++) {
+			if(i>0){
+				q+= ',('+asignacion.idAsignacion+','+codigo[i].id_codigo+')'	
+			}else{
+				q+= '('+asignacion.idAsignacion+','+codigo[i].id_codigo+')'
+			}
+		
+		}
+		q+= ';'
 	return sequelize.transaction(function(t){
-		return AsignacionCodigo.create({idAsignacion: asignacion, idCodigo: codigo}, { transaction: t }).then(function(r){
-			
+		return sequelize.query(q,{transaction: t}).then(function(){
+			return sequelize.query ('UPDATE asignacion SET `id_estado`=2 WHERE `id_asignacion`='+asignacion.idAsignacion+';',{transaction: t});
 		}).then(function(){
-			updateEstado(2,asignacion)								
+			fs.writeFile("./views/js/correctorEjemplo.json", JSON.stringify(carga)); 
 		}).catch(function(err){
-											
-		})
-	})
-}
-
-function updateEstado(estado, asignacion){
-	return sequelize.transaction(function(t){
-		return Asignacion.update({idEstado: estado}, {where: { idAsignacion: asignacion }},{transaction: t}).then(function(){
-			
-		}).catch(function(err){
-			
-		})
-	})
-	
+			console.log('fallo save')
+		})	
+	})	
 }
 
 function updateCorreccion(asignacion, codigo, codigoAsignacion){
 	return sequelize.transaction(function(t){
-		return AsignacionCodigo.update({idCodigo: codigo},{where:{idAsignacionCodigo: codigoAsignacion}}, { transaction: t }).then(function(r){
-		}).then(function(){
-			updateEstado(2, asignacion)								
-		}).catch(function(err){
-											
-		})
+		return AsignacionCodigo.update({idCodigo: codigo},{where:{idAsignacionCodigo: codigoAsignacion}}, { transaction: t });
+	}).then(function(){
+		console.log('hizo algo update')
+	}).catch(function(err){
+		console.log('fallo update')
+	})
+}
+
+function actualizarCarga(nombre, carga, fs){
+	console.log(JSON.stringify(carga))
+	console.log('esta actualizando')
+	fs.writeFile("./view/js/correctorEjemplo.json", JSON.stringify(carga), function(err){
+		if(err) throw err;
+		console.log('')
 	})
 }
 /*

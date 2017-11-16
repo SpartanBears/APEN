@@ -33,13 +33,14 @@ var Funciones = require('./config/funciones.js')
 Cuando se conecta un usuario, espera a el envío de los datos de login.
 */
 io.on('connection', function (socket) {
+    io.emit('conectado', {mensaje:'conecto'})
     socket.on('Iniciar Sesion', function (data) {
         Funciones.login(data.user, data.pass, io, socket.id)
     })
 
     socket.on('Guardar Correccion', function (data) {
 		//console.log(data.codigo.length)
-        //Funciones.guardarCorreccion(data.id_respuesta, data.codigo, data.id_usuario,io, socket.id)
+        Funciones.guardarCorreccion(data.id_respuesta, data.codigo, data.nombre_usuario,data.carga, io, socket.id, fs)
 		//Funciones.rawIn(data.codigo)
     })
 })
