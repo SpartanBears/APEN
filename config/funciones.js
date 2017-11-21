@@ -180,10 +180,9 @@ module.exports = {
 
 						if(data.length>0){
 							for(var i = 0; i<codigo.length; i++){
-								updateCorreccion(data[i].idAsignacion,codigo[i].id_codigo,data[i].idAsignacionCodigo)
+								updateCorreccion(data[i].idAsignacion,codigo[i].id_codigo,data[i].idAsignacionCodigo, carga, fs)
 							}
 						}else{							
-								//saveCorreccion(result.idAsignacion, codigo[i].id_codigo)
 								saveCorreccion(result, codigo, carga, usuario, fs)					
 						}
 				})				
@@ -211,31 +210,7 @@ module.exports = {
 			fs.writeFile("./config/carga/deita.json", JSON.stringify(d)); 
 		})
 	},
-	rawIn: function (codigo){
-		var q = 'INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES ';
 
-		for (var i = 0; i < codigo.length; i++) {
-			if(i>0){
-				q+= ',('+1+','+codigo[i].id_codigo+')'	
-			}else{
-				q+= '('+1+','+codigo[i].id_codigo+')'
-			}
-		
-		}
-		q+= ';'
-
-
-		return sequelize.transaction(function(t){
-			return sequelize.query(q,{transaction: t}).then(function(){
-				return sequelize.query ('UPDATE asignacion SET `id_estado`=2 WHERE `id_asignacion`=1;',{transaction: t});
-			})
-
-			}).then(function(){
-		
-			}).catch(function(){
-				
-			})
-	},
 	agregarEquipo: function(name){
 		return sequelize.transaction(function(t){
 			return Equipo.create({nombre: name}, {transaction: t}).then(function(r){
@@ -644,11 +619,11 @@ function saveCorreccion(asignacion, codigo, carga, usuario, fs){
 	})	
 }
 
-function updateCorreccion(asignacion, codigo, codigoAsignacion){
+function updateCorreccion(asignacion, codigo, codigoAsignacion, carga, fs){
 	return sequelize.transaction(function(t){
 		return AsignacionCodigo.update({idCodigo: codigo},{where:{idAsignacionCodigo: codigoAsignacion}}, { transaction: t });
 	}).then(function(){
-		console.log('hizo algo update')
+		fs.writeFile("./views/js/correctorEjemplo.json", JSON.stringify(carga)); 
 	}).catch(function(err){
 		console.log('fallo update')
 	})
