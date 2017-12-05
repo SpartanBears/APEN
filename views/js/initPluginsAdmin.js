@@ -1,5 +1,5 @@
 window.onload = function(){
-
+	verificarLogin();
 	createDonut('donut1', donutVal);
 	createBarsGraph('grafAvancePrueba', null);
 	createUITableTabs(instrumentos);
@@ -347,3 +347,9 @@ var instrumentos = [
 	'Instrumento 2',
 	'Instrumento 3',
 ];
+
+function verificarLogin(){
+	if(sessionStorage.nombre == undefined && sessionStorage.apellidoP == undefined){
+		window.location.replace('/');
+	}
+}

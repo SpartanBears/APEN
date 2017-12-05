@@ -1,5 +1,6 @@
 ﻿
     'use strict'
+var sock = io.connect()
 
 $(document).ready(function(){
 
@@ -11,7 +12,7 @@ $(document).ready(function(){
     $.AdminBSB.search.activate();
 });
 
-var io = io()
+
 
 /*
 Al presionar el boton guardar del formulario
@@ -23,13 +24,13 @@ $(document).on('click', '#Entrar', function (e) {
     var userName = $('#username').val()
     var passUser = $('#password').val()
     document.getElementById("sign_in").reset();
-    io.emit('Iniciar Sesion', { user: userName, pass: passUser })
+    sock.emit('Iniciar Sesion', { user: userName, pass: passUser })
 })
 
 /*
 evento de login exitoso, trae los datos del usuario para redireccionarlo
 */
-io.on('login exitoso', function (respuesta) {
+sock.on('login exitoso', function (respuesta) {
     sessionStorage.nombre = respuesta.nombre;
     sessionStorage.apellidoP = respuesta.apellidoP;
 	sessionStorage.apellidoM = respuesta.apellidoM;
@@ -41,20 +42,15 @@ io.on('login exitoso', function (respuesta) {
     }
 })
 
+
+
 /*
 evento de fallo al intentar iniciar sesion, muestra un mensaje de datos incorrectos
 */
-io.on('login fallido', function (respuesta) {
+sock.on('login fallido', function (respuesta) {
     $('#mensaje').val(respuesta.mensaje)
 })
-/*
-'actualizar', recibe los datos de la tabla usuario luego de agregar datos,
-limpia la tabla y los agrega.
-*/
-io.on('actualizar', function (resultado) {
-    $('#data_container').empty()
-    resultado.forEach(function (item) {
-        $('#data_container').append("<tr>\n" + "<td>" + item.id + "</td>\n" + "<td>" + item.user + "</td>\n" + "<td>" + item.pass + "</td>\n" + "</tr>")
-    })
-})
 
+sock.on('conectado', function(d){
+    console.log('conecto')
+})

@@ -6,6 +6,7 @@ var datosSinCambios = null;
 var io = io();
 
 $( document ).ready( function(){
+	verificarLogin();
 	$.AdminBSB.browser.activate();
     $.AdminBSB.navbar.activate();
     $.AdminBSB.dropdownMenu.activate();
@@ -442,7 +443,7 @@ function clickPrev(e){
 }
 
 function clickNext(e){
-    enviarCorreccion(getRespuestaActiva())
+    enviarCorreccion()
 	navRespuetas(1);
 }
 
@@ -611,14 +612,20 @@ function guardarCorreccion(data){
 
 
 
-function enviarCorreccion(respuesta){
-	if(JSON.stringify(datosSinCambios)!== JSON.stringify(respuesta)){
-		console.log('DISTINTO')
+function enviarCorreccion(){
+	if(JSON.stringify(datosSinCambios)!== JSON.stringify(datosRespuestas)){
 		io.emit('Guardar Correccion',{id_respuesta: respuesta.id_respuesta, codigo: respuesta.correccion, nombre_usuario: sessionStorage.nombre, carga: datosRespuestas})
+		datosSinCambios = datosRespuestas;
 	}
 
 }
 
+
+function verificarLogin(){
+	if(sessionStorage.nombre == undefined && sessionStorage.apellidoP == undefined){
+		window.location.replace('/');
+	}
+}
 // //eventos que son lanzados por el servidor
 // io.on('Resultado Correccion', function(data){
 	
