@@ -333,18 +333,21 @@ function setPanelButtons(subElements){
 				// 1 es de una respuesta no corregida
 				case 1:
 					btnCodigo.classList.add('btn-default');
+					btnCodigo.innerHTML = '<i class="fa fa-circle-o" aria-hidden="true"></i>';
 				break;
 
 				// 2 corregida
 				case 2:
 					
 					btnCodigo.classList.add('btn-success');
+					btnCodigo.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
 				break;
 
 				// 3 duda
 				case 3:
 					
 					btnCodigo.classList.add('btn-warning');
+					btnCodigo.innerHTML = '<i class="fa fa-exclamation" aria-hidden="true"></i>';
 				break;
 			}
 		}else{
