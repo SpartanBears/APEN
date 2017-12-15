@@ -593,9 +593,88 @@ module.exports = {
 		}).catch(function(err){
 
 		})
+	},
+	crearCarga: function(id_preg, asig, id_equipo, fs){
+		var corrector = '{';
+		Pregunta.findAll({where:{idPregunta: id_preg}},{raw: true}).then(function(f){
+			corrector+='"id_pregunta": '+f[0].dataValues.idPregunta+', "enunciado": "'+f[0].dataValues.enunciado+'",'+
+			' "estimulo": "'+f[0].dataValues.estimulo+'", "id_tipo_estimulo": '+f[0].dataValues.idTipoEstimulo+', "familias": ['
+			var family = {"familia": [1,2]};
+			fs.writeFile("./config/cargaPlantilla.json", corrector);
+			familiasNueva(family,fs)
+		})
+
 	}
 }
 
+function familiasNueva(fam,fs){
+	var famcorrector = '';
+	var codcorrector = '';
+	var filtrar = false;
+	var famfiltro = false;
+
+	fam.familia.forEach(function(family){
+
+		Familia.findAll({where:{idFamilia: family}},{raw:true}).then(function(fa){
+			if(famfiltro == true){
+				famcorrector+=', { "titulo": "'+fa[0].dataValues.titulo+'", "descripcion": "'+fa[0].dataValues.descripcion+'", "codigos": [';
+			}else{
+				famcorrector+= '{ "titulo": "'+fa[0].dataValues.titulo+'", "descripcion": "'+fa[0].dataValues.descripcion+'", "codigos": [';
+				famfiltro = true;
+			}
+			fs.appendFile("./config/cargaPlantilla.json", famcorrector)
+			famcorrector = '';
+		})
+		Filtro.findAll({where: {idFamilia: family}, include:[{model: Codigo, as: 'fCodigo', where:{idCodigo: Sequelize.col('filtro.id_codigo')}}]},{raw:true}).then(function(fil){
+			fil.forEach(function(filtro){
+				if(filtrar==false){
+					codcorrector+='{ "id_codigo": '+filtro.fCodigo[0].dataValues.idCodigo+', "valor": "'+filtro.fCodigo[0].dataValues.valor+'",'+
+					'"descripcion": "'+filtro.fCodigo[0].dataValues.descripcion+'"}'
+					filtrar = true;
+				}else{
+					codcorrector+=',{ "id_codigo": '+filtro.fCodigo[0].dataValues.idCodigo+', "valor": "'+filtro.fCodigo[0].dataValues.valor+'",'+
+					'"descripcion": "'+filtro.fCodigo[0].dataValues.descripcion+'"}'
+				}
+							})
+			codcorrector+=']}'
+			fs.appendFile("./config/cargaPlantilla.json", codcorrector)
+			codcorrector = '';
+			filtrar = false;
+		})	
+	})
+}
+
+
+function familiasCarga(fam, correc,fs){
+	var famcorrector = '';
+	for (var i = 0; i < fam.familia.length; i++) {
+		if(i>1){
+			famcorrector+=','
+		}
+		
+		Familia.findAll({where:{idFamilia: fam.familia[i]}},{raw: true}).then(function(fa){
+			famcorrector+= '{ "titulo": "'+fa[0].dataValues.titulo+'", "descripcion": "'+fa[0].dataValues.descripcion+'", "codigos": ['
+			Filtro.findAll({where: {idFamilia: fam.familia[i]}, include:[{model: Codigo, as: 'fCodigo', where:{idCodigo: Sequelize.col('filtro.id_codigo')}}]},{raw:true}).then(function(fil){
+				console.log('---valor en filtro---')
+				console.log(i)
+				console.log('---valor en filtro---')
+				console.log(i)
+				for (var j = 0; j < fil.length; j++) {
+					if(j==0){
+						famcorrector+='{ "id_codigo": '+fil[j].fCodigo[0].dataValues.idCodigo+', "valor": "'+fil[j].fCodigo[0].dataValues.valor+'",'+
+						'"descripcion": "'+fil[j].fCodigo[0].dataValues.descripcion+'"}'
+					}else{
+						famcorrector+=',{ "id_codigo": '+fil[j].fCodigo[0].dataValues.idCodigo+', "valor": "'+fil[j].fCodigo[0].dataValues.valor+'",'+
+						'"descripcion": "'+fil[j].fCodigo[0].dataValues.descripcion+'"}'
+					}
+					
+				}
+				famcorrector+=']}'
+				fs.appendFile("./config/cargaPlantilla.json", famcorrector)
+			})
+		})
+	}
+}
 
 function saveCorreccion(asignacion, codigo, carga, usuario, fs){
 	q = 'INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES '
@@ -637,22 +716,5 @@ function actualizarCarga(nombre, carga, fs){
 		console.log('')
 	})
 }
-/*
-función que obtiene los datos actualizados de la tabla
-*/
-function crearCarga(fs, id) {
-    /*
-    var q = 'SELECT re.id_respuesta, re.titulo, re.descripcion, pr.titulo, pr.enunciado' +
-        ' FROM respuesta re JOIN pregunta pr ON re.id_pregunta = pr.id_pregunta JOIN asignacion asi ON asi.id_respuesta = re.id_respuesta' +
-        ' WHERE asi.id_usuario=' + id
-    */
-    //var q = 'SELECT * FROM respuesta re JOIN pregunta pr ON re.id_pregunta = pr.id_pregunta JOIN asignacion asi ON asi.id_respuesta = re.id_respuesta WHERE asi.id_usuario=' + id;
-    sequelize.query('SELECT id_respuesta, titulo, descripcion FROM respuesta', { type: sequelize.QueryTypes.SELECT, raw: true }).then(result => {
-        fs.writeFile("./config/carga/prueba.json", JSON.stringify(result));    
-    })
-    /*
-    var prueba = { "mensaje": "prueba" }
-     
-   */
-}
+
 

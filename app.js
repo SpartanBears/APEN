@@ -37,7 +37,9 @@ io.on('connection', function (socket) {
     socket.on('Iniciar Sesion', function (data) {
         Funciones.login(data.user, data.pass, io, socket.id)
     })
-
+    socket.on('datosCarga', function(data){
+        Funciones.crearCarga(data.id_p, data.asignacion, data.id_e, fs)
+    })
     socket.on('Guardar Correccion', function (data) {
 		//console.log(data.codigo.length)
         Funciones.guardarCorreccion(data.id_respuesta, data.codigo, data.nombre_usuario,data.carga, io, socket.id, fs)
