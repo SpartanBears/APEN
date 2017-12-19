@@ -595,87 +595,57 @@ module.exports = {
 		})
 	},
 	crearCarga: function(id_preg, asig, id_equipo, fs){
-		var corrector = '{';
+		var plantilla = require("./cargaPlantilla.json");
 		Pregunta.findAll({where:{idPregunta: id_preg}},{raw: true}).then(function(f){
-			corrector+='"id_pregunta": '+f[0].dataValues.idPregunta+', "enunciado": "'+f[0].dataValues.enunciado+'",'+
-			' "estimulo": "'+f[0].dataValues.estimulo+'", "id_tipo_estimulo": '+f[0].dataValues.idTipoEstimulo+', "familias": ['
+			plantilla.id_pregunta = f[0].dataValues.idPregunta;
+			plantilla.enunciado = f[0].dataValues.enunciado;
+			plantilla.estimulo = f[0].dataValues.estimulo;
+			plantilla.id_tipo_estimulo = f[0].dataValues.idTipoEstimulo;
+			fs.writeFile("./config/pruebaplantilla.json", JSON.stringify(plantilla));
+		}).then(function(){
 			var family = {"familia": [1,2]};
-			fs.writeFile("./config/cargaPlantilla.json", corrector);
-			familiasNueva(family,fs)
+			familiasNueva(family,fs,plantilla)
 		})
 
 	}
 }
 
-function familiasNueva(fam,fs){
-	var famcorrector = '';
-	var codcorrector = '';
-	var filtrar = false;
-	var famfiltro = false;
-
+function familiasNueva(fam,fs,c){
+	var famcorrector = [];
+	var codcorrector = [];
+	var ti;
+	var des;
+	var idcod;
+	var val;
+	var desc;
+	var cont = 0;
+	var plantillaCorrector = c;
 	fam.familia.forEach(function(family){
-
 		Familia.findAll({where:{idFamilia: family}},{raw:true}).then(function(fa){
-			if(famfiltro == true){
-				famcorrector+=', { "titulo": "'+fa[0].dataValues.titulo+'", "descripcion": "'+fa[0].dataValues.descripcion+'", "codigos": [';
-			}else{
-				famcorrector+= '{ "titulo": "'+fa[0].dataValues.titulo+'", "descripcion": "'+fa[0].dataValues.descripcion+'", "codigos": [';
-				famfiltro = true;
+				ti = fa[0].dataValues.titulo;
+				des = fa[0].dataValues.descripcion;
+			Filtro.findAll({where: {idFamilia: family}, include:[{model: Codigo, as: 'fCodigo', where:{idCodigo: Sequelize.col('filtro.id_codigo')}}]},{raw:true}).then(function(fil){
+				fil.forEach(function(filtro){
+					idcod = filtro.fCodigo[0].dataValues.idCodigo;
+					val = filtro.fCodigo[0].dataValues.valor;
+					desc = filtro.fCodigo[0].dataValues.descripcion;
+					codcorrector.push({idcodigo: idcod, valor: val, descripcion: desc})
+				})
+				
+			}).then(function(){
+				console.log(codcorrector.length)
+				famcorrector.push({titulo: ti, descripcion: des, codigos: codcorrector })
+				codcorrector = [];
+				cont++
+				if(cont==fam.familia.length){
+				console.log("guardados")
+				plantillaCorrector.familias = famcorrector;
+				fs.writeFile("./config/pruebaplantilla.json", JSON.stringify(plantillaCorrector))
 			}
-			fs.appendFile("./config/cargaPlantilla.json", famcorrector)
-			famcorrector = '';
-		})
-		Filtro.findAll({where: {idFamilia: family}, include:[{model: Codigo, as: 'fCodigo', where:{idCodigo: Sequelize.col('filtro.id_codigo')}}]},{raw:true}).then(function(fil){
-			fil.forEach(function(filtro){
-				if(filtrar==false){
-					codcorrector+='{ "id_codigo": '+filtro.fCodigo[0].dataValues.idCodigo+', "valor": "'+filtro.fCodigo[0].dataValues.valor+'",'+
-					'"descripcion": "'+filtro.fCodigo[0].dataValues.descripcion+'"}'
-					filtrar = true;
-				}else{
-					codcorrector+=',{ "id_codigo": '+filtro.fCodigo[0].dataValues.idCodigo+', "valor": "'+filtro.fCodigo[0].dataValues.valor+'",'+
-					'"descripcion": "'+filtro.fCodigo[0].dataValues.descripcion+'"}'
-				}
-							})
-			codcorrector+=']}'
-			fs.appendFile("./config/cargaPlantilla.json", codcorrector)
-			codcorrector = '';
-			filtrar = false;
-		})	
-	})
-}
-
-
-function familiasCarga(fam, correc,fs){
-	var famcorrector = '';
-	for (var i = 0; i < fam.familia.length; i++) {
-		if(i>1){
-			famcorrector+=','
-		}
-		
-		Familia.findAll({where:{idFamilia: fam.familia[i]}},{raw: true}).then(function(fa){
-			famcorrector+= '{ "titulo": "'+fa[0].dataValues.titulo+'", "descripcion": "'+fa[0].dataValues.descripcion+'", "codigos": ['
-			Filtro.findAll({where: {idFamilia: fam.familia[i]}, include:[{model: Codigo, as: 'fCodigo', where:{idCodigo: Sequelize.col('filtro.id_codigo')}}]},{raw:true}).then(function(fil){
-				console.log('---valor en filtro---')
-				console.log(i)
-				console.log('---valor en filtro---')
-				console.log(i)
-				for (var j = 0; j < fil.length; j++) {
-					if(j==0){
-						famcorrector+='{ "id_codigo": '+fil[j].fCodigo[0].dataValues.idCodigo+', "valor": "'+fil[j].fCodigo[0].dataValues.valor+'",'+
-						'"descripcion": "'+fil[j].fCodigo[0].dataValues.descripcion+'"}'
-					}else{
-						famcorrector+=',{ "id_codigo": '+fil[j].fCodigo[0].dataValues.idCodigo+', "valor": "'+fil[j].fCodigo[0].dataValues.valor+'",'+
-						'"descripcion": "'+fil[j].fCodigo[0].dataValues.descripcion+'"}'
-					}
-					
-				}
-				famcorrector+=']}'
-				fs.appendFile("./config/cargaPlantilla.json", famcorrector)
 			})
 		})
-	}
+	})
 }
-
 function saveCorreccion(asignacion, codigo, carga, usuario, fs){
 	q = 'INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES '
 	for (var i = 0; i < codigo.length; i++) {
