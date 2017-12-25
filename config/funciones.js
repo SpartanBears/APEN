@@ -3,6 +3,7 @@ conexión con la base de datos
 */
 var sequelize = require('./configDB.js')
 var Sequelize = require('sequelize')
+var xls = require('xls-to-json')
 /*
 Se importan los modelos
 */
@@ -615,6 +616,21 @@ module.exports = {
 			asignacionFamilias(family,fs,plantilla, id_preg, asig, id_equipo, plantilla.enunciado)
 		})
 
+	},
+	importarExcel: function(nombre){
+		xls({
+    		input: "./config/Hoja1.xlsx",  // input xls 
+    		output: "./config/lista.json", // output json 
+    		sheet: "Hoja1"  // specific sheetname 
+  		}, function(err, result) {
+    		if(err) {
+    			console.log("error archivo")
+  				console.error(err);
+    		} else {
+    			console.log("resultado")
+      			console.log(result);
+    		}
+  		});
 	}
 }
 
