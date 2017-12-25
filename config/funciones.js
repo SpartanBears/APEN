@@ -1,4 +1,4 @@
-﻿/*
+/*
 conexión con la base de datos
 */
 var sequelize = require('./configDB.js')
@@ -596,21 +596,29 @@ module.exports = {
 	},
 	crearCarga: function(id_preg, asig, id_equipo, fs){
 		var plantilla = require("./cargaPlantilla.json");
+		var plantillaPaq = require("./plantillaPaquetes.json")
 		Pregunta.findAll({where:{idPregunta: id_preg}},{raw: true}).then(function(f){
 			plantilla.id_pregunta = f[0].dataValues.idPregunta;
 			plantilla.enunciado = f[0].dataValues.enunciado;
 			plantilla.estimulo = f[0].dataValues.estimulo;
 			plantilla.id_tipo_estimulo = f[0].dataValues.idTipoEstimulo;
 			fs.writeFile("./config/pruebaplantilla.json", JSON.stringify(plantilla));
+			Prueba.findAll({where:{idPrueba: f[0].dataValues.idPrueba}},{raw: true}).then(function(p){
+				plantillaPaq.id = f[0].dataValues.idPrueba;
+				plantillaPaq.title = p[0].dataValues.titulo;
+				fs.writeFile("./config/plantillaPaquetes-"+id_equipo+".json", JSON.stringify(plantillaPaq))
+			})
+			
+			
 		}).then(function(){
 			var family = {"familia": [1,2]};
-			familiasNueva(family,fs,plantilla)
+			asignacionFamilias(family,fs,plantilla, id_preg, asig, id_equipo, plantilla.enunciado)
 		})
 
 	}
 }
 
-function familiasNueva(fam,fs,c){
+function asignacionFamilias(fam,fs,c, idp, asignacion, eq, titp){
 	var famcorrector = [];
 	var codcorrector = [];
 	var ti;
@@ -638,14 +646,161 @@ function familiasNueva(fam,fs,c){
 				codcorrector = [];
 				cont++
 				if(cont==fam.familia.length){
-				console.log("guardados")
 				plantillaCorrector.familias = famcorrector;
 				fs.writeFile("./config/pruebaplantilla.json", JSON.stringify(plantillaCorrector))
+				asignacionesTeam(plantillaCorrector, fs, idp, asignacion, eq, titp)
 			}
 			})
 		})
 	})
 }
+
+function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
+	var asicorrector;
+	var resto = 0;
+	var resp = 0;
+	var archivo = '';
+
+	Respuesta.findAll({where:{idPregunta: pregunta}}, {raw: true}).then(function(r){
+		UsuarioEquipo.findAll({where: {idEquipo: team}, include: [{model: Usuario, as: 'userEquipo', where: {idUsuario: Sequelize.col('UsuarioEquipo.id_usuario')}}]},{raw: true}).then(function(users){
+			asicorrector = Math.trunc((r.length*2)/users.length)
+			resto = (r.length*2)%users.length
+			users.forEach(function(correc){
+					var asignadas = [];
+					var parte = 1;
+					var username = correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno;
+					var guardar = p;
+					var paq = [];
+					var pre = null;
+					if(resto>0){
+						var g = 0;
+						for (var i = 0; i < (asicorrector+1); i++) {
+							if(resp==r.length){
+								resp = 0;
+							}
+							var id = r[resp].dataValues.idRespuesta;
+							var val = r[resp].dataValues.valor;
+							var idEs = 1;
+							var cor = [];
+							Asignacion.create({idUsuario: correc.userEquipo[0].dataValues.idUsuario, idRespuesta: r[resp].dataValues.idRespuesta, idEstado: 1})
+							asignadas.push({id_respuesta: id, valor: val, id_estado: idEs, correccion: cor})
+							if(asignadas.length==100){
+								archivo = "./config/"+username+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
+								guardar.respuestas = asignadas;
+								fs.writeFile(archivo, JSON.stringify(guardar));
+								paq.push({parte: parte, contestadas: 0, duda: 0, noContestadas: asignadas.length})
+								parte++;
+								asignadas = [];
+								guardar = p;
+
+							}
+							g++;							
+							resp++;
+							if(g==asicorrector+1){
+								g = 0;
+								resto--;
+								var plantillaPaqUser = null;
+								if(asignadas.length>0){
+									archivo = "./config/"+correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
+									guardar.respuestas = asignadas;
+									paq.push({parte: parte, contestadas: 0, duda: 0, noContestadas: asignadas.length})
+									fs.writeFile(archivo, JSON.stringify(guardar));
+								}
+								fs.access("./config/"+username+"-paquetes.json", function(err){
+									if(err){
+										plantillaPaqUser = require("./plantillaPaquetes-"+team+".json")
+										pre = plantillaPaqUser.preguntas;
+										pre.push({idPregunta: pregunta, preguntaTitle: titlep, respuestas: paq })
+										plantillaPaqUser.preguntas = pre;
+										fs.writeFile("./config/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
+										plantillaPaqUser.preguntas = [];
+										asignadas = [];
+										paq = [];
+										parte = 1;
+										g = 0;
+										resto--;
+									}else{
+										plantillaPaqUser = require("./"+username+"-paquetes.json")
+										
+										pre = plantillaPaqUser.preguntas;
+										pre.push({idPregunta: pregunta, preguntaTitle: titlep, respuestas: paq })
+										plantillaPaqUser.preguntas = pre;
+										fs.writeFile("./config/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
+										plantillaPaqUser.preguntas = [];
+										paq = []
+										asignadas = [];
+										parte = 1;
+										g = 0;
+									}
+								})	
+							}
+						}
+					}else{
+						var g = 0;
+						for (var i = 0; i < asicorrector; i++) {
+							if(resp==r.length){
+								resp = 0;
+							}
+							var id = r[resp].dataValues.idRespuesta;
+							var val = r[resp].dataValues.valor;
+							var idEs = 1;
+							var cor = [];
+							Asignacion.create({idUsuario: correc.userEquipo[0].dataValues.idUsuario, idRespuesta: r[resp].dataValues.idRespuesta, idEstado: 1})
+							asignadas.push({id_respuesta: id, valor: val, id_estado: idEs, correccion: cor})
+							if(asignadas.length==100){
+								archivo = "./config/"+correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
+								guardar.respuestas = asignadas;
+								fs.writeFile(archivo, JSON.stringify(guardar));
+								paq.push({parte: parte, contestadas: 0, duda: 0, noContestadas: asignadas.length})
+								parte++;
+								asignadas = [];
+								guardar = p;
+							}
+							g++;
+							resp++;
+							if(g==asicorrector){
+								g = 0;
+								var plantillaPaqUser = null;
+								if(asignadas.length>0){
+									archivo = "./config/"+correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
+									guardar.respuestas = asignadas;
+									paq.push({parte: parte, contestadas: 0, duda: 0, noContestadas: asignadas.length})
+									fs.writeFile(archivo, JSON.stringify(guardar));	
+								}
+								fs.access("./config/"+username+"-paquetes.json", function(err){
+									if(err){
+										plantillaPaqUser = require("./plantillaPaquetes-"+team+".json")
+										pre = plantillaPaqUser.preguntas;
+										pre.push({idPregunta: pregunta, preguntaTitle: titlep, respuestas: paq })
+										plantillaPaqUser.preguntas = pre;
+										fs.writeFile("./config/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
+										paq = []
+										plantillaPaqUser.preguntas = [];
+										asignadas = [];
+										parte = 1;
+										g = 0;
+									}else{
+										plantillaPaqUser = require("./"+username+"-paquetes.json")
+										pre = plantillaPaqUser.preguntas;
+										pre.push({idPregunta: pregunta, preguntaTitle: titlep, respuestas: paq })
+										plantillaPaqUser.preguntas = pre;
+										fs.writeFile("./config/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
+										plantillaPaqUser.preguntas = [];
+										paq = []
+										asignadas = [];
+										parte = 1;
+										g = 0;
+									}
+								})
+								
+							}
+						}
+					}
+			})
+		})
+	})
+}
+
 function saveCorreccion(asignacion, codigo, carga, usuario, fs){
 	q = 'INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES '
 	for (var i = 0; i < codigo.length; i++) {
