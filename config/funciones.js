@@ -603,11 +603,11 @@ module.exports = {
 			plantilla.enunciado = f[0].dataValues.enunciado;
 			plantilla.estimulo = f[0].dataValues.estimulo;
 			plantilla.id_tipo_estimulo = f[0].dataValues.idTipoEstimulo;
-			fs.writeFile("./config/pruebaplantilla.json", JSON.stringify(plantilla));
+			fs.writeFile("./persistence/plantillaCarga-"+id_preg+".json", JSON.stringify(plantilla));
 			Prueba.findAll({where:{idPrueba: f[0].dataValues.idPrueba}},{raw: true}).then(function(p){
 				plantillaPaq.id = f[0].dataValues.idPrueba;
 				plantillaPaq.title = p[0].dataValues.titulo;
-				fs.writeFile("./config/plantillaPaquetes-"+id_equipo+".json", JSON.stringify(plantillaPaq))
+				fs.writeFile("./persistence/plantillaPaquetes-"+id_equipo+".json", JSON.stringify(plantillaPaq))
 			})
 			
 			
@@ -617,7 +617,9 @@ module.exports = {
 		})
 
 	},
-	importarExcel: function(nombre){
+	importarExcelPersona: function(nombre,fs){
+		var prueba = require("../views/js/correctorEjemplo.json")
+		console.log(JSON.stringify(prueba))
 		xls({
     		input: "./config/Hoja1.xlsx",  // input xls 
     		output: "./config/lista.json", // output json 
@@ -627,8 +629,9 @@ module.exports = {
     			console.log("error archivo")
   				console.error(err);
     		} else {
-    			console.log("resultado")
-      			console.log(result);
+    			result.forEach(function(ex){
+    				console.log("numero: "+ex.Numero+" RUT: "+ex.RUT+" pobla: "+ex.Pobla+" calle: "+ex.Calle)
+    			})
     		}
   		});
 	}
@@ -663,7 +666,7 @@ function asignacionFamilias(fam,fs,c, idp, asignacion, eq, titp){
 				cont++
 				if(cont==fam.familia.length){
 				plantillaCorrector.familias = famcorrector;
-				fs.writeFile("./config/pruebaplantilla.json", JSON.stringify(plantillaCorrector))
+				fs.writeFile("./persistence/plantillaCarga-"+idp+".json", JSON.stringify(plantillaCorrector))
 				asignacionesTeam(plantillaCorrector, fs, idp, asignacion, eq, titp)
 			}
 			})
@@ -701,7 +704,7 @@ function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
 							Asignacion.create({idUsuario: correc.userEquipo[0].dataValues.idUsuario, idRespuesta: r[resp].dataValues.idRespuesta, idEstado: 1})
 							asignadas.push({id_respuesta: id, valor: val, id_estado: idEs, correccion: cor})
 							if(asignadas.length==100){
-								archivo = "./config/"+username+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
+								archivo = "./persistence/"+username+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
 								guardar.respuestas = asignadas;
 								fs.writeFile(archivo, JSON.stringify(guardar));
 								paq.push({parte: parte, contestadas: 0, duda: 0, noContestadas: asignadas.length})
@@ -717,18 +720,18 @@ function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
 								resto--;
 								var plantillaPaqUser = null;
 								if(asignadas.length>0){
-									archivo = "./config/"+correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
+									archivo = "./persistence/"+correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
 									guardar.respuestas = asignadas;
 									paq.push({parte: parte, contestadas: 0, duda: 0, noContestadas: asignadas.length})
 									fs.writeFile(archivo, JSON.stringify(guardar));
 								}
-								fs.access("./config/"+username+"-paquetes.json", function(err){
+								fs.access("./persistence/"+username+"-paquetes.json", function(err){
 									if(err){
-										plantillaPaqUser = require("./plantillaPaquetes-"+team+".json")
+										plantillaPaqUser = require("../persistence/plantillaPaquetes-"+team+".json")
 										pre = plantillaPaqUser.preguntas;
 										pre.push({idPregunta: pregunta, preguntaTitle: titlep, respuestas: paq })
 										plantillaPaqUser.preguntas = pre;
-										fs.writeFile("./config/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
+										fs.writeFile("./persistence/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
 										plantillaPaqUser.preguntas = [];
 										asignadas = [];
 										paq = [];
@@ -736,12 +739,12 @@ function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
 										g = 0;
 										resto--;
 									}else{
-										plantillaPaqUser = require("./"+username+"-paquetes.json")
+										plantillaPaqUser = require("../persistence/"+username+"-paquetes.json")
 										
 										pre = plantillaPaqUser.preguntas;
 										pre.push({idPregunta: pregunta, preguntaTitle: titlep, respuestas: paq })
 										plantillaPaqUser.preguntas = pre;
-										fs.writeFile("./config/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
+										fs.writeFile("./persistence/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
 										plantillaPaqUser.preguntas = [];
 										paq = []
 										asignadas = [];
@@ -764,7 +767,7 @@ function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
 							Asignacion.create({idUsuario: correc.userEquipo[0].dataValues.idUsuario, idRespuesta: r[resp].dataValues.idRespuesta, idEstado: 1})
 							asignadas.push({id_respuesta: id, valor: val, id_estado: idEs, correccion: cor})
 							if(asignadas.length==100){
-								archivo = "./config/"+correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
+								archivo = "./persistence/"+correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
 								guardar.respuestas = asignadas;
 								fs.writeFile(archivo, JSON.stringify(guardar));
 								paq.push({parte: parte, contestadas: 0, duda: 0, noContestadas: asignadas.length})
@@ -778,29 +781,29 @@ function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
 								g = 0;
 								var plantillaPaqUser = null;
 								if(asignadas.length>0){
-									archivo = "./config/"+correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
+									archivo = "./persistence/"+correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno+"-"+r[0].dataValues.idPregunta+"-"+parte+".json"
 									guardar.respuestas = asignadas;
 									paq.push({parte: parte, contestadas: 0, duda: 0, noContestadas: asignadas.length})
 									fs.writeFile(archivo, JSON.stringify(guardar));	
 								}
-								fs.access("./config/"+username+"-paquetes.json", function(err){
+								fs.access("./persistence/"+username+"-paquetes.json", function(err){
 									if(err){
-										plantillaPaqUser = require("./plantillaPaquetes-"+team+".json")
+										plantillaPaqUser = require("../persistence/plantillaPaquetes-"+team+".json")
 										pre = plantillaPaqUser.preguntas;
 										pre.push({idPregunta: pregunta, preguntaTitle: titlep, respuestas: paq })
 										plantillaPaqUser.preguntas = pre;
-										fs.writeFile("./config/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
+										fs.writeFile("./persistence/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
 										paq = []
 										plantillaPaqUser.preguntas = [];
 										asignadas = [];
 										parte = 1;
 										g = 0;
 									}else{
-										plantillaPaqUser = require("./"+username+"-paquetes.json")
+										plantillaPaqUser = require("../persistence/"+username+"-paquetes.json")
 										pre = plantillaPaqUser.preguntas;
 										pre.push({idPregunta: pregunta, preguntaTitle: titlep, respuestas: paq })
 										plantillaPaqUser.preguntas = pre;
-										fs.writeFile("./config/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
+										fs.writeFile("./persistence/"+username+"-paquetes.json", JSON.stringify(plantillaPaqUser))
 										plantillaPaqUser.preguntas = [];
 										paq = []
 										asignadas = [];
