@@ -4,6 +4,7 @@ conexión con la base de datos
 var sequelize = require('./configDB.js')
 var Sequelize = require('sequelize')
 var xls = require('xls-to-json')
+const Op = Sequelize.Op;
 /*
 Se importan los modelos
 */
@@ -182,6 +183,7 @@ module.exports = {
 						if(data.length>0){
 							for(var i = 0; i<codigo.length; i++){
 								updateCorreccion(data[i].idAsignacion,codigo[i].id_codigo,data[i].idAsignacionCodigo, carga, fs)
+								console.log("entra a la actualizacion")
 							}
 						}else{							
 								saveCorreccion(result, codigo, carga, usuario, fs)					
@@ -617,8 +619,9 @@ module.exports = {
 		})
 
 	},
-	importarExcelPersona: function(nombre,fs){
-		var prueba = require("../views/js/correctorEjemplo.json")
+	importarExcelUsuario: function(nombre,fs){
+		var con = 0;
+		var queryPersona = 'INSERT INTO usuario (`id_tipo_usuario`, `usuario`, `contraseña`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`) VALUES '
 		console.log(JSON.stringify(prueba))
 		xls({
     		input: "./config/Hoja1.xlsx",  // input xls 
@@ -629,14 +632,106 @@ module.exports = {
     			console.log("error archivo")
   				console.error(err);
     		} else {
-    			result.forEach(function(ex){
-    				console.log("numero: "+ex.Numero+" RUT: "+ex.RUT+" pobla: "+ex.Pobla+" calle: "+ex.Calle)
+    			result.forEach(function(per){
+    				if(con==0){
+    					queryPersona+="("+per.idTipoUsuario+",'"+per.Usuario+"','"+per.Password+"','"+per.nombre+"','"+per.ApellidoPaterno+"','"+per.ApellidoMatern+"','"+per.email+"')"
+    				}else{
+    					queryPersona+="("+per.idTipoUsuario+",'"+per.Usuario+"','"+per.Password+"','"+per.nombre+"','"+per.ApellidoPaterno+"','"+per.ApellidoMaterno+"','"+per.email+"')"
+    				}
+    				if(con==result.length){
+    					return sequelize.transaction(function(t){
+    						return sequelize.query(q,{transaction: t})
+    					}).then(function(){
+    						
+    					}).catch(function(){
+    						
+    					})
+    				}
+    				con++;
     			})
     		}
   		});
+	},
+	SupervisorEquipo: function(idEq,fs){
+		UsuarioEquipo.findAll({where: {idEquipo: idEq}, include: [{model: Usuario, as: 'userEquipo', where: {idUsuario: Sequelize.col('UsuarioEquipo.id_usuario')}}]},{raw: true}).then(function(u){
+			var data = [];
+			var contador = 0;
+			u.forEach(function(usuario){
+				var contar = 0;
+				Asignacion.findAll({where:{idUsuario: usuario.userEquipo[0].dataValues.idUsuario}},{raw:true}).then(function(a){
+					if(a.length==0){
+						data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1})
+						contador++;
+						if(contador== u.length){
+								IndiceConsistencia(data, u)
+							}
+					}
+					for (var i = 0; i < a.length; i++) {
+						if(a[i].dataValues.idEstado==2){
+							contar++;
+						}
+						if(i==a.length-1){
+							data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 0})
+							contador++;
+							if(contador== u.length){
+								IndiceConsistencia(data, u)
+							}
+							contar = 0;
+						}
+					}
+				})
+			})
+		})
 	}
 }
 
+function IndiceConsistencia(d, users){
+	var c = 0;
+	users.forEach(function(us){
+		var z = 0;
+		Asignacion.findAll({where:{idUsuario: us.userEquipo[0].dataValues.idUsuario, idEstado: 2}},{raw:true}).then(function(a){
+			a.forEach(function(au){
+				var consis = 0;
+				Asignacion.findAll({where:{idRespuesta: au.dataValues.idRespuesta}},{raw:true}).then(function(ar){
+					for (var i = 0; i < ar.length; i++) {
+						var cons = true;
+						if(ar[i].dataValues.idUsuario!=au.dataValues.idUsuario){
+							AsignacionCodigo.findAll({where:{idAsignacion: ar[i].dataValues.idAsignacion}},{raw:true}).then(function(ad){
+								AsignacionCodigo.findAll({where:{idAsignacion: au.dataValues.idAsignacion}},{raw:true}).then(function(ap){
+									for (var j = 0; j < ap.length; j++) {
+										if(ad.length==0){
+											consis++;
+										}else if(ap[j].dataValues.idCodigo!=ad[j].dataValues.idCodigo){
+											cons = false;
+										} 
+										if(j==ap.length-1 && cons==true){
+											consis++;
+										}
+										if(j==ap.length-1){
+											cons = true;
+											z++;
+											if(z==a.length){
+												for (var k = 0; k < d.length; k++) {
+													if(d[k].ID == us.userEquipo[0].dataValues.idUsuario){
+														d[k].consistencia = consis;
+														c++;
+														if(c==a.length){
+															console.log(JSON.stringify(d))
+														}
+													}
+												}
+											}
+										}
+									}
+								})
+							})
+						}	
+					}
+				})
+			})
+		})
+	})
+}
 function asignacionFamilias(fam,fs,c, idp, asignacion, eq, titp){
 	var famcorrector = [];
 	var codcorrector = [];
@@ -821,7 +916,7 @@ function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
 }
 
 function saveCorreccion(asignacion, codigo, carga, usuario, fs){
-	q = 'INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES '
+	q = "INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES "
 	for (var i = 0; i < codigo.length; i++) {
 			if(i>0){
 				q+= ',('+asignacion.idAsignacion+','+codigo[i].id_codigo+')'	
@@ -844,7 +939,9 @@ function saveCorreccion(asignacion, codigo, carga, usuario, fs){
 
 function updateCorreccion(asignacion, codigo, codigoAsignacion, carga, fs){
 	return sequelize.transaction(function(t){
-		return AsignacionCodigo.update({idCodigo: codigo},{where:{idAsignacionCodigo: codigoAsignacion}}, { transaction: t });
+		return AsignacionCodigo.destroy({where:{idAsignacionCodigo: codigoAsignacion}}, { transaction: t }).then(function(){
+			return AsignacionCodigo.create({idAsignacion: asignacion, idCodigo: codigo})
+		});
 	}).then(function(){
 		fs.writeFile("./views/js/correctorEjemplo.json", JSON.stringify(carga)); 
 	}).catch(function(err){
