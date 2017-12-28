@@ -98,19 +98,11 @@ function generateTabsAndContent(){
 				totalNoCorregidas += datos[i].datos_respuestas.no_corregidos;
 			}
 
-		// console.log(datos[i].datos_respuestas.corregidos, (datos[i].datos_respuestas.corregidos + datos[i].datos_respuestas.no_corregidos) );
-
-		var auxCorregidas = parseInt(datos[i].datos_respuestas.corregidos),
-			auxNoCorregidas = parseInt(datos[i].datos_respuestas.no_corregidos);
-
-		var aBar = ( auxCorregidas / (auxCorregidas + auxNoCorregidas) ) * 100;
-		var bBar = ( auxNoCorregidas / (auxCorregidas + auxNoCorregidas) ) * 100;
-
 		barGraphData.push(
 			{
 				y: 'Instrumento '+datos[i].id_instrumento,
-				a: aBar.toFixed(0),
-				b: bBar.toFixed(0)
+				a: datos[i].datos_respuestas.corregidos,
+				b: datos[i].datos_respuestas.no_corregidos
 			}
 		);
 	};
@@ -124,9 +116,9 @@ function generateTabsAndContent(){
 	createDonut('donutGeneral', [ {label: 'Corregidos', value: totalCorregidas}, {label: 'No Corregidos', value: totalNoCorregidas} ] );
 
 	// createBarsGraph('grafAvancePruebaGeneral', barGraphData);
-	createBarsGraphWithKeys( document.getElementById('grafAvancePruebaGeneral'), barGraphData, ['% No Corregidas', '% Corregidas']);
+	createBarsGraphWithKeys( document.getElementById('grafAvancePruebaGeneral'), barGraphData, ['No Corregidas', 'Corregidas']);
 
-	// console.log('otro: ', barGraphData);
+	console.log('otro: ', barGraphData);
 	
 	$('.visible').removeClass('visible');
 }
@@ -256,7 +248,6 @@ function createInstrumentoDataContainer(instrumento, index){
 	$('#tabContent > #insCont_'+index).data('no-corregidos', instrumento.datos_respuestas.no_corregidos);
 
 	// console.log($('#tabContent > #insCont_'+instrumento.id_instrumento).data('corregidos'));
-
 	var donutValues = [
 		{
 			label: 'Corregidos',
@@ -273,33 +264,19 @@ function createInstrumentoDataContainer(instrumento, index){
 	var barData = [];
 
 	for (var i = 0; i < instrumento.preguntas.length; i++) {
-
-		var auxCorregidas = parseInt(instrumento.datos_respuestas.corregidos),
-			auxNoCorregidas = parseInt(instrumento.datos_respuestas.no_corregidos);
-
-		var aBar = ( auxCorregidas / (auxCorregidas + auxNoCorregidas) ) * 100;
-		var bBar = ( auxNoCorregidas / (auxCorregidas + auxNoCorregidas) ) * 100;
-
-		barData.push(
-			{
+		// instrumento.preguntas[i]
+		barData.push( 
+			{ 
 				y: 'Pregunta '+instrumento.preguntas[i].id_pregunta,
-				a: aBar.toFixed(0),
-				b: bBar.toFixed(0)
-			}
+				a: parseInt(instrumento.datos_respuestas.corregidos),
+				b: instrumento.datos_respuestas.no_corregidos
+			} 
 		);
-
-		// barData.push( 
-		// 	{ 
-		// 		y: 'Pregunta '+instrumento.preguntas[i].id_pregunta,
-		// 		a: parseInt(instrumento.datos_respuestas.corregidos),
-		// 		b: instrumento.datos_respuestas.no_corregidos
-		// 	} 
-		// );
 	}
 
 	// console.log(barData);
 
-	createBarsGraphWithKeys(divGraph, barData, ['% No Corregidas', '% Corregidas']);
+	createBarsGraphWithKeys(divGraph, barData, ['No Corregidas', 'Corregidas']);
 
 	var divRowInf = document.createElement('div');
 		divRowInf.id = 'divRowInf';
@@ -324,13 +301,6 @@ function createInstrumentoDataContainer(instrumento, index){
 	cardBodyInf.appendChild(createTableContainer());
 
 	$('#tabContent > #insCont_'+index).append(divRowInf);
-
-	setDataToTablesIntrumento();
-}
-
-function setDataToTablesIntrumento(){
-
-
 }
 
 function drawDonut(e){
@@ -416,7 +386,7 @@ function createUITableTabs(elements){
 			tabPanes.id = elements[index].replace(' ', '_');
 
 		var table = document.createElement('table');
-			table.id = 'tabla'+elements[index].replace(' ', '_');
+			table.id = 'tabla_'+elements[index].replace(' ', '_');
 			table.className = 'table-bordered table-striped table-hover dataTable js-exportable';
 			table.style.width = '100%';
 
@@ -429,11 +399,12 @@ function createUITableTabs(elements){
 
 	$(divContainer).append(panesContainer);
 
-	getCorrectorTableData('table_corrector');
+
+	getCorrectorTableData('tabla_'+elements[0]);
 
 	// for(var index = 0; index < elements.length; index++){
 		
-		// createTable('tabla'+elements[index].replace(' ', '_'), arrayTabas[index]);
+	// 	createTable('tabla'+elements[index].replace(' ', '_'), arrayTabas[index]);
 	// };
 }
 
@@ -442,20 +413,30 @@ function getCorrectorTableData(id){
 	$.getJSON( "./persistence/correctorTabla(1).json", function( data ) {
 
 		var dataset = [];
+		var dataGroup = [];
+
+		console.log(data, data.length);
 
 		for (var i = 0; i < data.length; i++) {
+
+			var aux = data[i].Asignadas == 0 ? 0: (( data[i].Corregidas / (data[i].Corregidas + data[i].Asignadas)) * 100 );
+
 			dataset.push(data[i].ID);
 			dataset.push(data[i].Asignadas);
 			dataset.push(data[i].Corregidas);
-			dataset.push(( data[i].Corregidas / (data[i].Corregidas + data[i].Asignadas)) * 100 );
-			dataset.push(data[i].consistencia)
-			dataset.push(data[i].carga)
+			dataset.push(aux.toFixed(2));
+			dataset.push(data[i].consistencia);
+			dataset.push(data[i].carga);
+
+			dataGroup.push(dataset);
+
+			dataset = [];
 		};
 		
 
-		tablaPorCorrector.dataSet = data;
+		tablaPorCorrector.dataSet = dataGroup;
 
-		console.log(tablaPorCorrector);
+		// console.log(tablaPorCorrector);
 
 		createTable(id, tablaPorCorrector);
 
@@ -476,7 +457,7 @@ function createDonut(id, values){
 	Morris.Donut({
 		element: donutContainer,
 		data: values,
-		colors: ['rgb(0, 188, 212)', 'rgb(233, 30, 99)', 'rgb(255, 152, 0)', 'rgb(0, 150, 136)'],
+		colors: ['rgb(0, 188, 212)', 'rgb(233, 30, 99)',  'rgb(255, 152, 0)', 'rgb(0, 150, 136)'],
 		resize: true,
 		formatter: function (y) {
 			return y
@@ -601,7 +582,7 @@ function openModalDetail(){
 
 	clearModal();
 
-	switch($('#btnGrupo').find('.btn-primary').html()){
+	switch($('ul#ulTableType > li.active > a').html()){
 
 		case 'Corrector':
 			var table = document.createElement('table');

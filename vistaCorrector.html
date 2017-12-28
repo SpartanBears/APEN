@@ -4,7 +4,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<title>Pregunta n°1</title>
+	<title>Corrector</title>
+	<!-- Favicon-->
+	<link rel="icon" href="./vendors/AdminBSB/favicon.ico" type="image/x-icon">
 
 	<!-- PRELOADED ADMINBSB -->
 
@@ -27,8 +29,7 @@
 		<!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
 		<link href="./vendors/AdminBSB/css/themes/all-themes.css" rel="stylesheet" />
 
-		<link rel="stylesheet" type="text/css" href="./css/style.css">
-		<link rel="stylesheet" type="text/css" href="./css/menuStyle.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 
 <body class="theme-red">
@@ -45,7 +46,7 @@
 					</div>
 				</div>
 			</div>
-			<p>Please wait...</p>
+			<p>Espere por favor...</p>
 		</div>
 	</div>
 	<!-- #END# Page Loader -->
@@ -69,7 +70,7 @@
 			<div class="navbar-header">
 				<a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
 				<a href="javascript:void(0);" class="bars"></a>
-				<a class="navbar-brand" href="./vendors/AdminBSB/index.html"><img class="navbar_logo" src="./resources/images/qualansLogo_v1.png"></a>
+				<a class="navbar-brand" href="./vendors/AdminBSB/index.html">Qualans</a>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
@@ -210,89 +211,102 @@
 	</nav>
 	<div class="container content">
 		<div class="row">
-			<div class="col-xs-12">
-				<div class="card">
-					<div class="header">
-						<h4>Instrumento > Pregunta</h4>
-					</div>
-					<div class="body">
-						<div class="row heightfix">
-							<div class="col-md-9 cols-corrector">
-								<div class="row">
-
-									<div class="col-md-12">
-										<div class="row">
-											<div id="preguntaContainer" class="col-md-12">
-												<div class="card">
-													<div id="estimuloDisplay" class="body estimulo-container">
-														Pregunta
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div id="respuestaContainer" class="col-md-12">
-												<div class="card">
-													<div class="header">
-														<div class="row">
-															<div class="col-md-9">
-																<div id="tituloRespuesta">
-																	Respuesta A50
-																</div>
-															</div>
-															
-															<div class="col-md-3">
-																<input type="text" class="form-control" placeholder="Buscar">
-															</div>
-														</div>
-													</div>
-													<div class="body">
-														<div class="btns-status">
-															<input type="checkbox" class="filled-in" id="chboxDuda" />
-															<label for="chboxDuda">Duda</label>
-														</div>
-														<div id="respuestaDisplay" class="body respuesta-container">
-															Respuesta
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12">
-												<div class="navegacion-respuestas">
-													<div>
-														<button type="button" class="btn btn-lg btn-success waves-effect btn-anterior">Anterior</button>
-														<button type="button" class="btn btn-lg btn-success waves-effect btn-siguiente">Siguiente</button>
-													</div>
-													<div id="listadoRespuestas">
-													</div>
-													<div id="indicadorAsignaciones" class="row">
-														<!-- <div class="col-md-1">
-															<input id="respGroup" type="range" min="1"/>
-														</div>
-														<div class="col-md-11">
-															<div class="progress">
-															</div>
-														</div> -->
-														
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+			<!-- NAV RESPUESTAS -->
+			<div class="col-md-3">
+				<section class="left-panel-ans">
+				
+					<div class="panel-group full-body collapsable-left-bar" id="accordion_19" role="tablist" aria-multiselectable="true">
+						<div class="panel collapse-no-contestado">
+							<div class="panel-heading" role="tab" id="noCorregidasHead">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" href="#noCorregidas" aria-expanded="true" aria-controls="noCorregidas">
+										<i class="material-icons">event_note</i> No Corregidos
+									</a>
+								</h4>
+							</div>
+							<div id="noCorregidas" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="noCorregidasHead">
+								<div class="panel-body">
 									
 								</div>
 							</div>
-							<div class="col-md-3 cols-corrector">
-								<section class="family-panel">
-									<div class="panel-group full-body family-rigth-bar" id="familiaRespuestas" role="tablist" aria-multiselectable="true">
-									</div>
-								</section>
+						</div>
+						<div class="panel collapse-dudas">
+							<div class="panel-heading" role="tab" id="dudasHead">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" href="#preguntasDudas" aria-expanded="false" aria-controls="preguntasDudas">
+										<i class="material-icons">report</i> Dudas
+									</a>
+								</h4>
+							</div>
+							<div id="preguntasDudas" class="panel-collapse collapse" role="tabpanel" aria-labelledby="dudasHead">
+								<div class="panel-body">
+									
+								</div>
+							</div>
+						</div>
+						<div class="panel collapse-contestados">
+							<div class="panel-heading" role="tab" id="corregidasHead">
+								<h4 class="panel-title">
+									<a class="collapsed" role="button" data-toggle="collapse" href="#corregidas" aria-expanded="false" aria-controls="corregidas">
+										<i class="material-icons">done_all</i> Corregidos
+									</a>
+								</h4>
+							</div>
+							<div id="corregidas" class="panel-collapse collapse" role="tabpanel" aria-labelledby="corregidasHead">
+								<div class="panel-body">
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</section>
+			</div>
+			<!-- FIN NAV RESPUESTAS -->
+			<!-- #Top Bar -->
+			<div class="col-md-6">
+				<section class="middle-panel">
+					<div class="container-fluid">
+						<div class="block-header">
+							<!-- <h2>BLANK PAGE</h2> -->
+						</div>
+						
+						<div class="row">
+							<div class="col-xs-10">
+								<h3 id="preguntaDisplay" class="body pregunta-container">
+									Ejemplo Pregunta
+								</h3>
+							</div>
+							<div class="col-xs-2 btns-status-contaienr">
+								<div class="btns-status">
+									<input type="checkbox" id="chboxDuda" />
+									<label for="chboxDuda">Duda</label>
+								</div>
+								<div class="btns-status">
+									<input type="checkbox" id="chBoxCorregida" />
+									<label for="chBoxCorregida">Corregido</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="card">
+							<div id="estimuloDisplay" class="body estimulo-container">
+								<strong>Estimulo</strong>
+							</div>
+						</div>
+						<div class="card">
+							<div id="respuestaDisplay" class="body respuesta-container">
+								<strong>Respuesta</strong>
+							</div>
+						</div>
+					</div>
+					<button type="button" class="btn btn-lg btn-success waves-effect btn-anterior">Anterior</button>
+					<button type="button" class="btn btn-lg btn-success waves-effect btn-siguiente">Siguiente</button>
+				</section>
+			</div>
+			<div class="col-md-3">
+				<section class="family-panel">
+					<div class="panel-group full-body family-rigth-bar" id="familiaRespuestas" role="tablist" aria-multiselectable="true">
+					</div>
+				</section>
 			</div>
 		</div>
 	</div>
@@ -336,9 +350,7 @@
 		<!-- Demo Js -->
 		<script src="./vendors/AdminBSB/js/demo.js"></script>
 
-		<script src="/socket.io/socket.io.js"></script>	
-
-		<script type="text/javascript" src="./js/corrector.js"></script>
+	<script type="text/javascript" src="./js/corrector.js"></script>
 </body>
 
 </html>

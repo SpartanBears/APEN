@@ -4,9 +4,13 @@ var datosSinCambios = null;
 // listaNoCorregidas
 // listaDudas
 var io = io();
+var cantAsignadas = 0,
+	cantNoAsignadas = 0,
+	cantDudas = 0;
+var cantPerResp = 20;
 
 $( document ).ready( function(){
-	verificarLogin();
+
 	$.AdminBSB.browser.activate();
     $.AdminBSB.navbar.activate();
     $.AdminBSB.dropdownMenu.activate();
@@ -27,7 +31,6 @@ function initCorrectorView(){
 	setPanelButtons(datosRespuestas.respuestas);
 	setEvents();
 	loadPregunta();
-
 }
 
 function loadPregunta(){
@@ -76,8 +79,6 @@ function scrollHandler(e){
 
 	if(scrollTop > $('.cols-corrector')[1].offsetTop){
 
-		console.log(scrollTop - $('.cols-corrector')[1].offsetTop);
-
 		$('.cols-corrector > .family-panel').addClass('fixed');
 
 		$('.cols-corrector > .family-panel').css('top', scrollTop - $('.cols-corrector')[1].offsetTop+'px');
@@ -101,7 +102,7 @@ function loadRespuesta(respuesta){
 
 	$('#tituloRespuesta').empty().html('Respuesta '+respuesta.id_respuesta);
 
-	$('#familiaRespuestas').find('button.btn-primary').removeClass('btn-primary').addClass('btn-default');
+	$('#familiaRespuestas').find('button.btn-selected').removeClass('btn-selected btn-primary').addClass('btn-default');
 
 	var btnsCodigos = getBtnsCodigos();
 
@@ -113,6 +114,7 @@ function loadRespuesta(respuesta){
 
 				if(respuesta.correccion[i].id_codigo == btnsCodigos[c].codigoData.id_codigo){
 
+					btnsCodigos[c].classList.add('btn-selected');
 					btnsCodigos[c].classList.add('btn-primary');
 					btnsCodigos[c].classList.remove('btn-default');
 				}
@@ -128,7 +130,8 @@ function loadRespuesta(respuesta){
 
 					if(respuesta.correccion[i].id_codigo == btnsCodigos[c].idCodigo){
 
-						btnsCodigos[c].classList.add('btn-primary');
+						btnsCodigos[c].classList.add('btn-selected');
+						btnsCodigos[c].classList.remove('btn-primary');
 						btnsCodigos[c].classList.remove('btn-default');
 					}
 				}
@@ -158,19 +161,85 @@ function updateNoCorregida(respuesta){
 
 	var newAsignacion = getCodigosAsignados();
 
-	if(datosSinCambios=== null){
-		datosSinCambios = getRespuestaActiva();
-	}
-
 	datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].correccion = newAsignacion;
 
 	if(newAsignacion.length > 0 && !isDudaRespuesta(respuesta)){
+
 		datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].id_estado = 2;
 	}else if (newAsignacion.length == 0 && !isDudaRespuesta(respuesta)){
 
 		datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].id_estado = 1;
+	}else if(isDudaRespuesta(respuesta)){
+
+		datosRespuestas.respuestas[datosRespuestas.respuestas.indexOf(respuesta)].id_estado = 3;
 	}
-	// console.log(, respuesta);
+
+	changeBtnRespuesta();
+}
+
+function changeBtnRespuesta(){
+
+	var respuestas = datosRespuestas.respuestas;
+	var getBtnRespuestas = getArrayBtnRespuestas();
+
+	var classNoAsignada = 'btn-default',
+		classAsignada = 'btn-success',
+		classDuda = 'btn-warning',
+		iconNoAsignada = document.createElement('i'),
+		iconAsignada = document.createElement('i'),
+		iconDuda = document.createElement('i');
+
+		iconNoAsignada.className = 'material-icons';
+		iconNoAsignada.innerHTML = 'check_box_outline_blank';
+
+		iconAsignada.className = 'material-icons';
+		iconAsignada.innerHTML = 'done';
+
+		iconDuda.className = 'material-icons';
+		iconDuda.innerHTML = 'help_outline';
+
+	for (var i = 0; i < respuestas.length; i++) {
+
+		$(getBtnRespuestas[i]).removeClass(classNoAsignada + ' ' + classAsignada + ' ' + classDuda);
+		$(getBtnRespuestas[i]).empty();
+
+		// console.log('esta: ', respuestas[i].id_estado);
+
+		switch(respuestas[i].id_estado){
+
+			case 2:
+
+				$(getBtnRespuestas[i]).addClass(classAsignada);
+				$(getBtnRespuestas[i]).html(iconAsignada.cloneNode(true));
+			break;
+
+			case 1:
+
+				$(getBtnRespuestas[i]).addClass(classNoAsignada);
+				$(getBtnRespuestas[i]).html(iconNoAsignada.cloneNode(true));
+			break;
+
+			case 3:
+
+				$(getBtnRespuestas[i]).addClass(classDuda);
+				$(getBtnRespuestas[i]).html(iconDuda.cloneNode(true));
+			break;
+
+			default:
+
+				$(getBtnRespuestas[i]).addClass(classNoAsignada);
+				$(getBtnRespuestas[i]).html();
+			break;
+		}
+
+		
+	};
+
+}
+
+function getArrayBtnRespuestas(){
+
+	return $('#listadoRespuestas').find('button.btn-respuestas[type=button]');
 }
 
 function isDudaRespuesta(respuesta){
@@ -187,7 +256,7 @@ function isDudaRespuesta(respuesta){
 function getCodigosAsignados(){
 
 	var out = [],
-		btnsActivos = $('#familiaRespuestas').find('.btn-primary');
+		btnsActivos = $('#familiaRespuestas').find('.btn-selected');
 
 	for (var i = 0; i < btnsActivos.length; i++) {
 		out.push(btnsActivos[i].codigoData);
@@ -203,7 +272,7 @@ function getRespuestaActiva(){
 
 function getBtnRespuestaActivo(){
 
-	return $('#listadoRespuestas').find('.btn-primary')[0];
+	return $('#listadoRespuestas').find('.btn-selected')[0];
 }
 
 function getBtnsCodigos(){
@@ -223,21 +292,24 @@ function getBtnsCodigosMismaFamilia(btn){
 
 		for(var index = 0; index < families.length; index++){
 
-			var titleFamily = families[index].titulo.toLowerCase().replace(' ', '_');
+			var titleFamily = families[index].titulo.toLowerCase().replace(' ', '_') + '_'+index;
 
 			var divPanel = document.createElement('div');
 				divPanel.className = 'panel collapse-'+titleFamily;
 
-			divPanel.appendChild(getPanelHeader(families[index].titulo, 'perm_contact_calendar'));
-			divPanel.appendChild(getPanelBodyFamilies(families[index].titulo, families[index].codigos));
+			console.log(index);
+
+			divPanel.appendChild(
+				getPanelHeader(families[index].titulo,'perm_contact_calendar', index));
+			divPanel.appendChild(getPanelBodyFamilies(families[index].titulo, families[index].codigos, index));
 
 			$(familiesContainer).append(divPanel);
 		}
 	}
 
-	function getPanelBodyFamilies(title, subElements){
+	function getPanelBodyFamilies(title, subElements, index){
 
-		var titleFamily = title.toLowerCase().replace(' ', '_');
+		var titleFamily = title.toLowerCase().replace(' ', '_') + '_' + index;
 
 		var divTabPanel =document.createElement('div');
 			divTabPanel.id = titleFamily;
@@ -283,9 +355,11 @@ function getBtnsCodigosMismaFamilia(btn){
 		return divTabPanel;
 	}
 
-	function getPanelHeader(title, icon){
+	function getPanelHeader(title, icon, index){
 
-		var titleFamily = title.toLowerCase().replace(' ', '_');
+		console.log(index);
+
+		var titleFamily = title.toLowerCase().replace(' ', '_') + '_' + index;
 
 		var divPanelHeader = document.createElement('div');
 			divPanelHeader.className = 'panel-heading';
@@ -301,6 +375,7 @@ function getBtnsCodigosMismaFamilia(btn){
 
 		var iconContainer = document.createElement('i');
 			iconContainer.className = 'material-icons';
+	
 			iconContainer.innerHTML = icon;
 
 		if(icon != undefined)	anchorHeader.appendChild(iconContainer);
@@ -315,7 +390,26 @@ function getBtnsCodigosMismaFamilia(btn){
 
 function setPanelButtons(subElements){
 
+	var cantPerGroup = 20;
+	var cContId = -1;
+	var respGroupContainer;
+
+	console.log( Math.floor(subElements.length / cantPerResp)+1  );
+ 
+	$('#respGroup').attr('max', Math.floor(subElements.length / cantPerResp)+1 );
+
 	for(var index = 0; index < subElements.length; index++){
+
+		if(cContId != Math.floor(index / cantPerGroup)){
+
+			cContId = Math.floor(index / cantPerGroup);
+
+			respGroupContainer = document.createElement('div');
+			respGroupContainer.id = 'cont_' + Math.floor(index / cantPerGroup);
+			respGroupContainer.className = 'cont-btn-resp';
+
+			$('#listadoRespuestas').append(respGroupContainer);
+		}
 
 		var btnCodigo = document.createElement('button');
 			btnCodigo.type = 'button';
@@ -324,50 +418,105 @@ function setPanelButtons(subElements){
 			btnCodigo.respuestaData = subElements[index];
 			btnCodigo.onclick = clickRespuestaEvt;
 
-		$('#listadoRespuestas').append(btnCodigo);
+		$(respGroupContainer).append(btnCodigo);
 
-		if(index != 0){
+		// addNewSegmentToProgress(subElements[index].id_estado, subElements.length);
 
-			switch(subElements[index].id_estado){
+		switch(subElements[index].id_estado){
 
-				// 1 es de una respuesta no corregida
-				case 1:
-					btnCodigo.classList.add('btn-default');
-					btnCodigo.innerHTML = '<i class="fa fa-circle-o" aria-hidden="true"></i>';
-				break;
+			// 1 es de una respuesta no corregida
+			case 1:
+				btnCodigo.classList.add('btn-default');
+				btnCodigo.innerHTML = '<i class="material-icons" style="">check_box_outline_blank</i>';
+				cantNoAsignadas++;
+			break;
 
-				// 2 corregida
-				case 2:
-					
-					btnCodigo.classList.add('btn-success');
-					btnCodigo.innerHTML = '<i class="fa fa-check-circle" aria-hidden="true"></i>';
-				break;
+			// 2 corregida
+			case 2:
+				btnCodigo.classList.add('btn-success');
+				btnCodigo.innerHTML = '<i class="material-icons">done</i>';
+				cantAsignadas++;
+			break;
 
-				// 3 duda
-				case 3:
-					
-					btnCodigo.classList.add('btn-warning');
-					btnCodigo.innerHTML = '<i class="fa fa-exclamation" aria-hidden="true"></i>';
-				break;
-			}
-		}else{
+			// 3 duda
+			case 3:
+				btnCodigo.classList.add('btn-warning');
+				btnCodigo.innerHTML = '<i class="material-icons">help_outline</i>';
+				cantDudas++;
+			break;
+		}
+
+		if(index == 0){
 			
-			btnCodigo.classList.add('btn-primary');
+			btnCodigo.classList.add('btn-selected');
 			loadRespuesta(subElements[index]);
 		}
 	}
+
+	// updateProgressBar();
 }
+
+function addNewSegmentToProgress(type, total){
+
+	var barra = $('#indicadorAsignaciones .progress');
+
+	var successBar = document.createElement('div');
+		successBar.className = 'progress-bar progress-bar-success';
+
+	var warningBar = document.createElement('div');
+		warningBar.className = 'progress-bar progress-bar-warning';
+
+	var dangerBar = document.createElement('div');
+		dangerBar.className = 'progress-bar progress-bar-default';
+
+	switch(type){
+
+		case 1:
+
+			$(barra).append(dangerBar.cloneNode(true));
+		break;
+
+		case 2:
+
+			$(barra).append(successBar.cloneNode(true));
+		break;
+
+		case 3:
+
+			$(barra).append(warningBar.cloneNode(true));
+		break;
+	}
+
+	// console.log(total, (100/total))
+
+	var percent = (100/total).toFixed(2) + '%';
+
+	// console.log(percent);
+
+	$('#indicadorAsignaciones .progress-bar').css('width', percent );
+}
+
+// function updateProgressBar(){
+
+// 	var total = cantNoAsignadas + cantAsignadas + cantDudas;
+
+// 	$('.progress-bar.progress-bar-success').css('width', ((cantAsignadas/total)*100) + '%' );
+
+// 	$('.progress-bar.progress-bar-warning').css('width', ((cantDudas/total)*100) + '%' );
+
+// 	$('.progress-bar.progress-bar-danger').css('width', ((cantNoAsignadas/total)*100) + '%' );
+// }
 
 // 
 function clickRespuestaEvt(e){
 
 	var contPreguntas = '#listadoRespuestas';
 
-	var arrayBtnRespuetas = $(contPreguntas).children().not(this);
+	var arrayBtnRespuetas = $('button.btn-respuestas').not(this);
 
 	resetBtnStyle(arrayBtnRespuetas);
 
-	$(this).removeClass('btn-default btn-success btn-warning').addClass('btn-primary');
+	$(this).addClass('btn-selected');
 
 
 	loadRespuesta(this.respuestaData);
@@ -375,26 +524,28 @@ function clickRespuestaEvt(e){
 
 function resetBtnStyle(arrayBtnRespuetas){
 
+	var btnClassSelector = 'btn-selected btn-primary';
+
 	for (var i = 0; i < arrayBtnRespuetas.length; i++) {
 
 		// switch
-		console.log(arrayBtnRespuetas[i].respuestaData.id_estado);
+		// console.log(arrayBtnRespuetas[i].respuestaData.id_estado);
 		switch(arrayBtnRespuetas[i].respuestaData.id_estado){
 
 			case 1:
-				$(arrayBtnRespuetas[i]).removeClass('btn-primary').addClass('btn-default');
+				$(arrayBtnRespuetas[i]).removeClass(btnClassSelector).addClass('btn-default');
 			break;
 
 			case 2:
-				$(arrayBtnRespuetas[i]).removeClass('btn-primary').addClass('btn-success');
+				$(arrayBtnRespuetas[i]).removeClass(btnClassSelector).addClass('btn-success');
 			break;
 
 			case 3:
-				$(arrayBtnRespuetas[i]).removeClass('btn-primary').addClass('btn-warning');
+				$(arrayBtnRespuetas[i]).removeClass(btnClassSelector).addClass('btn-warning');
 			break;
 
 			default:
-				$(arrayBtnRespuetas[i]).removeClass('btn-primary').addClass('btn-default');
+				$(arrayBtnRespuetas[i]).removeClass(btnClassSelector).addClass('btn-default');
 			break;
 		}
 	};
@@ -402,11 +553,12 @@ function resetBtnStyle(arrayBtnRespuetas){
 
 function clickCodigoEvt(e){
 
+	console.log(this);
 
 	if(!$(this).hasClass('btn-primary')){
-		$(this).removeClass('btn-default').addClass('btn-primary');
+		$(this).removeClass('btn-default').addClass('btn-primary btn-selected');
 	}else{
-		$(this).addClass('btn-default').removeClass('btn-primary');
+		$(this).addClass('btn-default').removeClass('btn-primary btn-selected');
 	}
 
 	$(getBtnsCodigosMismaFamilia(this)).not(this).removeClass('btn-primary').addClass('btn-default');
@@ -442,11 +594,12 @@ function clickDescripcionCodigo(e){
 }
 
 function clickPrev(e){
+
 	navRespuetas(-1);
 }
 
 function clickNext(e){
-    enviarCorreccion()
+	enviarCorreccion(getRespuestaActiva());
 	navRespuetas(1);
 }
 
@@ -469,12 +622,15 @@ function clickCheckboxDuda(e){
 		}
 	}
 
+	changeBtnRespuesta();
+
 	// toggleCorregidaCheckbox();
 	// changePanel();
 }
 
 // DEPRECADO
 function clickCheckboxCorregida(e){
+
 	var isInDuda = $('#chboxDuda').prop('checked'),
 		isCorregida = e.target.checked;
 
@@ -571,19 +727,29 @@ function toggleCorregidaCheckbox(){
 // se utiliza en los eventos de anterior y siguiente
 function navRespuetas(direction){
 
-	var arrayBtns = $(getBtnRespuestaActivo()).parent().children(),
+	// var arrayBtns = $(getBtnRespuestaActivo()).parent().children(),
+	var arrayBtns = $('button.btn-respuestas');
 		currentIndex = arrayBtns.index(getBtnRespuestaActivo());
 
 	var newIndex = 0;
 
 	newIndex = (currentIndex+direction)>=0 ? (currentIndex+direction) %arrayBtns.length : arrayBtns.length-1;
 
+	gotoDiv(Math.floor(newIndex / cantPerResp));
+
 	resetBtnStyle(arrayBtns);
 
 	// $(getBtnRespuestaActivo()).removeClass('btn-primary').addClass('btn-default');
-	$(arrayBtns[newIndex]).removeClass('btn-default btn-success btn-warning').addClass('btn-primary');
+	$(arrayBtns[newIndex]).addClass('btn-selected');
 
 	loadRespuesta(arrayBtns[newIndex].respuestaData);
+}
+
+function gotoDiv(index){
+
+	var contUbicacion = ($("#cont_0").outerHeight() * (index) ) + 'px';
+
+	$('#listadoRespuestas').animate({scrollTop: contUbicacion}, 250);
 }
 
 // almacena los datos de las respuestas y preguntas en SS
@@ -598,37 +764,32 @@ function getData(callback){
 
 	var strData;
 
-	$.getJSON( "./resources/correctorEjemplo.json", function( data ) {
+	$.getJSON( "../persistence/" + sessionStorage.nombre + "-" + sessionStorage.apellidoP + "-" + sessionStorage.apellidoM + "-" + sessionStorage.idPregunta + "-" + sessionStorage.parte + ".json", function( data ) {
 
-		datosRespuestas = data;
-		if(datosSinCambios===null){
-			datosSinCambios = data;
+		datosRespuestas = JSON.parse(JSON.stringify(data));
+		if(datosSinCambios==null){
+			datosSinCambios = JSON.parse(JSON.stringify(data));
 		}
-		
+
+		console.log(data);
+
 		if(callback != undefined)	callback();
 	});
 }
 
-function guardarCorreccion(data){
-	io.emit('Guardar Correccion',{ id_respuesta:data.id_respuesta, codigo:data.correccion, id_usuario: 1 })
-}
-
-
-
-function enviarCorreccion(){
+function enviarCorreccion(respuesta){
+	console.log("entro")
 	if(JSON.stringify(datosSinCambios)!== JSON.stringify(datosRespuestas)){
-		io.emit('Guardar Correccion',{id_respuesta: respuesta.id_respuesta, codigo: respuesta.correccion, nombre_usuario: sessionStorage.nombre, carga: datosRespuestas})
-		datosSinCambios = datosRespuestas;
+		console.log("se envio")
+		io.emit('Guardar Correccion',{idUsuario: sessionStorage.idUsuario, id_respuesta: respuesta.id_respuesta, codigo: respuesta.correccion, nombre_usuario: sessionStorage.nombre + "-" + sessionStorage.apellidoP + "-" + sessionStorage.apellidoM + "-" + sessionStorage.idPregunta + "-" + sessionStorage.parte, carga: datosRespuestas, idEstado: respuesta.id_estado})
 	}
 
 }
 
+io.on('Correccion Guardada',function(data){
+	datosSinCambios=JSON.parse(JSON.stringify(datosRespuestas));
+})
 
-function verificarLogin(){
-	if(sessionStorage.nombre == undefined && sessionStorage.apellidoP == undefined){
-		window.location.replace('/');
-	}
-}
 // //eventos que son lanzados por el servidor
 // io.on('Resultado Correccion', function(data){
 	

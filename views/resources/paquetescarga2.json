@@ -1,0 +1,60 @@
+{
+   "carga":[
+      {
+         "id_instrumento":1,
+         "instrumento":"instrumento 1",
+         "id_pregunta":1,
+         "parte":1,
+         "enunciado":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
+         "asignaciones":[
+            {
+               "contestadas":0,
+               "duda":3,
+               "noContestadas":7
+            }
+         ]
+      },
+      {
+         "id_instrumento":1,
+         "instrumento":"instrumento 1",
+         "id_pregunta":1,
+         "parte":2,
+         "enunciado":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
+         "asignaciones":[
+            {
+               "contestadas":4,
+               "duda":3,
+               "noContestadas":3
+            }
+         ]
+      },
+      {
+         "id_instrumento":1,
+         "instrumento":"instrumento 1",
+         "id_pregunta":1,
+         "parte":3,
+         "enunciado":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
+         "asignaciones":[
+            {
+               "contestadas":8,
+               "duda":2,
+               "noContestadas":0
+            }
+         ]
+      },
+      {
+         "id_instrumento":1,
+         "instrumento":"instrumento 1",
+         "id_pregunta":2,
+         "parte":1,
+         "enunciado":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed turpis in felis vulputate gravida.",
+         "asignaciones":[
+            {
+               "contestadas":5,
+               "duda":0,
+               "noContestadas":5
+            }
+         ]
+      }
+   ]
+}

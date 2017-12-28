@@ -37,12 +37,33 @@ io.on('connection', function (socket) {
     socket.on('Iniciar Sesion', function (data) {
         Funciones.login(data.user, data.pass, io, socket.id)
     })
+    socket.on('Crear Usuario',function(data){
+        Funciones.agregarUsuario(data.id_tipo_usuario,data.usuario,data.password,data.nombre,data.apellido_paterno,data.apellido_materno,data.correo,fs)
+    })
+    socket.on('Editar Usuario',function(data){
+        Funciones.editarUsuario(data.id_tipo_usuario,data.usuario,data.password,data.nombre,data.apellido_paterno,data.apellido_materno,data.correo,fs)
+    })
+    socket.on('Eliminar Usuario',function(data){
+        Funciones.eliminarUsuario(data.id_usuario,fs)
+    })
+    socket.on('Crear Equipo',function(data){
+        Funciones.agregarEquipo(nombre,fs);
+    })
+    socket.on('Editar Equipo',function(data){
+        Funciones.editarEquipo(fs)
+    })
+    socket.on('Eliminar Equipo',function(data){
+        Funciones.eliminarEquipo(fs)
+    })
+    
     socket.on('datosCarga', function(data){
-        Funciones.crearCarga(data.id_p, data.asignacion, data.id_e, fs)
+        //Funciones.supervisorPreguntas(1,fs)
+        //Funciones.SupervisorEquipo(1,fs);
+        Funciones.crearCarga(1, 2, 1, fs)
+        //Funciones.importarExcelPersona("bla",fs)
     })
     socket.on('Guardar Correccion', function (data) {
-		//console.log(data.codigo.length)
-        Funciones.guardarCorreccion(data.id_respuesta, data.codigo, data.nombre_usuario,data.carga, io, socket.id, fs)
-		//Funciones.rawIn(data.codigo)
+        console.log("llega al evento")
+        Funciones.guardarCorreccion(data.idUsuario,data.id_respuesta, data.codigo, data.nombre_usuario, data.carga,data.idEstado, io, socket.id, fs)
     })
 })

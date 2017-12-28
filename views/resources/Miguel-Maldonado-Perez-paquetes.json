@@ -1,0 +1,36 @@
+{
+   "id":1,
+   "title":"Prueba de estudio",
+   "preguntas":[
+      {
+         "idPregunta":1,
+         "preguntaTitle":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
+         "respuestas":[
+            {
+               "parte":1,
+               "contestadas":0,
+               "duda":0,
+               "noContestadas":20
+            }
+         ]
+      },
+	  {
+         "idPregunta":2,
+         "preguntaTitle":"Praesent malesuada, sem in tempor vulputate, velit elit iaculis diam, quis rutrum orci nulla a augue. Integer gravida tincidunt consequat. Etiam in risus fringilla, vehicula mauris sed, pellentesque purus.",
+         "respuestas":[
+            {
+               "parte":1,
+               "contestadas":0,
+               "duda":0,
+               "noContestadas":20
+            },
+			{
+               "parte":2,
+               "contestadas":0,
+               "duda":0,
+               "noContestadas":20
+            }
+         ]
+      }
+   ]
+}

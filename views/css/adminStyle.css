@@ -1,0 +1,29 @@
+.crud-select{
+
+	float: right;
+}
+
+.row-body{
+
+	display: flex;
+}
+
+.body-col{
+
+	margin: auto;
+}
+
+.infobox-content{
+
+	margin-top: 0 !important;
+}
+
+.infobox-text{
+
+	font-size: 12px;
+}
+
+.visible{
+
+	display: block !important;
+}

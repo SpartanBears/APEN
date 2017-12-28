@@ -163,7 +163,7 @@ module.exports = {
         Usuario.find({ where: { usuario: useru, contrasena: passu } }).then(function (result) {
             if (result != null) {
             	console.log(result)
-                io.to(sock).emit('login exitoso', { nombre: result.dataValues.nombre, apellidop: result.dataValues.apellidoPaterno, apellidom: result.dataValues.apellidMaterno, tipousuario: result.dataValues.idTipoUsuario })
+                io.to(sock).emit('login exitoso', { nombre: result.dataValues.nombre, apellidop: result.dataValues.apellidoPaterno, apellidom: result.dataValues.apellidoMaterno, tipousuario: result.dataValues.idTipoUsuario, idUsuario:result.dataValues.idUsuario })
             } else {
                 io.to(sock).emit('login fallido', {mensaje: 'datos incorrectos'})
             }
@@ -175,22 +175,26 @@ module.exports = {
     /*
     funcion asignar codigo a la correción de una pregunta
     */
-    guardarCorreccion: function (respuesta, codigo, usuario, carga, io, sock, fs) {
-
-			Asignacion.find({where: {idUsuario: 1, idRespuesta: respuesta }}).then(function(result){
+    guardarCorreccion: function (id,respuesta, codigo, usuario, carga,estado, io, sock, fs) {
+    	if(estado==2){
+			Asignacion.find({where: {idUsuario: id, idRespuesta: respuesta }}).then(function(result){
 				AsignacionCodigo.findAll({where:{ idAsignacion: result.dataValues.idAsignacion }}).then(function(data){
 
 						if(data.length>0){
 							for(var i = 0; i<codigo.length; i++){
-								updateCorreccion(data[i].idAsignacion,codigo[i].id_codigo,data[i].idAsignacionCodigo, carga, fs)
-								console.log("entra a la actualizacion")
+								updateCorreccion(usuario,data[i].idAsignacion,codigo[i].idcodigo,data[i].idAsignacionCodigo, carga, fs, io, sock)
 							}
 						}else{							
-								saveCorreccion(result, codigo, carga, usuario, fs)					
+								saveCorreccion(result, codigo, carga, usuario, fs, io, sock)					
 						}
 				})				
 			})
-        
+        }else{
+        	Asignacion.update({idEstado: estado},{where:{idUsuario:id, idRespuesta: respuesta}}).then(function(r){
+        		io.to(sock).emit('Correccion Guardada', { mensaje: 'ok' })
+				fs.writeFile("./views/persistence/"+usuario+".json", JSON.stringify(carga)); 
+        	})
+        }
     },
     registrarDuda: function (respuesta, duda, usuario, io, sock) {
         return sequelize.transaction(function (t) {
@@ -202,22 +206,10 @@ module.exports = {
             })
         })
     },
-	pruebaInclude: function(fs){
-		Asignacion.findAll({
-			include:[{
-				model: Usuario,
-				as: 'corrector',
-				where: {idUsuario: Sequelize.col('asignacion.id_usuario')}
-			}]
-		}).then(function(d){
-			fs.writeFile("./config/carga/deita.json", JSON.stringify(d)); 
-		})
-	},
-
 	agregarEquipo: function(name){
 		return sequelize.transaction(function(t){
 			return Equipo.create({nombre: name}, {transaction: t}).then(function(r){
-
+				
 			}).catch(function(){
 
 			})
@@ -334,9 +326,9 @@ module.exports = {
 
 		})
 	},
-	editarUsuario: function(idTipo, user, pass, name, apeP, apeM, mail, id){
+	editarUsuario: function(idTipo, user,pass, name, apeP, apeM, mail, id){
 		return sequelize.transaction(function(t){
-			return Usuario.update({idTipoUsuario: idTipo, usuario: user, contrasena: pass, nombre: name, apellidoPaterno: apeP,
+			return Usuario.update({idTipoUsuario: idTipo, usuario: user, nombre: name,contrasena:pass, apellidoPaterno: apeP,
 				apellidoMaterno: apeM, email: mail}, {where: {idUsuario: id}}, {transaction : t});
 		}).then(function(){
 
@@ -660,7 +652,7 @@ module.exports = {
 				var contar = 0;
 				Asignacion.findAll({where:{idUsuario: usuario.userEquipo[0].dataValues.idUsuario}},{raw:true}).then(function(a){
 					if(a.length==0){
-						data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1})
+						data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1, inconsistencia:[]})
 						contador++;
 						if(contador== u.length){
 								IndiceConsistencia(data, u)
@@ -671,7 +663,7 @@ module.exports = {
 							contar++;
 						}
 						if(i==a.length-1){
-							data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 0})
+							data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 0, inconsistencia:[]})
 							contador++;
 							if(contador== u.length){
 								IndiceConsistencia(data, u)
@@ -682,42 +674,254 @@ module.exports = {
 				})
 			})
 		})
+	},
+	supervisorPreguntas: function(idEq,fs){
+		var instrumento;
+		var tablaPregunta = [];
+		let buscarInstrumento = function(){
+			return new Promise(function(resolve, reject){
+				fs.access("./persistence/plantillaPaquetes-"+idEq+".json", function(err){
+				if(!err){
+					var prueba = require("../persistence/plantillaPaquetes-"+idEq+".json")
+					instrumento = prueba.id;
+					resolve();
+				}else{
+					io.emit("no hay datos")
+				}
+			})	
+			})
+		}
+
+		let buscarPreguntas = function(){
+			return new Promise(function(resolve, reject){
+				Pregunta.findAll({where:{idPrueba: instrumento}},{raw:true}).then(function(pr){
+					pr.forEach(function(pres){
+						tablaPregunta.push({idPregunta: pres.dataValues.idPregunta, asignadas: 0, corregidas: 0, avance: 0, consistencia: 1, inconsistencia: []})
+					})
+				}).then(function(){
+					resolve();
+				})
+			})
+		}
+
+		let buscarRespuestas = function(){
+			var ans = [];
+			var corr = 0;
+			var asig = 0;
+			return new Promise(function(resolve,reject){
+				for (var i = 0; i < tablaPregunta.length; i++) {
+					var id = i;
+					var corrige = 0;
+					var asigna = 0;
+					var jota = 0;
+					Respuesta.findAll({where:{idPregunta: tablaPregunta[i].idPregunta}},{raw:true}).then(function(re){
+						for (var j = 0; j < re.length; j++) {
+							Asignacion.findAll({where:{idRespuesta: re[j].dataValues.idRespuesta}},{raw:true}).then(function(asi){
+								if(asi.length==0){
+									jota++;
+								}else{
+									asig=asi.length;
+									for (var k = 0; k < asi.length; k++) {
+										if(asi[k].dataValues.idEstado==2){
+											corr++;
+										}
+										if(k==asi.length-1){
+											corrige = corrige+corr;
+											asigna = asigna+asig;
+											tablaPregunta[id].asignadas = asigna;
+											tablaPregunta[id].corregidas = corrige;
+											corr = 0;
+											jota++;
+										}
+									}
+								}
+								if(jota==re.length-1 && id==tablaPregunta.length-1){
+									resolve();
+								}
+							})
+						}
+					})
+				}
+			})
+		}
+
+		let indiceAvance = function(){
+			return new Promise(function(resolve,reject){
+				for (var i = 0; i < tablaPregunta.length; i++) {
+					tablaPregunta[i].avance = (tablaPregunta[i].corregidas/tablaPregunta[i].asignadas)*100
+					if(i==tablaPregunta.length-1){
+						resolve();
+					}
+				}	
+			})
+		}
+
+		let indiceInconsistencia = function(){
+			var incon = [];
+			var inconsistente = 0;
+			return new Promise(function(resolve,reject){
+				for (var i = 0; i < tablaPregunta.length; i++) {
+					var res = i;
+					var consiste = false;
+					Respuesta.findAll({where:{idPregunta: tablaPregunta[i].idPregunta}},{raw:true}).then(function(r){
+						for (var j = 0; j < r.length; j++) {
+							var jo = j;
+							var codigoP = [];
+							var codigoD = [];
+							Asignacion.findAll({where:{idRespuesta:r[j].dataValues.idRespuesta, idEstado: 2}},{raw:true}).then(function(ac){
+								console.log("respuesta")
+								if(ac.length==2){
+									var usu = ac[0].dataValues.idUsuario;
+									var usd = ac[1].dataValues.idUsuario;
+									AsignacionCodigo.findAll({where:{idAsignacion:ac[0].dataValues.idAsignacion}},{raw:true}).then(function(acp){
+										AsignacionCodigo.findAll({where:{idAsignacion:ac[1].dataValues.idAsignacion}},{raw:true}).then(function(acd){
+											console.log("llega aqui")
+											if(acp.length!= acd.length){
+												console.log("inconsiste tamaño")
+												inconsistente++;
+												for (var l = 0; l < acp.length; l++) {
+													codigoP.push({id: acp[l].dataValues.idCodigo, valor:"a"})
+												}
+												for (var m = 0; m < acd.length; m++) {
+													codigoD.push({id: acd[m].dataValues.idCodigo, valor:"a"})
+													if(m==acd.length-1){
+														var correccion = [];
+														correccion.push({idCorrector:usu,codigos: codigoP})
+														correccion.push({idCorrector:usd, codigos: codigoD})
+														incon.push({idRespuesta: r[jo].dataValues.idRespuesta, correcciones: correccion})
+													}
+												}
+											}else{
+												for (var n = 0; n < acp.length; n++) {
+													var ene = n;
+													codigoP.push({id:acp[n].dataValues.idCodigo, valor:"a"})
+													for (var c = 0; c < acd.length; c++) {
+														var ce = c;
+														codigoD.push({id:acd[c].dataValues.idCodigo, valor:"a"})
+														if(acp[n].dataValues.idCodigo==acd[c].dataValues.idCodigo){
+															console.log("consiste true")
+															consiste = true;
+														}
+														if(ene==acp.length-1 && ce==acd.length-1 && consiste==false){
+															console.log("inconsiste false")
+															var correccion = [];
+															correccion.push({idCorrector:usu, codigos: codigoP})
+															correccion.push({idCorrector:usd, codigos: codigoD})
+															incon.push({idRespuesta: r[jo].dataValues.idRespuesta, correcciones: correccion})
+															inconsistente++;
+															console.log(incon)
+														}
+														if(ene==acp.length-1){
+															consiste = false;
+														}
+													}
+												}
+											}
+										})
+									})
+								}
+							})
+						}
+					})
+				}
+			})
+		}
+		let resultado = function(){
+			return new Promise(function(resolve, reject){
+				console.log(tablaPregunta)
+			})
+		}
+		buscarInstrumento().then(function(){
+			return buscarPreguntas();
+		}).then(function(){
+			return buscarRespuestas();
+		}).then(function(){
+			return indiceAvance();
+		}).then(function(){
+			indiceInconsistencia();
+		})
 	}
 }
 
 function IndiceConsistencia(d, users){
 	var c = 0;
 	users.forEach(function(us){
+		var codigoD = [];
+		var codigoP = [];
+		var inconsis = [];
+		var matriz = [];
 		var z = 0;
+		var consis = 0;
+		var y = 0;
 		Asignacion.findAll({where:{idUsuario: us.userEquipo[0].dataValues.idUsuario, idEstado: 2}},{raw:true}).then(function(a){
 			a.forEach(function(au){
-				var consis = 0;
+				var cons = 0;
+				var noc = false;
+				var idp = au.dataValues.idUsuario;
 				Asignacion.findAll({where:{idRespuesta: au.dataValues.idRespuesta}},{raw:true}).then(function(ar){
 					for (var i = 0; i < ar.length; i++) {
-						var cons = true;
+					var inc = false;
+					var res = ar[i].dataValues.idRespuesta;
 						if(ar[i].dataValues.idUsuario!=au.dataValues.idUsuario){
+							var idud= ar[i].dataValues.idUsuario;
 							AsignacionCodigo.findAll({where:{idAsignacion: ar[i].dataValues.idAsignacion}},{raw:true}).then(function(ad){
 								AsignacionCodigo.findAll({where:{idAsignacion: au.dataValues.idAsignacion}},{raw:true}).then(function(ap){
 									for (var j = 0; j < ap.length; j++) {
+										y++;
 										if(ad.length==0){
+											noc = true;
+										}else{
+											for (var t = 0; t < ad.length; t++){
+												if(ap[j].dataValues.idCodigo==ad[t].dataValues.idCodigo){
+													cons++;
+												}
+											}
+										}
+										if(j==ap.length-1 && cons==ap.length){
 											consis++;
-										}else if(ap[j].dataValues.idCodigo!=ad[j].dataValues.idCodigo){
-											cons = false;
-										} 
-										if(j==ap.length-1 && cons==true){
-											consis++;
+											cons = 0;
+										}
+										if(noc==true && j==ap.length-1){
+												consis++;
+												console.log(consis)
+												noc = false;
+										}
+										if(y==ap.length*2 && cons!=ap.length){
+											var don = 0;
+											for (var v = 0; v < ap.length; v++) {
+												Codigo.findAll({where:{idCodigo:ap[v].dataValues.idCodigo}},{raw:true}).then(function(cp){
+													codigoP.push({id:cp[0].dataValues.idCodigo, valor:cp[0].dataValues.valor})
+													don++;
+												})
+											}
+											for (var u = 0; u < ad.length; u++) {
+												Codigo.findAll({where:{idCodigo:ad[u].dataValues.idCodigo}},{raw:true}).then(function(cd){
+													codigoD.push({id:cd[0].dataValues.idCodigo, valor:cd[0].dataValues.valor})
+													don++;
+													if(don==ap.length+ad.length){
+														matriz.push({idCorrector:idp, codigos: codigoP})
+														matriz.push({idCorrector:idud, codigos: codigoD})
+														for (var b = 0; b < d.length; b++) {
+															if(d[b].ID==idp){
+																d[b].inconsistencia.push({idRespuesta: res, correcciones: matriz});
+																c++;
+																if(c==a.length){
+																	console.log(JSON.stringify(d))
+																}
+															}
+														}
+													}
+												})
+											}
 										}
 										if(j==ap.length-1){
-											cons = true;
+											cons = 0;
 											z++;
 											if(z==a.length){
 												for (var k = 0; k < d.length; k++) {
 													if(d[k].ID == us.userEquipo[0].dataValues.idUsuario){
-														d[k].consistencia = consis;
-														c++;
-														if(c==a.length){
-															console.log(JSON.stringify(d))
-														}
+														d[k].consistencia =((consis/d[k].Corregidas)-0.2)/(1-0.2);
+														d[k].inconsistencia = inconsis; 
 													}
 												}
 											}
@@ -774,12 +978,18 @@ function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
 	var resto = 0;
 	var resp = 0;
 	var archivo = '';
-
+	correctores = 0;
 	Respuesta.findAll({where:{idPregunta: pregunta}}, {raw: true}).then(function(r){
 		UsuarioEquipo.findAll({where: {idEquipo: team}, include: [{model: Usuario, as: 'userEquipo', where: {idUsuario: Sequelize.col('UsuarioEquipo.id_usuario')}}]},{raw: true}).then(function(users){
-			asicorrector = Math.trunc((r.length*2)/users.length)
-			resto = (r.length*2)%users.length
+			for (var q = 0; q < users.length; q++) {
+				if(users[q].userEquipo[0].dataValues.idTipoUsuario==2){
+					correctores++;
+				}
+			}
+			asicorrector = Math.trunc((r.length*2)/correctores)
+			resto = (r.length*2)%correctores
 			users.forEach(function(correc){
+				if(correc.userEquipo[0].dataValues.idTipoUsuario==2){
 					var asignadas = [];
 					var parte = 1;
 					var username = correc.userEquipo[0].dataValues.nombre+"-"+correc.userEquipo[0].dataValues.apellidoPaterno+"-"+correc.userEquipo[0].dataValues.apellidoMaterno;
@@ -910,18 +1120,19 @@ function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
 							}
 						}
 					}
+				}
 			})
 		})
 	})
 }
 
-function saveCorreccion(asignacion, codigo, carga, usuario, fs){
+function saveCorreccion(asignacion, codigo, carga, usuario, fs, io, socket){
 	q = "INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES "
 	for (var i = 0; i < codigo.length; i++) {
 			if(i>0){
-				q+= ',('+asignacion.idAsignacion+','+codigo[i].id_codigo+')'	
+				q+= ',('+asignacion.idAsignacion+','+codigo[i].idcodigo+')'	
 			}else{
-				q+= '('+asignacion.idAsignacion+','+codigo[i].id_codigo+')'
+				q+= '('+asignacion.idAsignacion+','+codigo[i].idcodigo+')'
 			}
 		
 		}
@@ -930,22 +1141,21 @@ function saveCorreccion(asignacion, codigo, carga, usuario, fs){
 		return sequelize.query(q,{transaction: t}).then(function(){
 			return sequelize.query ('UPDATE asignacion SET `id_estado`=2 WHERE `id_asignacion`='+asignacion.idAsignacion+';',{transaction: t});
 		}).then(function(){
-			fs.writeFile("./views/js/correctorEjemplo.json", JSON.stringify(carga)); 
-		}).catch(function(err){
-			console.log('fallo save')
-		})	
+			console.log(usuario)
+			io.to(socket).emit('Correccion Guardada', { mensaje: 'ok' })
+			fs.writeFile("./views/persistence/"+usuario+".json", JSON.stringify(carga)); 
+		})
 	})	
 }
 
-function updateCorreccion(asignacion, codigo, codigoAsignacion, carga, fs){
+function updateCorreccion(usuario,asignacion, codigo, codigoAsignacion, carga, fs, io, socket){
 	return sequelize.transaction(function(t){
 		return AsignacionCodigo.destroy({where:{idAsignacionCodigo: codigoAsignacion}}, { transaction: t }).then(function(){
 			return AsignacionCodigo.create({idAsignacion: asignacion, idCodigo: codigo})
 		});
 	}).then(function(){
-		fs.writeFile("./views/js/correctorEjemplo.json", JSON.stringify(carga)); 
-	}).catch(function(err){
-		console.log('fallo update')
+		 io.to(socket).emit('Correccion Guardada', { mensaje: 'ok' })
+		fs.writeFile("./views/persistence/"+usuario+".json", JSON.stringify(carga)); 
 	})
 }
 

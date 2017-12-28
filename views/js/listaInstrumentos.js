@@ -1,22 +1,116 @@
 var instrumentos = {};
+var nonSelectedText = 'Listar todos los Elementos';
 
 $(document).ready(function(){
 
 	getData(createInstrumentos);
 });
 
+function initList(){
+
+	$('.select-filter-instrumento').selectpicker({
+		style: 'btn-default',
+		size: 4,
+		noneSelectedText: nonSelectedText,
+		header: 'Filtrar por instrumentos',
+	});
+
+	$('.pregunta-filter').selectpicker({
+		style: '',
+		size: 3,
+		noneSelectedText: nonSelectedText,
+		header: 'Filtrar por Pregunta',
+	});
+
+	setEvents();
+}
+
+function setEvents(){
+
+	$('.select-filter-instrumento').on('changed.bs.select', filtrarPorInstrumento);
+	$('.pregunta-filter').on('changed.bs.select', filtrarPorPregunta);
+}
+
+function filtrarPorInstrumento(e){
+
+	if($(this).selectpicker('val') != null || $(this).selectpicker('val') != undefined){
+		
+		if(typeof $(this).selectpicker('val')[0] == 'string'){
+
+			var selected = $(this).selectpicker('val');
+			var query = '';
+
+			if(selected.length > 0){
+
+				for(var index=0; index < selected.length; index++){
+
+					query += '#' + selected[index].replace(' ', '_')  + '-container';
+					if(index+1 < selected.length)	query += ', ';
+				
+				}
+
+				$('#instrumentosContainer').children().not(query).slideUp();
+				$(query).slideDown();
+			}else{
+
+				$('#instrumentosContainer').children().slideDown();
+			}
+		}
+	}else{
+
+		$('#instrumentosContainer').children().slideDown();
+	}
+}
+
+function filtrarPorPregunta(e){
+
+	if($(this).selectpicker('val') != null || $(this).selectpicker('val') != undefined){
+		
+		if(typeof $(this).selectpicker('val')[0] == 'string'){
+
+			var selected = $(this).selectpicker('val');
+			var query = '';
+
+			if(selected.length > 0){
+
+				for(var index=0; index < selected.length; index++){
+
+					query += '.' + selected[index].replace(' ', '_');
+					if(index+1 < selected.length)	query += ', ';
+				
+				}
+
+				console.log(query, $(this).closest('.card').find('.card-instrumento').not(query));
+
+				$(this).closest('.card').find('.card-instrumento').parent().not(query).slideUp();
+				$(query).slideDown();
+			}else{
+
+				$(this).closest('.card').find('.card-instrumento').parent().slideDown();
+			}
+		}
+	}else{
+
+		$(this).closest('.card').find('.card-instrumento').parent().slideDown();
+	}
+}
+
 function createInstrumentos(inst){
 
+	// for (var i = 0; i < inst.length; i++) {
 
-	for (var i = 0; i < inst.length; i++) {
+		$('.select-filter-instrumento').append('<option>' + inst.title + '</option>');
+		// $('.select-filter-instrumento').selectpicker('render');
+		
+		// $('.select-filter-instrumento').selectpicker('val', inst[i].title);
 
 		var container = document.createElement('div');
-			container.id = inst[i].title+'Container';
+			container.id = (inst.title.replace(' ', '_') ) + '-container';
 			container.className = 'card bg-gray';
 
 		var containerHeader = document.createElement('div');
 			containerHeader.className = 'header';
-			containerHeader.innerHTML = inst[i].title;
+			containerHeader.innerHTML = inst.title;
 
 		var containerBody = document.createElement('div');
 			containerBody.className = 'body';
@@ -24,29 +118,44 @@ function createInstrumentos(inst){
 		var rowContainer = document.createElement('div');
 			rowContainer.className = 'row';
 
-		var pregs = inst[i].preguntas;
+		var dropbox = document.createElement('select');
+			dropbox.className = 'pregunta-filter';
+			$(dropbox).data('live-search', 'true');
+			$(dropbox).attr('multiple', 'true');
+
+		containerHeader.appendChild(dropbox);
+
+		var pregs = inst.preguntas;
 
 		for(var cont = 0; cont < pregs.length; cont++){
+
+			var opDD = document.createElement('option');
+				opDD.innerHTML = pregs[cont].preguntaTitle.substring(0, 15);
+				opDD.value = pregs[cont].preguntaTitle;
+
+			dropbox.appendChild(opDD);
 
 			var resp = pregs[cont].respuestas;
 
 			for (var index = 0; index < resp.length; index++) {
 			
 				var colCard = document.createElement('div');
-					colCard.className = 'col-md-4';
+					colCard.className = 'col-md-4 preg-' + (index+1);
+					colCard.id = 'preg_' + (index+1);
 					
 				var cardInstrumento = document.createElement('div');
-					cardInstrumento.className = 'card';
+					cardInstrumento.className = 'card card-instrumento';
+					cardInstrumento.id_pregunta = pregs[cont].idPregunta;
+					cardInstrumento.parte = resp[index].parte;
 					cardInstrumento.addEventListener('click', cardEvent, false);
 
 				var cardHeader = document.createElement('div');
 					cardHeader.className = 'header';
-					cardHeader.innerHTML = pregs[cont].preguntaTitle;
+					cardHeader.innerHTML = pregs[cont].preguntaTitle.substring(0, 125);
 
 				var cardBody = document.createElement('div');
 					cardBody.className = 'body';
-					cardBody.innerHTML = resp[index].pregInicio + ' .. ' 
-						+ resp[index].pregFin;
+					cardBody.innerHTML = '<div class="row"><div class="col-md-6">Parte: ' + pregs[cont].respuestas[index].parte + '</div><div class="col-md-6">Cantidad: ' + (pregs[cont].respuestas[index].contestadas + pregs[cont].respuestas[0].duda + pregs[cont].respuestas[0].noContestadas )  + '</div></div>';
 
 				var iconAsignadas = document.createElement('div');
 					iconAsignadas.className = 'col-xs-4';
@@ -78,22 +187,39 @@ function createInstrumentos(inst){
 
 		container.appendChild(containerHeader);
 		container.appendChild(containerBody);
-		
 
 		$('#instrumentosContainer').append(container);
-	};
+	// };
+
+	initList();
 }
 
 function cardEvent(e){
 
+	sessionStorage.idPregunta = this.id_pregunta;
+	sessionStorage.parte = this.parte;
+
 	console.log('click!!');
+	window.location.replace('/vistaCorrector.html')
+	//window.location = 'localhost:51440/vistaCorrector.html';
 }
 
 function getData(callback){
 
-	instrumentos = tempIns;
+	// instrumentos = tempIns;
 
-	callback(instrumentos);
+	// var strData;
+
+	$.getJSON( "./persistence/" + sessionStorage.nombre + "-" + sessionStorage.apellidoP + "-" + sessionStorage.apellidoM + "-paquetes.json", function( data ) {
+
+		instrumentos = data;
+
+		console.log(data);
+
+		if(callback != undefined)	callback(instrumentos);
+	});
+
+	// callback(instrumentos);
 }
 
 var tempIns = [
@@ -170,3 +296,64 @@ var tempIns = [
 		],
 	},
 ];
+
+// var testCarga ={
+//    "carga":[
+//       {
+//          "id_instrumento":1,
+//          "instrumento":"instrumento 1",
+//          "id_pregunta":1,
+//          "parte":1,
+//          "enunciado":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
+//          "asignaciones":[
+//             {
+//                "contestadas":0,
+//                "duda":3,
+//                "noContestadas":7
+//             }
+//          ]
+//       },
+//       {
+//          "id_instrumento":1,
+//          "instrumento":"instrumento 1",
+//          "id_pregunta":1,
+//          "parte":2,
+//          "enunciado":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
+//          "asignaciones":[
+//             {
+//                "contestadas":4,
+//                "duda":3,
+//                "noContestadas":3
+//             }
+//          ]
+//       },
+//       {
+//          "id_instrumento":1,
+//          "instrumento":"instrumento 1",
+//          "id_pregunta":1,
+//          "parte":3,
+//          "enunciado":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sem quam, pretium eu nunc et, tempor dapibus erat.",
+//          "asignaciones":[
+//             {
+//                "contestadas":8,
+//                "duda":2,
+//                "noContestadas":0
+//             }
+//          ]
+//       },
+//       {
+//          "id_instrumento":1,
+//          "instrumento":"instrumento 1",
+//          "id_pregunta":2,
+//          "parte":1,
+//          "enunciado":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed turpis in felis vulputate gravida.",
+//          "asignaciones":[
+//             {
+//                "contestadas":5,
+//                "duda":0,
+//                "noContestadas":5
+//             }
+//          ]
+//       }
+//    ]
+// }

@@ -1,0 +1,270 @@
+{
+   "id_pregunta":1,
+   "enunciado":"Resolución de situación pedagógica",
+   "estimulo":"Usted debe resolver una situación pedagógica, a través de la cual se evaluará su reflexión pedagógica y su habilidad de expresión escrita.  Al elaborar sus respuestas considere las siguientes instrucciones, pues los elementos indicados serán tomados en cuenta en la evaluación de ésta: Incorpore explícitamente en su respuesta la información contextual proporcionada. Cuando se solicite fundamentar, oriente su respuesta a partir de argumentos que se apoyen en sus aprendizajes teóricos o prácticos como estudiante de pedagogía. Es importante que sus argumentos sean justificados de manera lógica, sin recurrir a descalificaciones o apelar a los sentimientos del lector para persuadir (por ejemplo: 'Si bebes, no conduzcas, recuerda a quienes más te aprecian'). Mantenga un registro formal en la exposición de sus argumentos. Preste atención a los aspectos formales, como la ortografía y el uso del vocabulario. Situación pedagógica:  La educadora Andrea ha diseñado una unidad temática para el Primer nivel de Transición, considerando elementos contextuales tales como: las bases curriculares vigentes y los estilos de aprendizaje de sus párvulos. Sin embargo, los aprendizajes logrados por los niños y niñas en la unidad no fueron los que esperaba. El director del establecimiento le ha pedido que informe sobre estos resultados a la comunidad educativa en dos presentaciones distintas, una dirigida al cuerpo docente y posteriormente una segunda a los padres y/o apoderados del curso.   Usted seleccionó la alternativa a para elaborar su respuesta:  Nombre y fundamente pedagógicamente, al menos dos elementos contextuales adicionales que debiera incorporar la educadora para la presentación dirigida al cuerpo docente, que permita ayudar a entender los resultados obtenidos por los párvulos. Especifique en su fundamentación el porqué es importante incorporar los elementos contextuales señalados en su respuesta. Una Educadora de Párvulos ha diseñado una unidad didáctica, considerando elementos contextuales tales como: el currículo vigente, los intereses y estilos de aprendizaje de sus estudiantes. Sin embargo, los aprendizajes de sus estudiantes en la unidad no fueron los que esperaba. La directora del establecimiento le ha pedido que informe estos resultados de aprendizaje a la comunidad educativa, específicamente al cuerpo docente y a los padres y/o apoderados. a) Describa en detalle, al menos dos elementos contextuales adicionales que debe incorporar la educadora en su comunicación, tanto al cuerpo docente como a los padres y/o apoderados. b) Fundamente pedagógicamente por qué es importante incorporar los elementos contextuales señalados por usted en ambas comunicaciones.",
+   "id_tipo_estimulo":1,
+   "familias":[
+      {
+         "titulo":"Aptitudes psicosociales",
+         "descripcion":"define la psicosociales de la Aptitudes",
+         "codigos":[
+            {
+               "idcodigo":1,
+               "valor":"A1",
+               "descripcion":"Nam placerat dignissim convallis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec sed nunc bibendum, aliquet purus sit amet, volutpat magna. Cras gravida turpis et mauris porta, non congue lorem egestas. Maecenas eget justo elementum, hendrerit dui sed, cursus felis. Morbi eu mauris quis elit pharetra dapibus. Nam at tellus commodo, imperdiet lectus in, suscipit mi. Nullam accumsan dui sed suscipit euismod. Ut quis odio eu erat pretium luctus quis vel leo. Curabitur nec vestibulum sem. Vivamus pulvinar pellentesque neque, quis cursus urna scelerisque eu. Aenean congue hendrerit purus vel pellentesque. Nunc sit amet diam non lectus volutpat dictum. Vestibulum dignissim, tortor eget bibendum aliquam, enim diam porttitor nibh, et pretium tortor orci sed velit. Nam ut pretium metus, vel tincidunt nibh."
+            },
+            {
+               "idcodigo":2,
+               "valor":"A2",
+               "descripcion":"Suspendisse a pulvinar ligula. Integer in varius lectus. Nulla eu metus justo. Pellentesque eu purus pharetra, feugiat lorem ut, fermentum nisl. Cras facilisis convallis sem, ac gravida metus volutpat eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut condimentum tortor nec lectus interdum viverra. In hac habitasse platea dictumst. Maecenas ornare, lorem eget elementum posuere, dui neque feugiat massa, sit amet molestie tortor leo eget libero. Donec sodales libero in quam hendrerit, ac dignissim leo dictum. Donec aliquet dolor est, et iaculis ipsum pretium a. Etiam ac libero ac erat lobortis molestie. Aliquam ac lorem id lorem sollicitudin tincidunt hendrerit faucibus ex. Curabitur interdum risus vitae odio pulvinar, sed elementum odio semper."
+            },
+            {
+               "idcodigo":3,
+               "valor":"A3",
+               "descripcion":"Suspendisse ornare, purus at lacinia pretium, velit tortor venenatis nisi, at dapibus neque augue a ligula. Donec a fringilla nisl. Aenean convallis bibendum urna, sed euismod turpis rutrum non. Quisque id feugiat magna, tempus tincidunt augue. Sed sed finibus metus, id ultricies turpis. Duis eu sapien quis purus facilisis faucibus vel ut turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce a lorem suscipit lectus tincidunt pharetra sit amet id ex. Pellentesque et massa eget turpis viverra mollis. Etiam vitae congue lectus. Fusce vel ornare magna. Fusce pulvinar tempus neque. Donec porttitor dictum elit eget rutrum. Duis sit amet lacus sed nisl mattis aliquam."
+            },
+            {
+               "idcodigo":4,
+               "valor":"A4",
+               "descripcion":"Donec imperdiet orci nunc, at cursus libero ultricies ut. Vestibulum aliquet accumsan lacinia. Etiam mollis non velit ac scelerisque. Vestibulum rutrum vel quam dignissim vulputate. Pellentesque placerat urna ut purus tempus tincidunt. Suspendisse velit nibh, pulvinar eu maximus quis, ullamcorper et ligula. Donec tristique laoreet semper. Curabitur tincidunt pellentesque lobortis. Nulla congue dictum felis, a euismod odio commodo non. Vivamus tristique cursus orci, id laoreet nunc rhoncus vitae. Aenean ullamcorper fringilla lorem a pellentesque."
+            },
+            {
+               "idcodigo":5,
+               "valor":"A5",
+               "descripcion":"Integer arcu tortor, tristique in dictum et, pellentesque sit amet diam. Morbi sapien nibh, tincidunt sed dolor et, tincidunt imperdiet felis. Nullam sed sollicitudin neque. Aliquam feugiat est lacinia nibh dignissim pellentesque. In feugiat lacus sit amet nulla tristique, quis blandit dui sagittis. Pellentesque nec justo sodales, suscipit magna ac, facilisis turpis."
+            }
+         ]
+      },
+      {
+         "titulo":"Aptitudes psicosociales",
+         "descripcion":"define la psicosociales de la Aptitudes",
+         "codigos":[
+            {
+               "idcodigo":6,
+               "valor":"B1",
+               "descripcion":"Nam placerat dignissim convallis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec sed nunc bibendum, aliquet purus sit amet, volutpat magna. Cras gravida turpis et mauris porta, non congue lorem egestas. Maecenas eget justo elementum, hendrerit dui sed, cursus felis. Morbi eu mauris quis elit pharetra dapibus. Nam at tellus commodo, imperdiet lectus in, suscipit mi. Nullam accumsan dui sed suscipit euismod. Ut quis odio eu erat pretium luctus quis vel leo. Curabitur nec vestibulum sem. Vivamus pulvinar pellentesque neque, quis cursus urna scelerisque eu. Aenean congue hendrerit purus vel pellentesque. Nunc sit amet diam non lectus volutpat dictum. Vestibulum dignissim, tortor eget bibendum aliquam, enim diam porttitor nibh, et pretium tortor orci sed velit. Nam ut pretium metus, vel tincidunt nibh."
+            },
+            {
+               "idcodigo":7,
+               "valor":"B2",
+               "descripcion":"Suspendisse a pulvinar ligula. Integer in varius lectus. Nulla eu metus justo. Pellentesque eu purus pharetra, feugiat lorem ut, fermentum nisl. Cras facilisis convallis sem, ac gravida metus volutpat eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut condimentum tortor nec lectus interdum viverra. In hac habitasse platea dictumst. Maecenas ornare, lorem eget elementum posuere, dui neque feugiat massa, sit amet molestie tortor leo eget libero. Donec sodales libero in quam hendrerit, ac dignissim leo dictum. Donec aliquet dolor est, et iaculis ipsum pretium a. Etiam ac libero ac erat lobortis molestie. Aliquam ac lorem id lorem sollicitudin tincidunt hendrerit faucibus ex. Curabitur interdum risus vitae odio pulvinar, sed elementum odio semper."
+            },
+            {
+               "idcodigo":8,
+               "valor":"B3",
+               "descripcion":"Suspendisse ornare, purus at lacinia pretium, velit tortor venenatis nisi, at dapibus neque augue a ligula. Donec a fringilla nisl. Aenean convallis bibendum urna, sed euismod turpis rutrum non. Quisque id feugiat magna, tempus tincidunt augue. Sed sed finibus metus, id ultricies turpis. Duis eu sapien quis purus facilisis faucibus vel ut turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce a lorem suscipit lectus tincidunt pharetra sit amet id ex. Pellentesque et massa eget turpis viverra mollis. Etiam vitae congue lectus. Fusce vel ornare magna. Fusce pulvinar tempus neque. Donec porttitor dictum elit eget rutrum. Duis sit amet lacus sed nisl mattis aliquam."
+            }
+         ]
+      }
+   ],
+   "respuestas":[
+      {
+         "id_respuesta":1,
+         "valor":"Como Educadora de Primer Nivel de Transición, se trabaja con las bases curriculares vigentes y los estilos de aprendizajes de cada niño y niña, a esto se recomienda sumas los elementos contextuales de Los Mapas de Progreso y las Orientaciones Pedagógicas del nivel correspondiente. Estos elementos nos ayudaran a fortalecer el desarrollo de los niños y niñas del nivel a cargo, orientando nuestros métodos pedagógicos para  la entrega de conocimientos y el desarrollo adecuado de nuestros párvulos. es importante tomar en cuenta, las habilidades de cada párvulo, de esta forma se facilitará el desarrollo de sus capacidades, y se podrá trabajar de manera optima sus dificultades, de acuerdo a la edad, los aprendizajes esperados, el desarrollo cognitivo, motor, etc. sin pasar a llevar los principios pedagógicos.",
+         "id_estado":2,
+         "correccion":[
+		 
+         ]
+      },
+      {
+         "id_respuesta":2,
+         "valor":"la educadora al comienzo de esta unidad temática debiera dar a conocer a los padres  cual es el objetivo general  y los aprendizajes esperados en nuestros niños y niñas dentro de esta unidad , cuales son los logros que como docentes queremos enseñar y lograr en un plazo determinado. el primer punto  seria realizar una tabla,con los porcentajes en que se encuentran nuestros niños como curso, dentro  de la unidad  temática que diseño. señalando las fortalezas y debilidades para poder trabajar en conjunto y  lograr un mejor resultado y rendimiento de nuestros párvulos. no obstante es importante conocer el punto de vista de nuestros padres dando les un espacio donde ellos mismos nos comenten o nos sugieran formas de aprendizajes que les gustaría que aplicáramos en  nuestros niños. Es muy importante escuchar y entender a nuestros apoderados ya que ellos son los primeros educadores de nuestros niños es importante dar a conocer e informar a nuestros padres de cada paso experiencias que realizamos. De cual es el objetivo y lo que queremos lograr que aprendan nuestros, párvulos. tenemos que ser claras y precisas al entregar una información y así poder trabajar en conjunto a las familias para un mayor aprendizaje de nuestros niños y niñas dentro y fuera del aula. lo primero y fundamental  es tener una buena comunicación   para así formar lazos, donde ellos se sientan seguros de los logros de sus hijos y  que sean  parte de este proceso de aprendizaje.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":3,
+         "valor":"para obtener resultados óptimos en los aprendizajes de los niños y niñas, se debe siempre incorporar nuevos elementos contextuales, para esto se llama a los docentes a participar de una reunión donde se darán a conocer los resultados obtenidos por los niños, se les explica que uno de los métodos trabajados en el aula. Se trabajaron con dos elementos contextuales que fueron con las bases curriculares y estilos de aprendizajes , pero aún así no se logro ver resultados que se esperaban , para ello  se podría aparte de esos elementos agregar otros como: ver y observar con el trascurso del tiempo si algún niño tiene algunas necesidad, y detectar si algo le afecta en su aprendizaje, y explicarles a los docentes que es importante la observación que se les da a los niños, ya que si logramos descubrir algún tipo de anomalía como retraso en su lenguaje, problemas cognitivos etc,  podremos derivarlos a los especialistas para que puedan ser atendidos antes de tiempo, con ello evitaremos muchas cosas en su futuro como la frustración ya que no puede estar a la par con sus compañeros, con todo esto también puede tener dificultad al momento de crean relaciones sociales, autoestima y un sin fin de cosas. otro elemento fundamental es hacer participe a los padres en los aprendizajes del niño y el vinculo con el jardín, ante todo como educadoras tenemos la tarea de incentivar a los padres, a comprometerlos con sus hijos para ello es importante informarles como se trabaja cual es el tipo de enseñanza que les entrega el establecimiento, se podría tener diferentes maneras de comunicación como agenda, y reuniones de apoderados y un sin fin de cosas. si logramos esta unión con los padres que sean comprometidos con la educación y aprendizajes de sus hijos, será mas fácil para la educadora y para el niño crear otro tipo de ambiente , con esto lograremos una confianza mayor en el niño y seguridad ya que no solo la educadora le enseña nuevos conocimientos sino que los padres también aportan en esto. con esto debemos entender que las familias son el motor de el inicio y la continuidad en la educación de los niños, si les damos un ambiente grato tanto como en el hogar y en el jardín, tendremos sin duda a niños exitosos, sin miedo a equivocarse, a ser autónomos, con mayor confianza y con mejor autoestima.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":4,
+         "valor":" Es fundamental que los padres y apoderados se involucren en los aprendizaje esperados y específicos  de cada niña y niño  que estén constantemente conocimiento de que realizan en la sala de clases,   es importante que los padres y apoderados estén  presente en la educación de ellos  , la familia es el primer educador de cada niña y niño por lo cual es  fundamental para los párvulos  estén presentes en las actividades y en los aprendizajes que se involucren con cada niña y niño   .La educadora se dirige a los padres  y apoderados del curso buscando estrategias para ir mejorando los resultados .- La educadora de párvulos  trabaja de la mano con  los padres y apoderados , se cita a entrevista personal junto con la educadora en donde se conversaran los temas principales  temas  para ayudar a entender los resultados obtenidos por los párvulos se les entregan herramientas de estrategias para que se trabaje en conjunto y poder mejora los resultados de cada uno de ellos .- La educadora realiza una reunión de padres para que que cada niña y niño obtenga el apoyo de sus padres y se trabaje en equipo que se comprometan ayudar a las niñas y niños en donde se reforzaran los temas que están bajo nivel de aprendizaje - Se buscan recursos externos junto con la comunidad y municipalidad , en la cual se citan a universidades para que realicen charlas y para así comprender que sucede con cada niña y niño .La educadora buscara estrategias  para ayudar a las niñas y niños buscando ambientes educativos mas ludicos que aprendan a través del juego , que cada niña y niño sea protagonista de sus aprendizajes  en donde se integrara la participación de los padres y apoderados   presentes los padres y apoderados   , para poder ir reforzando dentro de la sala a cada niña y niño . ",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":5,
+         "valor":"El primer elemento contextual que se debería presentar a los padres son los aprendizajes que como educadora se planteo para trabajar con los niños, en forma ordenada presentar cada uno de ellos a los apoderados explicando el porque y como los trabajo durante la unidad, para que ellos tenga la claridad de los que sus hijos realizaron esto mediante una reunión de apoderados en donde se entregue información sobre  los aprendizajes que se trabajó durante un periodo determinado. En este contexto seria de vital importancia mostrar las actividades realizadas, los intereses, y las preferencias de cada uno de los niños, para eso como educadora deberá tener un registro diario de observación de dichas actividades,así como también  fotografías y/o vídeos que posteriormente puedan ser vistos y analizados por sus propios padres. Es de suma importancia realizar esta entrega de información de manera personalizada por lo que la educadora deberá citar en forma individual a cada familia para dar a conocer los resultados obtenidos por sus hijos y tomar decisiones y compromisos en conjunto de acuerdo a lo entregado. como es de vital importancia el respeto por la individualidad cada niño debe tener su trayectoria de aprendizajes, los que pueden ser medidos en evaluaciones, diagnosticas, sumativas  y formativas las que se entregaran a los padres en forma trimestral mediante sus respectivas evaluaciones.Este seria un segundo elemento contextual la entrega de información pertinente a cada niño. en conjunto con cada familia la educadora deberá profundizar en los intereses propios de cada niño,  en su desempeño dentro de la sala, en sus motivaciones, intereses,en sus ritmos de aprendizaje, en su personalidad, en su relación dentro del hogar y cuan comprometidos están los padres del desarrollo optimo de sus hijo. Como se he de esperar puede que se enfrente a padres que están muy motivados y comprometidos con la enseñanza de sus hijos, así como también otros padres que no lo están, y otros que solo ven el colegio o el jardín como un paso a la educación mas formal. Cada educadora deber tener muy clara esta gama de situaciones dentro de la sala y con respecto a cada niño y niña a su cuidado por lo que deberá generar muy bien sus estrategia para la entrega de este tipo de información, si es necesario recurrir a visitas domiciliarias, realizar las entrevistas a la llegada de los o niños o en su despedida, buscar la instancia mas apropiada para hacerlo , pues todos los padres deben tener claridad de los que sus hijos aprenden dentro de cada establecimiento, y también como un derecho propio de cada niño de que cada padre y madre sepa lo que el realiza en sus sala de actividades, tanto emocional como en lo educacional. Estos dos elementos tanto la reunión como la entrevista resultan de mucha importancia en la toma de decisiones, pues en la reunión se pueden compartir en plenario, cada padre puede dar sus punto de vista, sugerencias y también molestias en cuanto a los aprendizajes de sus hijos, por otra parte la entrega de evaluaciones ayuda a enfrentar las falencias de sus hijos a comprometerse en la ayuda para mejorar y a buscar nuevas estrategias para mejorar lo que dificulta. La educadora tendrá la claridad de lo que los padres esperan de ella y de sus propios hijos y a partir de esto ella podrá generar nuevas estrategias para continuar trabajando en beneficio de los niños y niñas respetando los intereses propios y mejorando las actividades dentro y fuera de la sala.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":6,
+         "valor":"Praesent vitae quam commodo, cursus tortor in, volutpat lectus. Vestibulum a mauris nisi. In volutpat metus et pretium vulputate. Aliquam in tincidunt magna. Integer ornare posuere auctor. Fusce at convallis nunc.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":7,
+         "valor":"Vestibulum interdum, odio molestie porta posuere, justo est feugiat sem, a lobortis lectus nunc a magna. Maecenas mauris metus, iaculis vel diam vel, porta rutrum elit. Phasellus nibh justo, porta ac egestas eu, eleifend aliquet elit.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":8,
+         "valor":"Ut varius dapibus accumsan. Curabitur mi purus, lacinia vel ultricies ultrices, vestibulum pellentesque nunc. Proin euismod sed ante id accumsan.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":9,
+         "valor":"Cras in felis vitae est vehicula consequat vitae nec purus. In sit amet eros a nunc sollicitudin elementum non vel sapien. Praesent pellentesque mi a tellus fermentum tristique. Phasellus sit amet fermentum arcu. Nullam lectus dolor, semper a varius non, molestie vel sem.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":10,
+         "valor":"Nulla mi lectus, gravida ac velit vitae, porttitor malesuada felis. In vitae purus sit amet odio porttitor varius id eget orci. Proin at ullamcorper sem.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":11,
+         "valor":"Fusce molestie ex augue, eu porttitor mi hendrerit eu. Nunc non arcu at mauris ultrices placerat. Curabitur faucibus turpis rutrum, varius nibh sed, condimentum erat.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":12,
+         "valor":"Ut venenatis ligula ut eros consequat porta. Pellentesque vel arcu id velit pharetra porttitor. Proin aliquam sit amet dui vehicula finibus. Nulla laoreet justo semper rutrum sollicitudin. Vivamus eu libero odio. Sed eros quam, cursus quis vestibulum vel, vulputate sed erat",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":13,
+         "valor":"Duis a ullamcorper orci, et auctor dolor. Phasellus scelerisque ante ac lacus fringilla elementum. Ut a orci justo. Integer hendrerit dui felis, ut cursus quam luctus nec.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":14,
+         "valor":"Ut pellentesque, elit ut cursus lacinia, nisl leo dapibus urna, et luctus massa nisi in mauris. Etiam facilisis nisl tellus, nec finibus metus lacinia at. Suspendisse vitae justo consectetur, iaculis lorem quis, ullamcorper nisl. Donec fermentum fermentum dolor, eget finibus ipsum malesuada in.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":15,
+         "valor":"Sed vulputate accumsan turpis, eu convallis eros ultricies et. Cras interdum nisl non fermentum ullamcorper. Nam sodales sollicitudin aliquet. Maecenas aliquam malesuada lorem, consectetur congue libero.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":16,
+         "valor":"Quisque hendrerit vel magna at porta. Donec sollicitudin pulvinar dignissim. In iaculis eleifend vulputate. Morbi quis varius arcu, nec posuere ipsum.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":17,
+         "valor":"Cras tortor ligula, consectetur sit amet laoreet at, viverra ut lectus. Nunc maximus quam et erat eleifend luctus. Vivamus libero elit, mattis eget neque sit amet, efficitur feugiat ligula.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":18,
+         "valor":"Nunc interdum semper ex in semper. Nunc eu urna at dolor gravida aliquet vel nec felis. Integer lobortis dui et risus interdum blandit ut ac odio. Nulla sit amet egestas justo. Morbi efficitur eros eu pretium tempus. Praesent mollis imperdiet turpis, eget lobortis nisi lacinia id.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":19,
+         "valor":"Aliquam ut mattis dui, ut facilisis magna. Nulla tristique eleifend fringilla. Mauris dapibus justo in faucibus tempor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent a semper nisl, eget laoreet ipsum.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":20,
+         "valor":"Etiam aliquet consectetur rutrum. Pellentesque dapibus orci sed arcu suscipit varius. Duis eu enim purus. Nulla lectus nulla, pellentesque id scelerisque vel, convallis at sem.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":21,
+         "valor":"Ut fringilla consequat lorem in vestibulum. Nulla eget tellus ultricies, gravida arcu efficitur, vestibulum nunc. Phasellus ornare tincidunt eros. Vivamus a accumsan massa.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":22,
+         "valor":"Phasellus justo ipsum, luctus quis velit sed, congue fringilla purus. Sed non eros sit amet sem efficitur sollicitudin vitae vel magna. Sed scelerisque vel ipsum nec bibendum. Quisque tempor erat eu est dictum, non consequat enim porttitor.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":23,
+         "valor":"Proin vel velit hendrerit, volutpat ligula et, pharetra sem. Aliquam eu justo leo. Donec luctus justo egestas turpis fermentum, eget blandit diam tincidunt.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":24,
+         "valor":"Phasellus vel sem et felis viverra porttitor sit amet nec nunc. Cras lacus tortor, congue vitae vehicula non, facilisis et enim. Suspendisse ac fringilla quam. Ut pretium enim et rhoncus fringilla.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":25,
+         "valor":"Aliquam erat volutpat. Ut condimentum massa sit amet elit commodo, a porta velit pretium. Aenean feugiat auctor turpis, nec eleifend ex. Aenean vitae est nibh.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      },
+      {
+         "id_respuesta":26,
+         "valor":"Nunc gravida turpis vitae ligula venenatis, nec faucibus nibh vulputate. Quisque nec ligula ac arcu rutrum fringilla. Aenean id rhoncus velit, nec rutrum sapien.",
+         "id_estado":1,
+         "correccion":[
+
+         ]
+      }
+   ]
+}

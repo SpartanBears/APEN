@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
 	<meta charset="UTF-8">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	<title>Pregunta n°1</title>
+	<title>Sistema de Administración</title>
 
 	<!-- PRELOADED ADMINBSB -->
 
@@ -27,8 +27,9 @@
 		<!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
 		<link href="./vendors/AdminBSB/css/themes/all-themes.css" rel="stylesheet" />
 
-		<link rel="stylesheet" type="text/css" href="./css/style.css">
+		<link rel="stylesheet" type="text/css" href="./css/adminStyle.css">
 		<link rel="stylesheet" type="text/css" href="./css/menuStyle.css">
+		<link rel="stylesheet" type="text/css" href="./css/baseStyle.css">
 </head>
 
 <body class="theme-red">
@@ -45,7 +46,7 @@
 					</div>
 				</div>
 			</div>
-			<p>Please wait...</p>
+			<p>Cargando...</p>
 		</div>
 	</div>
 	<!-- #END# Page Loader -->
@@ -213,90 +214,235 @@
 			<div class="col-xs-12">
 				<div class="card">
 					<div class="header">
-						<h4>Instrumento > Pregunta</h4>
+						<h4>Ia</h4>
 					</div>
 					<div class="body">
-						<div class="row heightfix">
-							<div class="col-md-9 cols-corrector">
-								<div class="row">
 
-									<div class="col-md-12">
-										<div class="row">
-											<div id="preguntaContainer" class="col-md-12">
-												<div class="card">
-													<div id="estimuloDisplay" class="body estimulo-container">
-														Pregunta
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div id="respuestaContainer" class="col-md-12">
-												<div class="card">
-													<div class="header">
-														<div class="row">
-															<div class="col-md-9">
-																<div id="tituloRespuesta">
-																	Respuesta A50
-																</div>
-															</div>
-															
-															<div class="col-md-3">
-																<input type="text" class="form-control" placeholder="Buscar">
-															</div>
-														</div>
-													</div>
-													<div class="body">
-														<div class="btns-status">
-															<input type="checkbox" class="filled-in" id="chboxDuda" />
-															<label for="chboxDuda">Duda</label>
-														</div>
-														<div id="respuestaDisplay" class="body respuesta-container">
-															Respuesta
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12">
-												<div class="navegacion-respuestas">
-													<div>
-														<button type="button" class="btn btn-lg btn-success waves-effect btn-anterior">Anterior</button>
-														<button type="button" class="btn btn-lg btn-success waves-effect btn-siguiente">Siguiente</button>
-													</div>
-													<div id="listadoRespuestas">
-													</div>
-													<div id="indicadorAsignaciones" class="row">
-														<!-- <div class="col-md-1">
-															<input id="respGroup" type="range" min="1"/>
-														</div>
-														<div class="col-md-11">
-															<div class="progress">
-															</div>
-														</div> -->
-														
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-								</div>
-							</div>
-							<div class="col-md-3 cols-corrector">
-								<section class="family-panel">
-									<div class="panel-group full-body family-rigth-bar" id="familiaRespuestas" role="tablist" aria-multiselectable="true">
-									</div>
-								</section>
-							</div>
+						<div class="btn-group" role="group">
+							<button id="crearEquipo" type="button" class="btn btn-default waves-effect js-right-sidebar" data->Crear Equipo</button>
+
+							<button id="editEquipo" type="button" class="btn btn-default waves-effect js-right-sidebar" data->Editar Equipo</button>
+
+							<button id="borrarEquipo" type="button" class="btn btn-default waves-effect js-right-sidebar" data->Borrar Equipo</button>
+
+						</div>
+						<div class="btn-group" role="group">
+
+							<button id="crearCorrector" type="button" class="btn btn-default waves-effect js-right-sidebar" >Crear Corrector</button>
+
+							<button id="editarCorrector" type="button" class="btn btn-default waves-effect js-right-sidebar" >Editar Corrector</button>
+
+							<button id="borrarCorrector" type="button" class="btn btn-default waves-effect js-right-sidebar" >Borrar Corrector</button>
+
+						</div>
+						<div class="btn-group" role="group">
+							<button id="crearSupervisor" type="button" class="btn btn-default waves-effect js-right-sidebar" >Crear Supervisor</button>
+
+							<button id="editarSupervisor" type="button" class="btn btn-default waves-effect js-right-sidebar" >Editar Supervisor</button>
+
+							<button id="borrarSupervisor" type="button" class="btn btn-default waves-effect js-right-sidebar" >Borrar Supervisor</button>
+
+						</div>
+						<div class="btn-group" role="group">
+							<button id="btnAsignarPregunta" type="button" class="btn btn-primary waves-effect">Asignar Pregunta</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+
+	<aside id="rightsidebar" class="right-sidebar open">
+
+		<div>
+			
+		</div>
+	</aside>
+
+	<div class="modal fade" id="equipoModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div id="modalContent" class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="defaultModalLabel">Modal title</h4>
+					<div class="crud-select hidden">
+						<select id="selectCorrector">
+							
+						</select>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div id="idInputEquipo" class="col-sm-6 hidden">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<select id="inputIdEquipo" class="form-control"></select>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputEquipo" class="form-control" type="text" placeholder="Nombre el Equipo">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<button id="submitEquipo" class="btn btn-success waves-effect">
+						asd
+					</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="CorrectorModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div id="modalContent" class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="defaultModalLabel">Corrector</h4>
+					<div class="crud-select hidden">
+						<select id="selectUser" class="form-control">
+							
+						</select>
+					</div>
+				</div>
+				<div class="modal-body">
+
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputUser" class="form-control" type="text" placeholder="Nombre de Usuario">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputPass" class="form-control" type="password" placeholder="Contraseña">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputNames" class="form-control" type="text" placeholder="Nombres">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="apellidoPaterno" class="form-control" type="text" placeholder="Apellido Paterno">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputMaterno" class="form-control" type="text" placeholder="Apellido Materno">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputEmail" class="form-control" type="text" placeholder="Correo Electrónico">
+								</div>
+							</div>
+						</div>
+					</div>
+					<button id="submitBtn" class="btn btn-success waves-effect">
+					asd
+					</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="SupervisorModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div id="modalContent" class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="defaultModalLabel">Supervisor</h4>
+					<div class="crud-select hidden">
+						<select id="selectUser" class="form-control">
+							
+						</select>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputUser" class="form-control" type="text" placeholder="Nombre de Usuario">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputPass" class="form-control" type="password" placeholder="Contraseña">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputNames" class="form-control" type="text" placeholder="Nombres">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="apellidoPaterno" class="form-control" type="text" placeholder="Apellido Paterno">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputMaterno" class="form-control" type="text" placeholder="Apellido Materno">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group form-float">
+								<div class="form-line">
+									<input id="inputEmail" class="form-control" type="text" placeholder="Correo Electrónico">
+								</div>
+							</div>
+						</div>
+					</div>
+					<button id="submitSprvsor" class="btn btn-success waves-effect">
+					asd
+					</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="PreguntaModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div id="modalContent" class="modal-content">
 				<div class="modal-header">
@@ -313,7 +459,6 @@
 			</div>
 		</div>
 	</div>
-
 	<!-- PRELOADED ADMINBSB -->
 		<!-- Jquery Core Js -->
 		<script src="./vendors/AdminBSB/plugins/jquery/jquery.min.js"></script>
@@ -338,7 +483,7 @@
 
 		<script src="/socket.io/socket.io.js"></script>	
 
-		<script type="text/javascript" src="./js/corrector.js"></script>
+		<script type="text/javascript" src="./js/adminCRUD.js"></script>
 </body>
 
 </html>
