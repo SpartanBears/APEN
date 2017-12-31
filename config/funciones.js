@@ -652,7 +652,7 @@ module.exports = {
 				var contar = 0;
 				Asignacion.findAll({where:{idUsuario: usuario.userEquipo[0].dataValues.idUsuario}},{raw:true}).then(function(a){
 					if(a.length==0){
-						data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1, inconsistencia:[]})
+						data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1, preguntas:[]})
 						contador++;
 						if(contador== u.length){
 								IndiceConsistencia(data, u)
@@ -663,7 +663,7 @@ module.exports = {
 							contar++;
 						}
 						if(i==a.length-1){
-							data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 0, inconsistencia:[]})
+							data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1, preguntas:[]})
 							contador++;
 							if(contador== u.length){
 								IndiceConsistencia(data, u)
@@ -677,179 +677,228 @@ module.exports = {
 	},
 	supervisorPreguntas: function(idEq,fs){
 		var instrumento;
-		var tablaPregunta = [];
-		let buscarInstrumento = function(){
-			return new Promise(function(resolve, reject){
-				fs.access("./persistence/plantillaPaquetes-"+idEq+".json", function(err){
-				if(!err){
-					var prueba = require("../persistence/plantillaPaquetes-"+idEq+".json")
-					instrumento = prueba.id;
-					resolve();
-				}else{
-					io.emit("no hay datos")
-				}
-			})	
-			})
-		}
-
-		let buscarPreguntas = function(){
-			return new Promise(function(resolve, reject){
+		var jeison = [];
+		var pregun = [];
+		var cantPre = 0;
+			fs.access("./views/persistence/plantillaPaquetes-"+idEq+".json", function(err){
+			if(!err){
+				var prueba = require("../views/persistence/plantillaPaquetes-"+idEq+".json")
+				instrumento = prueba.id;
 				Pregunta.findAll({where:{idPrueba: instrumento}},{raw:true}).then(function(pr){
-					pr.forEach(function(pres){
-						tablaPregunta.push({idPregunta: pres.dataValues.idPregunta, asignadas: 0, corregidas: 0, avance: 0, consistencia: 1, inconsistencia: []})
+					pr.forEach(function(p){
+						pregun.push({id_pregunta:p.dataValues.idPregunta, total_asignadas: 0, total_respuestas: 0, total_corregidas: 0, total_doble_corregidas:0, media_consistencia: 0, respuestas: []})
+						cantPre++;
+						if(cantPre==pr.length){
+							jeison.push({id_instrumento: instrumento, preguntas: pregun})
+							preguntasSupervisor(jeison)
+						}
 					})
-				}).then(function(){
-					resolve();
+				})
+			}else{
+				console.log("no hay datos")
+			}
+		})	
+	}
+
+}
+
+function preguntasSupervisor(preguntas){
+	var questions = preguntas;
+	var id = 0;
+
+	let respuestaPreguntas = function(id){
+		var arrResp = [];
+		var cont = 0;
+		return new Promise(function(resolve, reject){
+			Respuesta.findAll({where:{idPregunta: questions[0].preguntas[id].id_pregunta}},{raw:true}).then(function(resP){
+				questions[0].preguntas[id].total_respuestas = resP.length;
+				resP.forEach(function(r){
+					arrResp.push({id_respuesta: r.dataValues.idRespuesta, correctores:[]})
+					cont++;
+					if(cont==resP.length){
+						questions[0].preguntas[id].respuestas = arrResp;
+						resolve();
+					}
 				})
 			})
-		}
+		})
+	}
 
-		let buscarRespuestas = function(){
-			var ans = [];
-			var corr = 0;
-			var asig = 0;
-			return new Promise(function(resolve,reject){
-				for (var i = 0; i < tablaPregunta.length; i++) {
-					var id = i;
-					var corrige = 0;
-					var asigna = 0;
-					var jota = 0;
-					Respuesta.findAll({where:{idPregunta: tablaPregunta[i].idPregunta}},{raw:true}).then(function(re){
-						for (var j = 0; j < re.length; j++) {
-							Asignacion.findAll({where:{idRespuesta: re[j].dataValues.idRespuesta}},{raw:true}).then(function(asi){
-								if(asi.length==0){
-									jota++;
+	let asignacionesRespuesta = function(){
+		var conta = 0;
+		var idR= 0;
+		var arrCor = [];
+		return new Promise(function(resolve, reject){
+			questions[0].preguntas[id].respuestas.forEach(function(a){
+				Asignacion.findAll({where:{idRespuesta: a.id_respuesta}},{raw:true}).then(function(asig){
+					questions[0].preguntas[id].total_asignadas += asig.length;
+					AsignacionCodigo.findAll({where:{idAsignacion: asig[0].dataValues.idAsignacion}},{raw:true}).then(function(pcor){
+						AsignacionCodigo.findAll({where:{idAsignacion: asig[1].dataValues.idAsignacion}},{raw:true}).then(function(scor){
+							if(pcor.length!=scor.length){
+								if(pcor.length==0){
+									questions[0].preguntas[id].total_corregidas += 1;
+									questions[0].preguntas[id].media_consistencia += 1;
+									var asignap = {id_codigo:0, id_justificacion: 0}
+									arrCor.push({id_corrector: asig[0].dataValues.idUsuario, asignacion: asignap})
+									var asigas = {id_codigo: 0, id_justificacion: scor[0].dataValues.idCodigo}
+									arrCor.push({id_corrector: asig[1].dataValues.idUsuario, asignacion: asigas})
+									conta++;
+									questions[0].preguntas[id].respuestas[idR].correctores = arrCor;
+									arrCor =[];
+									idR++;
+									if(conta==questions[0].preguntas[id].respuestas.length){
+
+										resolve();
+									}
 								}else{
-									asig=asi.length;
-									for (var k = 0; k < asi.length; k++) {
-										if(asi[k].dataValues.idEstado==2){
-											corr++;
-										}
-										if(k==asi.length-1){
-											corrige = corrige+corr;
-											asigna = asigna+asig;
-											tablaPregunta[id].asignadas = asigna;
-											tablaPregunta[id].corregidas = corrige;
-											corr = 0;
-											jota++;
-										}
+									questions[0].preguntas[id].total_corregidas += 1;
+									questions[0].preguntas[id].media_consistencia += 1;
+									var asignap = {id_codigo: 0, id_justificacion: pcor[0].dataValues.idCodigo}
+									arrCor.push({id_corrector: asig[0].dataValues.idUsuario, asignacion: asignap})
+									var asigas = {id_codigo: 0, id_justificacion: 0}
+									arrCor.push({id_corrector: asig[1].dataValues.idUsuario, asignacion: asigas})
+									conta++;
+									questions[0].preguntas[id].respuestas[idR].correctores = arrCor;
+									arrCor =[];
+									idR++;
+									if(conta==questions[0].preguntas[id].respuestas.length){
+										console.log(JSON.stringify(questions))
+										resolve();
 									}
 								}
-								if(jota==re.length-1 && id==tablaPregunta.length-1){
+							}else{
+								if(pcor.length>0){
+									questions[0].preguntas[id].total_corregidas += 2;
+									questions[0].preguntas[id].total_doble_corregidas +=1;
+									if(pcor[0].dataValues.idCodigo==scor[0].dataValues.idCodigo){
+										questions[0].preguntas[id].media_consistencia += 2;
+									}
+									var asignap = {id_codigo: 0, id_justificacion: pcor[0].dataValues.idCodigo}
+									arrCor.push({id_corrector: asig[0].dataValues.idUsuario, asignacion: asignap})
+									var asigas = {id_codigo: 0, id_justificacion: scor[0].dataValues.idCodigo}
+									arrCor.push({id_corrector: asig[1].dataValues.idUsuario, asignacion: asigas})
+									conta++;
+									questions[0].preguntas[id].respuestas[idR].correctores = arrCor;
+									arrCor =[];
+									idR++;
+									if(conta==questions[0].preguntas[id].respuestas.length){
+										console.log(JSON.stringify(questions))
+										resolve();
+									}	
+								}else{
+									var asignap = {id_codigo: 0, id_justificacion: 0}
+									arrCor.push({id_corrector: asig[0].dataValues.idUsuario, asignacion: asignap})
+									var asigas = {id_codigo: 0, id_justificacion: 0}
+									arrCor.push({id_corrector: asig[1].dataValues.idUsuario, asignacion: asigas})
+									conta++;
+									questions[0].preguntas[id].respuestas[idR].correctores = arrCor;
+									arrCor =[];
+									idR++;
+									if(conta==questions[0].preguntas[id].respuestas.length){
+										questions[0].preguntas[id].media_consistencia = (questions[0].preguntas[id].media_consistencia/questions[0].preguntas[id].total_corregidas)-0.2/(1-0.2)
+										console.log(JSON.stringify(questions))
+										resolve();
+									}
+								}
+							}
+						})
+					})
+				})
+			})
+		})
+	}
+
+	let valorCodigos = function(){
+		var qrc = 0;
+		return new Promise(function(resolve, reject){
+			questions[0].preguntas[id].respuestas.forEach(function(qr){
+				if(qr.correctores[0].asignacion.id_justificacion!=0 && qr.correctores[1].asignacion.id_justificacion!=0){
+					Codigo.findAll({where:{idCodigo: qr.correctores[0].asignacion.id_justificacion }},{raw:true}).then(function(cu){
+						Filtro.findAll({where:{idCodigo:cu[0].dataValues.idCodigo}, include:[{model:Familia, as:'fFamilia',where:{idFamilia: Sequelize.col('filtro.id_familia')}}]},{raw:true}).then(function(cuf){
+							Codigo.findAll({where:{idCodigo: qr.correctores[1].asignacion.id_justificacion}},{raw:true}).then(function(cd){
+								console.log(cd)
+								Filtro.findAll({where:{idCodigo:cd[0].dataValues.idCodigo}, include:[{model:Familia, as:'fFamilia',where:{idFamilia: Sequelize.col('filtro.id_familia')}}]},{raw:true}).then(function(cdf){
+									qr.correctores[0].asignacion.id_justificacion = cu[0].dataValues.valor;
+									qr.correctores[0].asignacion.id_codigo = cuf[0].fFamilia[0].dataValues.titulo;
+									qr.correctores[1].asignacion.id_justificacion = cd[0].dataValues.valor;
+									qr.correctores[1].asignacion.id_codigo = cdf[0].fFamilia[0].dataValues.titulo;
+									qrc++;
+									if(qrc==questions[0].preguntas[id].respuestas.length){
+										resolve();
+									}
+								})
+							})
+						})
+					})
+				}else if(qr.correctores[0].asignacion.id_justificacion!=0 || qr.correctores[1].asignacion.id_justificacion!=0){
+					if(qr.correctores[0].asignacion.id_justificacion!=0){
+						Codigo.findAll({where:{idCodigo: qr.correctores[0].asignacion.id_justificacion }},{raw:true}).then(function(cu){
+							console.log(cu)
+							Filtro.findAll({where:{idCodigo:cu[0].dataValues.idCodigo}, include:[{model:Familia, as:'fFamilia',where:{idFamilia: Sequelize.col('filtro.id_familia')}}]},{raw:true}).then(function(cuf){
+								qr.correctores[0].asignacion.id_justificacion = cu[0].dataValues.valor;
+								qr.correctores[0].asignacion.id_codigo = cuf[0].fFamilia[0].dataValues.titulo;
+								qr.correctores[1].asignacion.id_justificacion = "-";
+								qr.correctores[1].asignacion.id_codigo = "-";
+								qrc++;
+								if(qrc==questions[0].preguntas[id].respuestas.length-1){
 									resolve();
 								}
 							})
-						}
-					})
-				}
-			})
-		}
-
-		let indiceAvance = function(){
-			return new Promise(function(resolve,reject){
-				for (var i = 0; i < tablaPregunta.length; i++) {
-					tablaPregunta[i].avance = (tablaPregunta[i].corregidas/tablaPregunta[i].asignadas)*100
-					if(i==tablaPregunta.length-1){
-						resolve();
-					}
-				}	
-			})
-		}
-
-		let indiceInconsistencia = function(){
-			var incon = [];
-			var inconsistente = 0;
-			return new Promise(function(resolve,reject){
-				for (var i = 0; i < tablaPregunta.length; i++) {
-					var res = i;
-					var consiste = false;
-					Respuesta.findAll({where:{idPregunta: tablaPregunta[i].idPregunta}},{raw:true}).then(function(r){
-						for (var j = 0; j < r.length; j++) {
-							var jo = j;
-							var codigoP = [];
-							var codigoD = [];
-							Asignacion.findAll({where:{idRespuesta:r[j].dataValues.idRespuesta, idEstado: 2}},{raw:true}).then(function(ac){
-								console.log("respuesta")
-								if(ac.length==2){
-									var usu = ac[0].dataValues.idUsuario;
-									var usd = ac[1].dataValues.idUsuario;
-									AsignacionCodigo.findAll({where:{idAsignacion:ac[0].dataValues.idAsignacion}},{raw:true}).then(function(acp){
-										AsignacionCodigo.findAll({where:{idAsignacion:ac[1].dataValues.idAsignacion}},{raw:true}).then(function(acd){
-											console.log("llega aqui")
-											if(acp.length!= acd.length){
-												console.log("inconsiste tamaño")
-												inconsistente++;
-												for (var l = 0; l < acp.length; l++) {
-													codigoP.push({id: acp[l].dataValues.idCodigo, valor:"a"})
-												}
-												for (var m = 0; m < acd.length; m++) {
-													codigoD.push({id: acd[m].dataValues.idCodigo, valor:"a"})
-													if(m==acd.length-1){
-														var correccion = [];
-														correccion.push({idCorrector:usu,codigos: codigoP})
-														correccion.push({idCorrector:usd, codigos: codigoD})
-														incon.push({idRespuesta: r[jo].dataValues.idRespuesta, correcciones: correccion})
-													}
-												}
-											}else{
-												for (var n = 0; n < acp.length; n++) {
-													var ene = n;
-													codigoP.push({id:acp[n].dataValues.idCodigo, valor:"a"})
-													for (var c = 0; c < acd.length; c++) {
-														var ce = c;
-														codigoD.push({id:acd[c].dataValues.idCodigo, valor:"a"})
-														if(acp[n].dataValues.idCodigo==acd[c].dataValues.idCodigo){
-															console.log("consiste true")
-															consiste = true;
-														}
-														if(ene==acp.length-1 && ce==acd.length-1 && consiste==false){
-															console.log("inconsiste false")
-															var correccion = [];
-															correccion.push({idCorrector:usu, codigos: codigoP})
-															correccion.push({idCorrector:usd, codigos: codigoD})
-															incon.push({idRespuesta: r[jo].dataValues.idRespuesta, correcciones: correccion})
-															inconsistente++;
-															console.log(incon)
-														}
-														if(ene==acp.length-1){
-															consiste = false;
-														}
-													}
-												}
-											}
-										})
-									})
+						})
+					}else{
+						Codigo.findAll({where:{idCodigo: qr.correctores[1].asignacion.id_justificacion }},{raw:true}).then(function(cd){
+							Filtro.findAll({where:{idCodigo:cd[0].dataValues.idCodigo}, include:[{model:Familia, as:'fFamilia',where:{idFamilia: Sequelize.col('filtro.id_familia')}}]},{raw:true}).then(function(cdf){
+								qr.correctores[0].asignacion.id_justificacion = "-";
+								qr.correctores[0].asignacion.id_codigo = "-";
+								qr.correctores[1].asignacion.id_justificacion = cd[0].dataValues.valor;
+								qr.correctores[1].asignacion.id_codigo = cdf[0].fFamilia[0].dataValues.titulo;
+								qrc++;
+								if(qrc==questions[0].preguntas[id].respuestas.length){
+									resolve();
 								}
 							})
-						}
-					})
+						})
+					}
+				}else{
+					qr.correctores[0].asignacion.id_justificacion = "-";
+					qr.correctores[0].asignacion.id_codigo = "-";
+					qr.correctores[1].asignacion.id_justificacion = "-";
+					qr.correctores[1].asignacion.id_codigo = "-";
+					qrc++;
+					if(qrc==questions[0].preguntas[id].respuestas.length){
+						resolve();
+					}
+					
 				}
 			})
-		}
-		let resultado = function(){
-			return new Promise(function(resolve, reject){
-				console.log(tablaPregunta)
-			})
-		}
-		buscarInstrumento().then(function(){
-			return buscarPreguntas();
-		}).then(function(){
-			return buscarRespuestas();
-		}).then(function(){
-			return indiceAvance();
-		}).then(function(){
-			indiceInconsistencia();
 		})
 	}
+	function ciclo(val){
+		return new Promise(function(resolve, reject){
+			respuestaPreguntas(val).then(function(){
+				return asignacionesRespuesta();
+			}).then(function(){
+				return valorCodigos();
+			}).then(function(){
+				id++;
+				if(id==questions[0].preguntas.length){
+					console.log(JSON.stringify(questions))
+				}else{
+					ciclo(id)
+				}
+			})
+		})
+	}
+	ciclo(id)
 }
 
 function IndiceConsistencia(d, users){
 	var c = 0;
 	users.forEach(function(us){
-		var codigoD = [];
-		var codigoP = [];
-		var inconsis = [];
-		var matriz = [];
+		//var codigoD = [];
+		//var codigoP = [];
+		//var inconsis = [];
+		//var matriz = [];
 		var z = 0;
 		var consis = 0;
 		var y = 0;
@@ -883,30 +932,29 @@ function IndiceConsistencia(d, users){
 										}
 										if(noc==true && j==ap.length-1){
 												consis++;
-												console.log(consis)
 												noc = false;
 										}
 										if(y==ap.length*2 && cons!=ap.length){
 											var don = 0;
 											for (var v = 0; v < ap.length; v++) {
 												Codigo.findAll({where:{idCodigo:ap[v].dataValues.idCodigo}},{raw:true}).then(function(cp){
-													codigoP.push({id:cp[0].dataValues.idCodigo, valor:cp[0].dataValues.valor})
+													//codigoP.push({id:cp[0].dataValues.idCodigo, valor:cp[0].dataValues.valor})
 													don++;
 												})
 											}
 											for (var u = 0; u < ad.length; u++) {
 												Codigo.findAll({where:{idCodigo:ad[u].dataValues.idCodigo}},{raw:true}).then(function(cd){
-													codigoD.push({id:cd[0].dataValues.idCodigo, valor:cd[0].dataValues.valor})
+													//codigoD.push({id:cd[0].dataValues.idCodigo, valor:cd[0].dataValues.valor})
 													don++;
 													if(don==ap.length+ad.length){
-														matriz.push({idCorrector:idp, codigos: codigoP})
-														matriz.push({idCorrector:idud, codigos: codigoD})
+														//matriz.push({idCorrector:idp, codigos: codigoP})
+														//matriz.push({idCorrector:idud, codigos: codigoD})
 														for (var b = 0; b < d.length; b++) {
 															if(d[b].ID==idp){
-																d[b].inconsistencia.push({idRespuesta: res, correcciones: matriz});
+																//d[b].inconsistencia.push({idRespuesta: res, correcciones: matriz});
 																c++;
 																if(c==a.length){
-																	console.log(JSON.stringify(d))
+																	correccionPorCorrector(d)
 																}
 															}
 														}
@@ -920,8 +968,8 @@ function IndiceConsistencia(d, users){
 											if(z==a.length){
 												for (var k = 0; k < d.length; k++) {
 													if(d[k].ID == us.userEquipo[0].dataValues.idUsuario){
-														d[k].consistencia =((consis/d[k].Corregidas)-0.2)/(1-0.2);
-														d[k].inconsistencia = inconsis; 
+														d[k].consistencia =(consis/d[k].Corregidas);
+														//d[k].inconsistencia = inconsis; 
 													}
 												}
 											}
@@ -936,6 +984,92 @@ function IndiceConsistencia(d, users){
 		})
 	})
 }
+function correccionPorCorrector(da){
+	var dat = da;
+	var c = 0;
+	var y = 0;
+	var jota = 0;
+	var asignacion = [];
+	let asignaciones = function(id){
+		return new Promise(function(resolve, reject){
+			Asignacion.findAll({where:{idUsuario: dat[id].ID}},{raw:true}).then(function(asc){
+				c = id;
+				asignacion = asc;
+				resolve()
+			})
+		})
+	}
+
+	let correcciones = function(){
+		var preg = [];
+		var resp = [];
+		return new Promise(function(resolve, reject){
+			if(asignacion.length!=0){
+				asignacion.forEach(function(asignar){
+					AsignacionCodigo.findAll({where:{idAsignacion: asignar.dataValues.idAsignacion}},{raw:true}).then(function(ac){
+						if(ac.length==0){
+							Respuesta.findAll({where:{idRespuesta:asignar.dataValues.idRespuesta}},{raw:true}).then(function(re){
+								y++;
+								var asigna = {id_justificacion:"-", id_codigo: "-"}
+								resp.push({id_respuesta: re[0].dataValues.idRespuesta, asignacion: asigna})
+								preg.push({id_pregunta:re[0].dataValues.idPregunta,respuesta:resp})
+								resp = [];
+								if(y==asignacion.length){
+									jota++;
+									y=0;
+									dat[c].preguntas = preg;
+									preg = [];
+									resolve();
+								}
+							})
+						}else{
+							Respuesta.findAll({where:{idRespuesta: asignar.dataValues.idRespuesta}},{raw:true}).then(function(r){
+								Codigo.findAll({where:{idCodigo: ac[0].dataValues.idCodigo}},{raw:true}).then(function(cod){
+									Filtro.findAll({where:{idCodigo:cod[0].dataValues.idCodigo}, include:[{model:Familia, as:'fFamilia',where:{idFamilia: Sequelize.col('filtro.id_familia')}}]},{raw:true}).then(function(fc){
+										var asigna = {id_justificacion:cod[0].dataValues.valor, id_codigo: fc[0].fFamilia[0].dataValues.titulo}
+										resp.push({id_respuesta: r[0].dataValues.idRespuesta, asignacion: asigna})
+										preg.push({id_pregunta:r[0].dataValues.idPregunta, respuestas: resp})
+										resp =[];
+										y++;
+										if(y==asignacion.length){
+											jota++;
+											y=0;
+											dat[c].preguntas = preg;
+											preg = [];
+											resolve();
+										}
+									})
+								})
+								
+							})
+						}
+					})
+				})
+
+			}else{
+				resolve();
+			}
+		})
+	}	
+
+	function cicle(val){
+		return new Promise(function(resolve, reject){
+			asignaciones(val).then(function(){
+				return correcciones();
+			}).then(function(){
+				if(jota==dat.length-1){
+					console.log(JSON.stringify(dat))
+				}else{
+					c = 0;
+					asignacion = null;
+					cicle(jota);
+				}
+			})
+		})
+	}
+	cicle(jota)
+}
+
 function asignacionFamilias(fam,fs,c, idp, asignacion, eq, titp){
 	var famcorrector = [];
 	var codcorrector = [];
