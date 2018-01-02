@@ -162,8 +162,13 @@ module.exports = {
     login: function (useru, passu, io, sock) {
         Usuario.find({ where: { usuario: useru, contrasena: passu } }).then(function (result) {
             if (result != null) {
-            	console.log(result)
-                io.to(sock).emit('login exitoso', { nombre: result.dataValues.nombre, apellidop: result.dataValues.apellidoPaterno, apellidom: result.dataValues.apellidoMaterno, tipousuario: result.dataValues.idTipoUsuario, idUsuario:result.dataValues.idUsuario })
+            	if(result.dataValues.idTipoUsuario!=3){
+            		UsuarioEquipo.findAll({where:{idUsuario: result.dataValues.idUsuario}},{raw:true}).then(function(ue){
+            			io.to(sock).emit('login exitoso', { nombre: result.dataValues.nombre, apellidop: result.dataValues.apellidoPaterno, apellidom: result.dataValues.apellidoMaterno, tipousuario: result.dataValues.idTipoUsuario, idUsuario:result.dataValues.idUsuario, idTeam:ue[0].dataValues.idEquipo })
+            		})
+            	}else{
+                io.to(sock).emit('login exitoso', { nombre: result.dataValues.nombre, apellidop: result.dataValues.apellidoPaterno, apellidom: result.dataValues.apellidoMaterno, tipousuario: result.dataValues.idTipoUsuario, idUsuario:result.dataValues.idUsuario, idTeam: 0 })
+            	}
             } else {
                 io.to(sock).emit('login fallido', {mensaje: 'datos incorrectos'})
             }
@@ -175,24 +180,30 @@ module.exports = {
     /*
     funcion asignar codigo a la correción de una pregunta
     */
-    guardarCorreccion: function (id,respuesta, codigo, usuario, carga,estado, io, sock, fs) {
+    guardarCorreccion: function (id,respuesta, codigo, usuario, carga,estado,preg,part, io, sock, fs) {
     	if(estado==2){
-			Asignacion.find({where: {idUsuario: id, idRespuesta: respuesta }}).then(function(result){
-				AsignacionCodigo.findAll({where:{ idAsignacion: result.dataValues.idAsignacion }}).then(function(data){
-
+			Asignacion.findAll({where: {idUsuario: id, idRespuesta: respuesta }},{raw:true}).then(function(result){
+				AsignacionCodigo.findAll({where:{ idAsignacion: result[0].dataValues.idAsignacion }},{raw:true}).then(function(data){
 						if(data.length>0){
-							for(var i = 0; i<codigo.length; i++){
-								updateCorreccion(usuario,data[i].idAsignacion,codigo[i].idcodigo,data[i].idAsignacionCodigo, carga, fs, io, sock)
+							if(data[0].idCodigo!=codigo[0].idcodigo){
+								updateCorreccion(usuario, result[0].dataValues.idAsignacion,codigo[0].idcodigo, carga, preg, parte, fs, io, sock)
 							}
-						}else{							
-								saveCorreccion(result, codigo, carga, usuario, fs, io, sock)					
+						}else{
+							if(result[0].idEstado==1){
+								saveCorreccion(result[0].dataValues.idAsignacion, codigo[0].idcodigo, carga, usuario, part, preg, fs, io, sock, 0)
+							}else{
+								saveCorreccion(result[0].dataValues.idAsignacion, codigo[0].idcodigo, carga, usuario, part, preg, fs, io, sock, 1)
+							}
 						}
 				})				
 			})
         }else{
-        	Asignacion.update({idEstado: estado},{where:{idUsuario:id, idRespuesta: respuesta}}).then(function(r){
-        		io.to(sock).emit('Correccion Guardada', { mensaje: 'ok' })
-				fs.writeFile("./views/persistence/"+usuario+".json", JSON.stringify(carga)); 
+        	Aasignacion.findAll({where: {idUsuario: id, idRespuesta: respuesta }},{raw:true}).then(function(res){
+        		if(res[0].dataValues.idEstado==1){
+        			dudaNueva(res[0].dataValues.idAsignacion, usuario, preg, part, fs, io, 0)
+        		}else{
+        			dudaNueva(res[0].dataValues.idAsignacion, usuario, preg, part, fs, io, 1)
+        		}
         	})
         }
     },
@@ -645,17 +656,20 @@ module.exports = {
   		});
 	},
 	SupervisorEquipo: function(idEq,fs){
+		console.log("SupervisorEquipo")
 		UsuarioEquipo.findAll({where: {idEquipo: idEq}, include: [{model: Usuario, as: 'userEquipo', where: {idUsuario: Sequelize.col('UsuarioEquipo.id_usuario')}}]},{raw: true}).then(function(u){
 			var data = [];
 			var contador = 0;
 			u.forEach(function(usuario){
 				var contar = 0;
+				if(usuario.userEquipo[0].dataValues.idTipoUsuario==2){
 				Asignacion.findAll({where:{idUsuario: usuario.userEquipo[0].dataValues.idUsuario}},{raw:true}).then(function(a){
 					if(a.length==0){
-						data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1, preguntas:[]})
+						data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1,carga: 0, preguntas:[]})
 						contador++;
-						if(contador== u.length){
-								IndiceConsistencia(data, u)
+						if(contador==u.length){
+								console.log("envia a IndiceConsistencia")
+								IndiceConsistencia(data, u, fs)
 							}
 					}
 					for (var i = 0; i < a.length; i++) {
@@ -663,19 +677,27 @@ module.exports = {
 							contar++;
 						}
 						if(i==a.length-1){
-							data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1, preguntas:[]})
+							data.push({ID: usuario.userEquipo[0].dataValues.idUsuario, Asignadas: a.length, Corregidas: contar, consistencia: 1,carga: 0, preguntas:[]})
 							contador++;
 							if(contador== u.length){
-								IndiceConsistencia(data, u)
+								console.log("envia a IndiceConsistencia")
+								IndiceConsistencia(data, u, fs)
 							}
 							contar = 0;
 						}
 					}
 				})
+			}else{
+				contador++;
+				if(contador==u.length){
+					console.log("envia a IndiceConsistencia")
+					IndiceConsistencia(data, u, fs)
+				}
+			}
 			})
 		})
 	},
-	supervisorPreguntas: function(idEq,fs){
+	supervisorPreguntas: function(idEq,fs, io){
 		var instrumento;
 		var jeison = [];
 		var pregun = [];
@@ -690,7 +712,7 @@ module.exports = {
 						cantPre++;
 						if(cantPre==pr.length){
 							jeison.push({id_instrumento: instrumento, preguntas: pregun})
-							preguntasSupervisor(jeison)
+							preguntasSupervisor(jeison, fs, io, idEq)
 						}
 					})
 				})
@@ -702,7 +724,7 @@ module.exports = {
 
 }
 
-function preguntasSupervisor(preguntas){
+function preguntasSupervisor(preguntas, fs, io, equip){
 	var questions = preguntas;
 	var id = 0;
 
@@ -747,7 +769,7 @@ function preguntasSupervisor(preguntas){
 									arrCor =[];
 									idR++;
 									if(conta==questions[0].preguntas[id].respuestas.length){
-
+										questions[0].preguntas[id].media_consistencia = ((questions[0].preguntas[id].media_consistencia/questions[0].preguntas[id].total_corregidas)-0.2/(1-0.2)).toFixed(2);
 										resolve();
 									}
 								}else{
@@ -762,7 +784,7 @@ function preguntasSupervisor(preguntas){
 									arrCor =[];
 									idR++;
 									if(conta==questions[0].preguntas[id].respuestas.length){
-										console.log(JSON.stringify(questions))
+										questions[0].preguntas[id].media_consistencia = ((questions[0].preguntas[id].media_consistencia/questions[0].preguntas[id].total_corregidas)-0.2/(1-0.2)).toFixed(2);
 										resolve();
 									}
 								}
@@ -782,7 +804,8 @@ function preguntasSupervisor(preguntas){
 									arrCor =[];
 									idR++;
 									if(conta==questions[0].preguntas[id].respuestas.length){
-										console.log(JSON.stringify(questions))
+										questions[0].preguntas[id].media_consistencia = ((questions[0].preguntas[id].media_consistencia/questions[0].preguntas[id].total_corregidas)-0.2/(1-0.2)).toFixed(2);
+
 										resolve();
 									}	
 								}else{
@@ -795,8 +818,8 @@ function preguntasSupervisor(preguntas){
 									arrCor =[];
 									idR++;
 									if(conta==questions[0].preguntas[id].respuestas.length){
-										questions[0].preguntas[id].media_consistencia = (questions[0].preguntas[id].media_consistencia/questions[0].preguntas[id].total_corregidas)-0.2/(1-0.2)
-										console.log(JSON.stringify(questions))
+										questions[0].preguntas[id].media_consistencia = ((questions[0].preguntas[id].media_consistencia/questions[0].preguntas[id].total_corregidas)-0.2/(1-0.2)).toFixed(2);
+	
 										resolve();
 									}
 								}
@@ -833,8 +856,8 @@ function preguntasSupervisor(preguntas){
 				}else if(qr.correctores[0].asignacion.id_justificacion!=0 || qr.correctores[1].asignacion.id_justificacion!=0){
 					if(qr.correctores[0].asignacion.id_justificacion!=0){
 						Codigo.findAll({where:{idCodigo: qr.correctores[0].asignacion.id_justificacion }},{raw:true}).then(function(cu){
-							console.log(cu)
 							Filtro.findAll({where:{idCodigo:cu[0].dataValues.idCodigo}, include:[{model:Familia, as:'fFamilia',where:{idFamilia: Sequelize.col('filtro.id_familia')}}]},{raw:true}).then(function(cuf){
+								console.log(JSON.stringify(cuf))
 								qr.correctores[0].asignacion.id_justificacion = cu[0].dataValues.valor;
 								qr.correctores[0].asignacion.id_codigo = cuf[0].fFamilia[0].dataValues.titulo;
 								qr.correctores[1].asignacion.id_justificacion = "-";
@@ -882,7 +905,8 @@ function preguntasSupervisor(preguntas){
 			}).then(function(){
 				id++;
 				if(id==questions[0].preguntas.length){
-					console.log(JSON.stringify(questions))
+					io.emit('Archivos listos',{creado: "Ok"});
+					fs.writeFile("./views/persistence/preguntastabla(1).json", JSON.stringify(questions))
 				}else{
 					ciclo(id)
 				}
@@ -892,99 +916,71 @@ function preguntasSupervisor(preguntas){
 	ciclo(id)
 }
 
-function IndiceConsistencia(d, users){
+function IndiceConsistencia(d, users, fs){
+	console.log("IndiceConsistencia")
 	var c = 0;
-	users.forEach(function(us){
-		//var codigoD = [];
-		//var codigoP = [];
-		//var inconsis = [];
-		//var matriz = [];
-		var z = 0;
-		var consis = 0;
-		var y = 0;
-		Asignacion.findAll({where:{idUsuario: us.userEquipo[0].dataValues.idUsuario, idEstado: 2}},{raw:true}).then(function(a){
-			a.forEach(function(au){
-				var cons = 0;
-				var noc = false;
-				var idp = au.dataValues.idUsuario;
-				Asignacion.findAll({where:{idRespuesta: au.dataValues.idRespuesta}},{raw:true}).then(function(ar){
-					for (var i = 0; i < ar.length; i++) {
-					var inc = false;
-					var res = ar[i].dataValues.idRespuesta;
-						if(ar[i].dataValues.idUsuario!=au.dataValues.idUsuario){
-							var idud= ar[i].dataValues.idUsuario;
-							AsignacionCodigo.findAll({where:{idAsignacion: ar[i].dataValues.idAsignacion}},{raw:true}).then(function(ad){
-								AsignacionCodigo.findAll({where:{idAsignacion: au.dataValues.idAsignacion}},{raw:true}).then(function(ap){
-									for (var j = 0; j < ap.length; j++) {
-										y++;
+	var user = 0;
+	var consistente = 0;
+	var usuarios = 0;
+	var asignacionesTotal=0;
+	let revisarAsignacion = function(use){
+		return new Promise(function(resolve,reject){
+			Asignacion.findAll({where:{idUsuario:users[use].userEquipo[0].dataValues.idUsuario, idEstado: 2}},{raw:true}).then(function(a){
+				if(a.length!=0){
+				a.forEach(function(au){
+					Asignacion.findAll({where:{idRespuesta: au.dataValues.idRespuesta}},{raw:true}).then(function(ar){
+						for (var i = 0; i < ar.length; i++) {
+							if(ar[i].dataValues.idUsuario!=au.dataValues.idUsuario){
+								AsignacionCodigo.findAll({where:{idAsignacion: ar[i].dataValues.idAsignacion}},{raw:true}).then(function(ad){
+									AsignacionCodigo.findAll({where:{idAsignacion: au.dataValues.idAsignacion}},{raw:true}).then(function(ap){
 										if(ad.length==0){
-											noc = true;
+											consistente++;
+											asignacionesTotal++;
+											if(asignacionesTotal==a.length){
+												d[use].consistencia = (consistente/d[use].Corregidas).toFixed(2)
+												asignacionesTotal=0;
+												resolve();
+											}
 										}else{
-											for (var t = 0; t < ad.length; t++){
-												if(ap[j].dataValues.idCodigo==ad[t].dataValues.idCodigo){
-													cons++;
+											if(ad[0].dataValues.idCodigo==ap[0].dataValues.idCodigo){
+												consistente++;	
+											}else{
+												asignacionesTotal++;
+												if(asignacionesTotal==a.length){
+													d[use].consistencia = (consistente/d[use].Corregidas).toFixed(2)
+													asignacionesTotal=0;
+													resolve();
 												}
 											}
 										}
-										if(j==ap.length-1 && cons==ap.length){
-											consis++;
-											cons = 0;
-										}
-										if(noc==true && j==ap.length-1){
-												consis++;
-												noc = false;
-										}
-										if(y==ap.length*2 && cons!=ap.length){
-											var don = 0;
-											for (var v = 0; v < ap.length; v++) {
-												Codigo.findAll({where:{idCodigo:ap[v].dataValues.idCodigo}},{raw:true}).then(function(cp){
-													//codigoP.push({id:cp[0].dataValues.idCodigo, valor:cp[0].dataValues.valor})
-													don++;
-												})
-											}
-											for (var u = 0; u < ad.length; u++) {
-												Codigo.findAll({where:{idCodigo:ad[u].dataValues.idCodigo}},{raw:true}).then(function(cd){
-													//codigoD.push({id:cd[0].dataValues.idCodigo, valor:cd[0].dataValues.valor})
-													don++;
-													if(don==ap.length+ad.length){
-														//matriz.push({idCorrector:idp, codigos: codigoP})
-														//matriz.push({idCorrector:idud, codigos: codigoD})
-														for (var b = 0; b < d.length; b++) {
-															if(d[b].ID==idp){
-																//d[b].inconsistencia.push({idRespuesta: res, correcciones: matriz});
-																c++;
-																if(c==a.length){
-																	correccionPorCorrector(d)
-																}
-															}
-														}
-													}
-												})
-											}
-										}
-										if(j==ap.length-1){
-											cons = 0;
-											z++;
-											if(z==a.length){
-												for (var k = 0; k < d.length; k++) {
-													if(d[k].ID == us.userEquipo[0].dataValues.idUsuario){
-														d[k].consistencia =(consis/d[k].Corregidas);
-														//d[k].inconsistencia = inconsis; 
-													}
-												}
-											}
-										}
-									}
+									})
 								})
-							})
-						}	
-					}
+							}
+						}
+					})
 				})
+			}else{
+				resolve();
+			}
 			})
 		})
-	})
+	}
+	function ciclar(usuarios){
+		return new Promise(function(resolve, reject){
+			revisarAsignacion(usuarios).then(function(){
+				usuarios++;
+				if(usuarios==users.length){
+					correccionPorCorrector(d, fs)
+				}else{
+					ciclar(usuarios)
+				}
+			})
+		})
+	}
+	ciclar(usuarios);
 }
-function correccionPorCorrector(da){
+function correccionPorCorrector(da, fs){
+	console.log("LLEGA A LA correccionPorCorrector")
 	var dat = da;
 	var c = 0;
 	var y = 0;
@@ -1051,6 +1047,44 @@ function correccionPorCorrector(da){
 			}
 		})
 	}	
+	function mediaCarga(dat){
+		console.log("llega a la media")
+		var dac = dat;
+		var media = 0;
+		var total = 0;	
+
+		let sacarMedia = function(){
+			return new Promise(function(resolve, reject){
+				dac.forEach(function(d){
+					media += d.Asignadas;
+					total++;
+					if(total==dac.length){
+						media = (media/dac.length)
+						total = 0;
+						resolve();
+					}
+				})
+			})
+		}
+
+		let calcularCarga = function(){
+			return new Promise(function(resolve,reject){
+				dac.forEach(function(dam){
+					dam.carga = (((dam.Asignadas-media)/media)*100).toFixed(2);
+					total++;
+					if(total==dac.length){
+						resolve();
+					}
+				})
+			})
+		}
+
+		sacarMedia().then(function(){
+			return calcularCarga();
+		}).then(function(){
+			fs.writeFile("./views/persistence/correctorTabla(1).json", JSON.stringify(dat))
+		})
+	}
 
 	function cicle(val){
 		return new Promise(function(resolve, reject){
@@ -1058,7 +1092,7 @@ function correccionPorCorrector(da){
 				return correcciones();
 			}).then(function(){
 				if(jota==dat.length-1){
-					console.log(JSON.stringify(dat))
+					mediaCarga(dat)
 				}else{
 					c = 0;
 					asignacion = null;
@@ -1069,6 +1103,7 @@ function correccionPorCorrector(da){
 	}
 	cicle(jota)
 }
+
 
 function asignacionFamilias(fam,fs,c, idp, asignacion, eq, titp){
 	var famcorrector = [];
@@ -1260,46 +1295,74 @@ function asignacionesTeam(p,fs,pregunta,asi,team,titlep){
 	})
 }
 
-function saveCorreccion(asignacion, codigo, carga, usuario, fs, io, socket){
-	q = "INSERT INTO asignacion_codigo(`id_asignacion`,`id_codigo`) VALUES "
-	for (var i = 0; i < codigo.length; i++) {
-			if(i>0){
-				q+= ',('+asignacion.idAsignacion+','+codigo[i].idcodigo+')'	
-			}else{
-				q+= '('+asignacion.idAsignacion+','+codigo[i].idcodigo+')'
-			}
-		
-		}
-		q+= ';'
+function saveCorreccion(asignacion, codigo, carga, usuario,pa,pregunta, fs, io, socket, est){
 	return sequelize.transaction(function(t){
-		return sequelize.query(q,{transaction: t}).then(function(){
-			return sequelize.query ('UPDATE asignacion SET `id_estado`=2 WHERE `id_asignacion`='+asignacion.idAsignacion+';',{transaction: t});
-		}).then(function(){
-			console.log(usuario)
-			io.to(socket).emit('Correccion Guardada', { mensaje: 'ok' })
-			fs.writeFile("./views/persistence/"+usuario+".json", JSON.stringify(carga)); 
+		return AsignacionCodigo.create({idAsignacion: asignacion, idCodigo: codigo},{transaction: t}).then(function(){
+
 		})
+	}).then(function(){
+		console.log("llega a guardar archivos")
+		var paq = require("../views/persistence/"+usuario+"-paquetes.json");
+		paq.preguntas.forEach(function(pre){
+			console.log("ciclo preguntas")
+			if(pre.idPregunta==pregunta){
+				pre.respuestas.forEach(function(bre){
+					console.log("ciclo respuestas")
+					if(bre.parte==pa){
+						if(est==1){
+							bre.contestadas+=1;
+							bre.duda-=1;
+							fs.writeFile("./views/persistence/"+usuario+"-paquetes.json", JSON.stringify(paq))	
+						}else{
+							bre.contestadas+=1;
+							bre.noContestadas-=1;
+							fs.writeFile("./views/persistence/"+usuario+"-paquetes.json", JSON.stringify(paq))
+						}
+					}
+				})
+			}
+			
+		})
+		fs.writeFile("./views/persistence/"+usuario+"-"+pregunta+"-"+pa+".json", JSON.stringify(carga));
 	})	
 }
 
-function updateCorreccion(usuario,asignacion, codigo, codigoAsignacion, carga, fs, io, socket){
+function updateCorreccion(usuario,asignacion, codigo, codigoAsignacion, carga,pregunta, parte, fs, io, socket){
 	return sequelize.transaction(function(t){
 		return AsignacionCodigo.destroy({where:{idAsignacionCodigo: codigoAsignacion}}, { transaction: t }).then(function(){
 			return AsignacionCodigo.create({idAsignacion: asignacion, idCodigo: codigo})
 		});
 	}).then(function(){
-		 io.to(socket).emit('Correccion Guardada', { mensaje: 'ok' })
-		fs.writeFile("./views/persistence/"+usuario+".json", JSON.stringify(carga)); 
-	})
-}
-
-function actualizarCarga(nombre, carga, fs){
-	console.log(JSON.stringify(carga))
-	console.log('esta actualizando')
-	fs.writeFile("./view/js/correctorEjemplo.json", JSON.stringify(carga), function(err){
-		if(err) throw err;
-		console.log('')
+		// io.to(socket).emit('Correccion Guardada', { mensaje: 'ok' })
+		fs.writeFile("./views/persistence/"+usuario+"-"+pregunta+"-"+parte+".json", JSON.stringify(carga)); 
 	})
 }
 
 
+function dudaNueva(asigna,usuario,pregunta,parte,fs, io, est){
+	return sequelize.transaction(function(t){
+		return Asignacion.update({idEstado: 3},{where:{idAsignacion: asigna}},{transaction: t}).then(function(){
+
+		})
+	}).then(function(){
+		var paq = require("../views/persistence/"+usuario+"-paquetes.json");
+		paq.preguntas.forEach(function(pre){
+			if(pre.idPregunta==pregunta){
+				pre.respuestas.forEach(function(bre){
+					if(bre.parte==pa){
+						if(est==1){
+							bre.duda+=1;
+							bre.contestadas-=1;
+							fs.writeFile("./views/persistence"+usuario+"-paquetes.json", JSON.stringify(paq))
+						}else{
+							bre.duda+=1;
+							bre.noContestadas-=1;
+							fs.writeFile("./views/persistence"+usuario+"-paquetes.json", JSON.stringify(paq))
+						}	
+					}
+				})
+			}	
+		})
+		fs.writeFile("./views/persistence/"+usuario+"-"+pregunta+"-"+parte+".json", JSON.stringify(carga));
+	})
+}
