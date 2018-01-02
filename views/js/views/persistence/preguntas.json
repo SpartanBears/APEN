@@ -1,0 +1,15 @@
+[
+	{
+	    "id_instrumento": 1,
+	    "preguntas": [
+	    	{
+				"id_pregunta": "1",
+				"total_asignada": "52",
+				"total_respuestas": "26",
+				"total_corregidas": "0",
+				"total_doble_corregidas": "0",
+				"media_concistencia": "1"
+			}
+		]
+	}
+]

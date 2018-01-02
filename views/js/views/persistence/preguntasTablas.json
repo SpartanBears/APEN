@@ -1,0 +1,85 @@
+[
+  {
+    "id_instrumento": 1,
+    "preguntas": [
+      {
+        "id_pregunta": 1,
+        "cantidad_respuestas": 31,
+        "corregidas": 22,
+        "doble_corregidas": 26,
+        "consistencia": 0.18
+      },
+      {
+        "id_pregunta": 11,
+        "cantidad_respuestas": 20,
+        "corregidas": 22,
+        "doble_corregidas": 26,
+        "consistencia": 0.27
+      },
+      {
+        "id_pregunta": 21,
+        "cantidad_respuestas": 21,
+        "corregidas": 40,
+        "doble_corregidas": 21,
+        "consistencia": 0.95
+      }
+    ]
+  },
+  {
+    "id_instrumento": 11,
+    "preguntas": [
+      {
+        "id_pregunta": 1,
+        "cantidad_respuestas": 21,
+        "corregidas": 20,
+        "doble_corregidas": 29,
+        "consistencia": 0.23
+      }
+    ]
+  },
+  {
+    "id_instrumento": 21,
+    "preguntas": [
+      {
+        "id_pregunta": 1,
+        "cantidad_respuestas": 35,
+        "corregidas": 33,
+        "doble_corregidas": 20,
+        "consistencia": 0.22
+      }
+    ]
+  },
+  {
+    "id_instrumento": 31,
+    "preguntas": [
+      {
+        "id_pregunta": 1,
+        "cantidad_respuestas": 23,
+        "corregidas": 28,
+        "doble_corregidas": 30,
+        "consistencia": 0.59
+      },
+      {
+        "id_pregunta": 11,
+        "cantidad_respuestas": 26,
+        "corregidas": 38,
+        "doble_corregidas": 32,
+        "consistencia": 0.17
+      },
+      {
+        "id_pregunta": 21,
+        "cantidad_respuestas": 29,
+        "corregidas": 25,
+        "doble_corregidas": 29,
+        "consistencia": 0.6
+      },
+      {
+        "id_pregunta": 31,
+        "cantidad_respuestas": 29,
+        "corregidas": 40,
+        "doble_corregidas": 27,
+        "consistencia": 0.28
+      }
+    ]
+  }
+]

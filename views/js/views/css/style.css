@@ -1,0 +1,293 @@
+/*
+	COLORES
+		BG
+			#dad6d6
+			218 214 214
+		NAVBAR
+			#5386e4
+			83 134 228
+		FONT
+			#0d1321
+			13 19 33
+
+		OTROS
+			#1d2d44
+			29 45 68
+
+			#3e5c76
+			62 92 118
+
+*/
+.family-panel{
+
+	overflow-y: auto;
+}
+
+.fixed{
+
+	position: absolute;
+}
+
+.header > .row > div{
+
+	margin: 0 !important;
+}
+
+.btn-respuestas{
+
+	margin: 1% 0.5%;
+	padding: 0;
+	width: 30px;
+	height: 30px;
+}
+
+#respuestaContainer .card>.body{
+
+	position:relative;
+
+}
+
+.btn-status{
+
+	position: absolute;
+	top: 3%;
+	left: 2%;
+}
+
+#listadoRespuestas{
+
+	text-align: center;
+	height: 50px;
+	overflow: hidden;
+}
+
+.cont-btn-resp{
+
+	height: 50px;
+	padding: 0 0;
+}
+
+.respuesta-container{
+
+	/*height: 30vh;*/
+	overflow-y: auto;
+}
+
+.btn-group.btn-group-justified {
+	
+	margin-bottom: 2%;
+}
+
+.btn-group.btn-group-justified:last-child {
+	
+	margin-bottom: 0%;
+}
+
+.btn-codigo{
+
+	width: 80% !important;
+}
+
+.btn-desc-codigo{
+
+	width: 20% !important;
+}
+
+.highlight{
+
+	box-shadow: 0px 0px 30px 5px #5386e4 !important;
+}
+
+section.left-panel-ans {
+	/*max-height: 85vh;*/
+	/*overflow-y: auto;*/
+}
+
+.collapsable-left-bar > div > .panel-heading, .family-rigth-bar > div > .panel-heading{
+
+	background-color: #5386e4;
+	color: white;
+}
+
+.collapsable-left-bar > div, .family-rigth-bar > div{
+
+	border-color: #5386e4;
+}
+
+.content{
+
+	margin-top: 6%;
+}
+
+
+
+.btn-siguiente{
+
+	float: right;
+}
+
+.btn-duda{
+
+	float: left;
+}
+
+.row.heightfix > div{
+
+	
+}
+
+.row.heightfix{
+
+	display: flex !important;
+	/*max-height: 79vh;*/
+	overflow: hidden;
+}
+
+#familiasContainer{
+
+	overflow-y: auto; 
+}
+
+.cols-corrector{
+
+	/*max-height: 79vh;*/
+}
+
+.cols-corrector>.row{
+
+	height: 100%;
+}
+
+#estimuloDisplay{
+
+	height: 25%;
+	min-height: 250px;
+}
+
+#respuestaContainer > .card > .body{
+
+	height: 75%;
+	min-height: 500px;
+}
+
+
+.cols-corrector>.row>div .card{
+
+	/*height: 98%;*/
+}
+
+.btn-selected {
+	/* border: 2px solid #1f91f3 !important; */
+	box-shadow: 0px 0px 2px 3px #1f91f3 !important;
+}
+
+.header.row, .header.row>*{
+
+/*	padding-bottom: 0 !important;
+	margin-bottom: 0 !important;*/
+}
+
+
+#preguntaContainer{
+
+	/*min-height: 300px;*/
+}
+
+#respuestaContainer{
+
+	/*min-height: 900px;*/
+}
+
+
+
+
+
+/* LOGIN START*/
+	
+.login-page{
+	background-color: #dad6d6; 
+}
+
+.login-page .login-box .logo a{
+
+	color: #337ab7;
+}
+
+.login-page .login-box .logo small{
+
+	color: #337ab7;
+}
+
+.login-page .login-box a{
+
+	color: #337ab7;
+}
+/* LOGIN END */
+
+.btn-circle-lg i {
+
+	top: 5px !important;
+	font-size: 20px !important;
+}
+
+.progress-bar-default{
+
+	background-color: white !important;
+}
+
+.login_logo{
+
+	width: 100%;
+}
+
+.navbar_logo{
+
+	height: 100%;
+}
+
+.label-respuesta{
+
+	top: -6px !important;
+	right: 0 !important;
+	position: absolute !important;
+	font-size: 1px !important;
+	line-height: 4px !important;
+	/* background-color: #000 !important; */
+	padding: 0 !important; 
+	-webkit-border-radius: 50% !important;
+	-moz-border-radius: 50% !important;
+	-ms-border-radius: 50% !important;
+	border-radius: 50% !important;
+	height: 15px !important;
+	width: 15px !important;
+	border: none !important; 
+	box-shadow: 0px 0px 1px 1px #5386e4 !important;
+}
+
+.label-respuesta > i{
+
+	top: 7px !important;
+    font-size: 10px !important;
+    line-height: 0 !important;
+}
+
+.btn-respuestas{
+
+	overflow: visible !important;
+}
+
+.panel-collapsable{
+
+	border: 1px solid #1f91f3 !important;
+	height: 30vh;
+	max-height: 30vh;
+	overflow-y: auto;
+}
+
+.panel-respuesta{
+
+	border: 1px solid #1f91f3 !important;
+	height: 55vh;
+	max-height: 55vh;
+	overflow-y: auto;
+}

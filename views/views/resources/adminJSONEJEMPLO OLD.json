@@ -1,0 +1,366 @@
+[
+  {
+    "id_instrumento": 1,
+    "preguntas":[
+      {
+        "id_pregunta": "1",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "2",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "3",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "4",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "5",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      }
+    ],
+    "total_respuestas": "1000",
+    "total_correctores": "20",
+    "datos_respuestas": {
+      "corregidos": "100",
+      "no_corregidos":"20"
+    }
+  },
+  {
+    "id_instrumento": 2,
+    "preguntas":[
+      {
+        "id_pregunta": "1",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "2",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "3",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "4",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "5",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      }
+    ],
+    "total_respuestas": "1000",
+    "total_correctores": "20",
+    "datos_respuestas": {
+      "corregidos": "100",
+      "no_corregidos":"20"
+    }
+  },
+  {
+    "id_instrumento": 3,
+    "preguntas":[
+      {
+        "id_pregunta": "1",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "2",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "3",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "4",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "5",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      }
+    ],
+    "total_respuestas": "1000",
+    "total_correctores": "20",
+    "datos_respuestas": {
+      "corregidos": "100",
+      "no_corregidos":"20"
+    }
+  },
+  {
+    "id_instrumento": 4,
+    "preguntas":[
+      {
+        "id_pregunta": "1",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "2",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "3",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "4",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      },
+      {
+        "id_pregunta": "5",
+        "total_respuestas": "22",
+        "total_corregidas": "33",
+        "total_doble_corregidas": "44",
+        "codigos":[
+          {
+            "id_codigo": "1",
+            "valor": "A1"
+          },
+          {
+            "id_codigo": "2",
+            "valor": "A2"
+          }
+        ]
+      }
+    ],
+    "total_respuestas": "1000",
+    "total_correctores": "20",
+    "datos_respuestas": {
+      "corregidos": "100",
+      "no_corregidos":"20"
+    }
+  }
+]

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<title>Instrumentos</title>
+
+
+	<!-- PRELOADED ADMINBSB -->
+
+		<!-- Google Fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+		<!-- Bootstrap Core Css -->
+		<link href="./vendors/AdminBSB/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+		<!-- Waves Effect Css -->
+		<link href="./vendors/AdminBSB/plugins/node-waves/waves.css" rel="stylesheet" />
+
+		<!-- Animation Css -->
+		<link href="./vendors/AdminBSB/plugins/animate-css/animate.css" rel="stylesheet" />
+
+		<!-- Custom Css -->
+		<link href="./vendors/AdminBSB/css/style.css" rel="stylesheet">
+
+		<!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+		<link href="./vendors/AdminBSB/css/themes/all-themes.css" rel="stylesheet" />
+
+		<link rel="stylesheet" type="text/css" href="./css/listaInstrumentosStyle.css">
+		<link rel="stylesheet" type="text/css" href="./css/menuStyle.css">
+</head>
+
+<body class="theme-red">
+	<!-- Page Loader -->
+	<div class="page-loader-wrapper">
+		<div class="loader">
+			<div class="preloader">
+				<div class="spinner-layer pl-red">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+			<p>Please wait...</p>
+		</div>
+	</div>
+	<!-- #END# Page Loader -->
+	<!-- Overlay For Sidebars -->
+	<div class="overlay"></div>
+	<!-- #END# Overlay For Sidebars -->
+	<!-- Search Bar -->
+	<div class="search-bar">
+		<div class="search-icon">
+			<i class="material-icons">search</i>
+		</div>
+		<input type="text" placeholder="START TYPING...">
+		<div class="close-search">
+			<i class="material-icons">close</i>
+		</div>
+	</div>
+	<!-- #END# Search Bar -->
+	<!-- Top Bar -->
+	<nav class="navbar">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+				<a href="javascript:void(0);" class="bars"></a>
+				<a class="navbar-brand" href="./vendors/AdminBSB/index.html"><img class="navbar_logo" src="./resources/images/qualansLogo_v1.png"></a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<!-- USER IAMGE -->
+					<li>
+						<a class="user-image" href="#">
+							<img src="./vendors/AdminBSB/images/user.png" alt="User">
+						</a>
+						
+					</li>
+					<!-- END USER IMAGE -->
+					<!-- Notifications -->
+					<li id="menuNotification" class="notification-bell dropdown">
+						<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+							<i class="material-icons">notifications</i>
+							<span class="label-count">7</span>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="header">NOTIFICATIONS</li>
+							<li class="body">
+								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 254px;"><ul class="menu" style="overflow: hidden; width: auto; height: 254px;">
+									<li>
+										<a href="javascript:void(0);" class=" waves-effect waves-block">
+											<div class="icon-circle bg-light-green">
+												<i class="material-icons">person_add</i>
+											</div>
+											<div class="menu-info">
+												<h4>12 new members joined</h4>
+												<p>
+													<i class="material-icons">access_time</i> 14 mins ago
+												</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);" class=" waves-effect waves-block">
+											<div class="icon-circle bg-cyan">
+												<i class="material-icons">add_shopping_cart</i>
+											</div>
+											<div class="menu-info">
+												<h4>4 sales made</h4>
+												<p>
+													<i class="material-icons">access_time</i> 22 mins ago
+												</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);" class=" waves-effect waves-block">
+											<div class="icon-circle bg-red">
+												<i class="material-icons">delete_forever</i>
+											</div>
+											<div class="menu-info">
+												<h4><b>Nancy Doe</b> deleted account</h4>
+												<p>
+													<i class="material-icons">access_time</i> 3 hours ago
+												</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);" class=" waves-effect waves-block">
+											<div class="icon-circle bg-orange">
+												<i class="material-icons">mode_edit</i>
+											</div>
+											<div class="menu-info">
+												<h4><b>Nancy</b> changed name</h4>
+												<p>
+													<i class="material-icons">access_time</i> 2 hours ago
+												</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);" class=" waves-effect waves-block">
+											<div class="icon-circle bg-blue-grey">
+												<i class="material-icons">comment</i>
+											</div>
+											<div class="menu-info">
+												<h4><b>John</b> commented your post</h4>
+												<p>
+													<i class="material-icons">access_time</i> 4 hours ago
+												</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);" class=" waves-effect waves-block">
+											<div class="icon-circle bg-light-green">
+												<i class="material-icons">cached</i>
+											</div>
+											<div class="menu-info">
+												<h4><b>John</b> updated status</h4>
+												<p>
+													<i class="material-icons">access_time</i> 3 hours ago
+												</p>
+											</div>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);" class=" waves-effect waves-block">
+											<div class="icon-circle bg-purple">
+												<i class="material-icons">settings</i>
+											</div>
+											<div class="menu-info">
+												<h4>Settings updated</h4>
+												<p>
+													<i class="material-icons">access_time</i> Yesterday
+												</p>
+											</div>
+										</a>
+									</li>
+								</ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 0px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+							</li>
+							<li class="footer">
+								<a href="javascript:void(0);" class=" waves-effect waves-block">View All Notifications</a>
+							</li>
+						</ul>
+					</li>
+					<!-- #END# Notifications -->
+					<li class="pull-right">
+						<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+							<i class="material-icons">more_vert</i>
+						</a>
+						<ul class="dropdown-menu pull-right">
+							<!-- <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+							<li role="seperator" class="divider"></li>
+							<li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
+							<li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
+							<li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
+							<li role="seperator" class="divider"></li> -->
+							<li><a href="javascript:void(0);" id="signOut" class=" waves-effect waves-block"><i class="material-icons">input</i>Salir</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container content">
+		<div class="card">
+			<div class="body">
+				<select class="select-filter-instrumento" data-live-search="true" multiple>
+				</select>
+
+				<div id="instrumentosContainer">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div id="modalContent" class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="defaultModalLabel">Modal title</h4>
+					<label class="label label-info"></label>
+					<label class="label label-primary"></label>
+				</div>
+				<div class="modal-body">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- PRELOADED ADMINBSB -->
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+		<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js"></script>
+
+		<!-- Jquery Core Js -->
+		<script src="./vendors/AdminBSB/plugins/jquery/jquery.min.js"></script>
+
+		<!-- Bootstrap Core Js -->
+		<script src="./vendors/AdminBSB/plugins/bootstrap/js/bootstrap.js"></script>
+
+		<!-- Select Plugin Js -->
+		<script src="./vendors/AdminBSB/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+		<!-- Slimscroll Plugin Js -->
+		<script src="./vendors/AdminBSB/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+		<!-- Waves Effect Plugin Js -->
+		<script src="./vendors/AdminBSB/plugins/node-waves/waves.js"></script>
+
+		<!-- Custom Js -->
+		<script src="./vendors/AdminBSB/js/admin.js"></script>
+
+		<!-- Demo Js -->
+		<!-- // <script src="./vendors/AdminBSB/js/demo.js"></script> -->
+
+		<script src="/socket.io/socket.io.js"></script>	
+
+		<script type="text/javascript" src="./js/listaInstrumentos.js"></script>
+		<script type="text/javascript" src="./js/menuEvts.js"></script>
+</body>
+
+</html>

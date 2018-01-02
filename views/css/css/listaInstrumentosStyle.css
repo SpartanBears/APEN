@@ -1,0 +1,45 @@
+body{
+
+	padding-top: 6%;
+}
+
+span.icon-cont {
+
+	position: relative;
+	top: -8px;
+}
+
+i.material-icons.contestadas{
+
+	color: #2b982b;
+}
+
+i.material-icons.duda{
+
+	color: #ff9600;
+}
+
+i.material-icons.no-contestadas{
+
+	color: #fb483a;
+}
+
+.icons-instrumento{
+
+	text-align: center;
+}
+
+.card.bg-gray{
+
+	background-color: #f5f5f5;
+}
+
+.card-instrumento {
+	
+	cursor: pointer;
+	transition: 0.5s all;
+}
+
+.card-instrumento:hover {
+    box-shadow: 0px 0px 20px 2px #1f91f3;
+}
