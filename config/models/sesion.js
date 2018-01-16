@@ -1,13 +1,18 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('alumno', {
-		idAlumno: {
+	return sequelize.define('sesion', {
+		idSesion: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
 			primaryKey: true,
 			autoIncrement: true,
-			field: 'id_alumno'
+			field: 'id_sesion'
+		},
+		idEquipo: {
+			type: DataTypes.INTEGER(11),
+			allowNull: false,
+			field: 'id_equipo'
 		},
 		nombre: {
 			type: DataTypes.STRING(100),
@@ -15,23 +20,11 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: '-',
 			field: 'nombre'
 		},
-		apellidos: {
-			type: DataTypes.STRING(100),
-			allowNull: true,
-			defaultValue: '-',
-			field: 'apellidos'
-		},
-		run: {
-			type: DataTypes.STRING(45),
-			allowNull: true,
-			defaultValue: '-',
-			field: 'run'
-		},
-		email: {
-			type: DataTypes.STRING(255),
-			allowNull: true,
-			defaultValue: '-',
-			field: 'email'
+		fecha: {
+			type: DataTypes.TIME,
+			allowNull: false,
+			defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+			field: 'fecha'
 		},
 		activo: {
 			type: DataTypes.INTEGER(4),
@@ -41,6 +34,6 @@ module.exports = function(sequelize, DataTypes) {
 		}
 	}, {
 		timestamps: false,
-		tableName: 'alumno'
+		tableName: 'sesion'
 	});
 };

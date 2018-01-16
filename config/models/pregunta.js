@@ -27,15 +27,26 @@ module.exports = function(sequelize, DataTypes) {
 			},
 			field: 'id_prueba'
 		},
-		enunciado: {
-			type: DataTypes.TEXT,
-			allowNull: false,
-			field: 'enunciado'
+		forma: {
+			type: DataTypes.STRING(100),
+			allowNull: true,
+			defaultValue: '',
+			field: 'forma'
 		},
-		estimulo: {
+		resSituacionPedagogica: {
 			type: DataTypes.TEXT,
 			allowNull: false,
-			field: 'estimulo'
+			field: 'res_situacion_pedagogica'
+		},
+		situacionPedagogica: {
+			type: DataTypes.TEXT,
+			allowNull: false,
+			field: 'situacion_pedagogica'
+		},
+		alterResolucionPedagogica: {
+			type: DataTypes.TEXT,
+			allowNull: false,
+			field: 'alter_resolucion_pedagogica'
 		},
 		activo: {
 			type: DataTypes.INTEGER(4),

@@ -37,33 +37,86 @@ io.on('connection', function (socket) {
     socket.on('Iniciar Sesion', function (data) {
         Funciones.login(data.user, data.pass, io, socket.id)
     })
-    socket.on('Crear Usuario',function(data){
+    socket.on('Crear Usuario',function(data){ 
         Funciones.agregarUsuario(data.id_tipo_usuario,data.usuario,data.password,data.nombre,data.apellido_paterno,data.apellido_materno,data.correo,fs)
     })
     socket.on('Editar Usuario',function(data){
-        Funciones.editarUsuario(data.id_tipo_usuario,data.usuario,data.password,data.nombre,data.apellido_paterno,data.apellido_materno,data.correo,fs)
+        Funciones.editarUsuario(data.id_tipo_usuario,data.id_usuario,data.usuario,data.password,data.nombre,data.apellido_paterno,data.apellido_materno,data.correo,fs)
     })
-    socket.on('Eliminar Usuario',function(data){
+    socket.on('Borrar Usuario',function(data){
         Funciones.eliminarUsuario(data.id_usuario,fs)
     })
     socket.on('Crear Equipo',function(data){
-        Funciones.agregarEquipo(nombre,fs);
+        Funciones.agregarEquipo(data.nombre,fs);
     })
     socket.on('Editar Equipo',function(data){
-        Funciones.editarEquipo(fs)
+        Funciones.editarEquipo(data.nombre,data.id_equipo,fs)
     })
-    socket.on('Eliminar Equipo',function(data){
-        Funciones.eliminarEquipo(fs)
+    socket.on('Borrar Equipo',function(data){
+        Funciones.eliminarEquipo(data.id_equipo,fs)
     })
-    
-    socket.on('datosCarga', function(data){
-        //Funciones.supervisorPreguntas(1,fs)
-        //Funciones.SupervisorEquipo(1,fs);
-        Funciones.crearCarga(1, 2, 1, fs)
-        //Funciones.importarExcelPersona("bla",fs)
+    socket.on('Datos Supervisor', function(data){
+        //Funciones.supervisorPreguntas(data.idE,fs,io, socket.id)
+        Funciones.SupervisorEquipo(data.idE, fs)
     })
+    socket.on('Asignar Pregunta', function(data){
+        Funciones.crearCarga(data.id_pregunta, 2, data.id_equipo, fs)
+    })
+
     socket.on('Guardar Correccion', function (data) {
-        console.log("llega al evento")
-        Funciones.guardarCorreccion(data.idUsuario,data.id_respuesta, data.codigo, data.nombre_usuario, data.carga,data.idEstado, io, socket.id, fs)
+        console.log("llega")
+        Funciones.guardarCorreccion(data.idUsuario,data.resp, data.nombre_usuario, data.carga,data.pregunta,data.sesion, io, socket.id, fs)
+    })
+
+    socket.on('Datos Admin', function(d){
+        Funciones.DatosAdmin(fs, io, socket.id)
+    })
+    socket.on('Importar',function(data){
+        //Funciones.importarCorrectores();
+        //Funciones.importarExcelUsers();
+        Funciones.importarSupervisores();
+    })
+    socket.on('Guardar Correccion Extra',function(data){
+        Funciones.correccionExtra(data.idUsuario, data.resp,data.isEC, data.tipoEC.docente,data.tipoEC.estudiante,data.tipoEC.escuela,data.tipoEC.otros,data.nivelFundamento.fund, data.nivelFundamento.parcial, data.nivelFundamento.no_fund, data.nivelFundamento.estereotipo)
+    })
+
+    socket.on('CUSUARIO',function(data){
+        Funciones.ConsistenciaUsuario(data.user, data.userd)
+    })
+
+    socket.on('Sesion',function(data){
+        Funciones.matrizAsignaciones(data.id);
+    })
+
+    socket.on('Tablas', function(data){
+        //Funciones.matrizAsignaciones(data.id, data.nombre, fs, data.user);
+        Funciones.tablaCorrectorAntigua(data.id, data.nombre, fs, data.user);  
+        Funciones.tablaPorRespuesta(data.id, data.nombre, fs, io, socket.id);
+    })
+
+    socket.on('Crear Sesion Pedagogia',function(data){
+        Funciones.crearAsignacionesPedagogia(data.Sesion, data.Equipo, fs)
+    })
+
+    socket.on('Crear Sesion Lenguaje',function(data){
+        if(data.id==1){
+            Funciones.crearAsignacionesLenguaje(data.Sesion,'Lenguaje 1',53,fs)    
+        }else{
+            Funciones.crearAsignacionesLenguaje(data.Sesion,'Lenguaje 2',54,fs)
+        }
+        
+    })
+
+    socket.on('Repetir Sesion Pedagogia',function(data){
+        Funciones.repetirAsignacionesPedagogia(data.Sesion, data.Equipo, fs)
+    })
+
+    socket.on('Repetir Sesion Lenguaje',function(data){
+        if(data.id==1){
+            Funciones.repetirAsignacionesLenguaje(data.Sesion, 'Lenguaje 1',53,fs)    
+        }else{
+            Funciones.repetirAsignacionesLenguaje(data.Sesion, 'Lenguaje 2', 53,fs)
+        }
+        
     })
 })

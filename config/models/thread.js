@@ -20,9 +20,8 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'mensaje'
 		},
 		fecha: {
-			type: DataTypes.TIME,
+			type: DataTypes.DATE,
 			allowNull: false,
-			defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
 			field: 'fecha'
 		},
 		tipo: {

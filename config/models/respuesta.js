@@ -31,7 +31,7 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		valor: {
 			type: DataTypes.TEXT,
-			allowNull: false,
+			allowNull: true,
 			field: 'valor'
 		},
 		activo: {

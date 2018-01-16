@@ -27,28 +27,44 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		contrasena: {
 			type: DataTypes.STRING(45),
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '-',
 			field: 'contraseña'
 		},
 		nombre: {
 			type: DataTypes.STRING(100),
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '-',
 			field: 'nombre'
 		},
 		apellidoPaterno: {
 			type: DataTypes.STRING(45),
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '-',
 			field: 'apellido_paterno'
 		},
 		apellidoMaterno: {
 			type: DataTypes.STRING(45),
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '-',
 			field: 'apellido_materno'
 		},
 		email: {
 			type: DataTypes.STRING(255),
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '-',
 			field: 'email'
+		},
+		especialidad: {
+			type: DataTypes.STRING(45),
+			allowNull: true,
+			defaultValue: '-',
+			field: 'especialidad'
+		},
+		misc: {
+			type: DataTypes.TEXT,
+			allowNull: true,
+			field: 'misc'
 		},
 		activo: {
 			type: DataTypes.INTEGER(4),
